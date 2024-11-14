@@ -1,3 +1,12 @@
 <resources>
+    <!--    앱 이름-->
     <string name="app_name">쿠키타임</string>
+    <!--    탭: 홈-->
+    <string name="home">홈</string>
+    <!--    탭: 커뮤니티-->
+    <string name="community">커뮤니티</string>
+    <!--    탭: 배지-->
+    <string name="badges">배지</string>
+    <!--    탭: 마이페이지-->
+    <string name="mypage">마이페이지</string>
 </resources>

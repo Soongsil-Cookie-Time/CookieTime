@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/uil_home_alt"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/tab_community"
+        android:icon="@drawable/uil_comments"
+        android:title="@string/community" />
+    <item
+        android:id="@+id/tab_badges"
+        android:icon="@drawable/uil_bookmark"
+        android:title="@string/badges" />
+    <item
+        android:id="@+id/tab_mypage"
+        android:icon="@drawable/uil_users_alt"
+        android:title="@string/mypage" />
+</menu>
