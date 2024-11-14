@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -5,6 +7,13 @@ plugins {
 android {
     namespace = "com.ssuclass.cookietime"
     compileSdk = 34
+
+    // `local.properties` 파일에서 값을 읽어옴
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
 
     defaultConfig {
         applicationId = "com.ssuclass.cookietime"
@@ -14,6 +23,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // resValue를 통해 XML 리소스에서 사용할 수 있도록 설정
+        resValue("string", "facebook_app_id", localProperties["facebook_app_id"] as String? ?: "")
+        resValue(
+            "string",
+            "facebook_client_token",
+            localProperties["facebook_client_id"] as String? ?: ""
+        )
     }
 
     buildTypes {
@@ -43,4 +60,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("com.facebook.android:facebook-android-sdk:latest.release")
 }
