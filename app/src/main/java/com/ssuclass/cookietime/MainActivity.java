@@ -1,10 +1,19 @@
 package com.ssuclass.cookietime;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.ssuclass.cookietime.badgemanager.BadgeManagerFragment;
+import com.ssuclass.cookietime.community.CommunityFragment;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
+import com.ssuclass.cookietime.home.HomeFragment;
+import com.ssuclass.cookietime.mypage.MyPageFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,5 +25,37 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setBottomNavigationView();
+    }
+
+    private void setBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationView;
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.tab_home) {
+                    replaceFragment(new HomeFragment());
+                    return true;
+                } else if (itemId == R.id.tab_community) {
+                    replaceFragment(new CommunityFragment());
+                    return true;
+                } else if (itemId == R.id.tab_badges) {
+                    replaceFragment(new BadgeManagerFragment());
+                    return true;
+                } else if (itemId == R.id.tab_mypage) {
+                    replaceFragment(new MyPageFragment());
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

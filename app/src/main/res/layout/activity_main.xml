@@ -6,9 +6,9 @@
 
     <!-- Fragment 또는 다른 컨텐츠를 위한 Container -->
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
