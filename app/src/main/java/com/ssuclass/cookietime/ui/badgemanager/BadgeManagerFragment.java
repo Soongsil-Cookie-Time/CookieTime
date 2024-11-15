@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.community;
+package com.ssuclass.cookietime.ui.badgemanager;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import com.ssuclass.cookietime.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CommunityFragment#newInstance} factory method to
+ * Use the {@link BadgeManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommunityFragment extends Fragment {
+public class BadgeManagerFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +25,7 @@ public class CommunityFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CommunityFragment() {
+    public BadgeManagerFragment() {
         // Required empty public constructor
     }
 
@@ -35,11 +35,11 @@ public class CommunityFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CommunityFragment.
+     * @return A new instance of fragment BadgeManagerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CommunityFragment newInstance(String param1, String param2) {
-        CommunityFragment fragment = new CommunityFragment();
+    public static BadgeManagerFragment newInstance(String param1, String param2) {
+        BadgeManagerFragment fragment = new BadgeManagerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,6 +60,6 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_community, container, false);
+        return inflater.inflate(R.layout.fragment_badge_manager, container, false);
     }
 }

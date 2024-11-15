@@ -1,21 +1,20 @@
-package com.ssuclass.cookietime.mypage;
+package com.ssuclass.cookietime.ui.community;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.ssuclass.cookietime.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyPageFragment#newInstance} factory method to
+ * Use the {@link CommunityEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyPageFragment extends Fragment {
+public class CommunityEntryFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,8 +25,8 @@ public class MyPageFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MyPageFragment() {
-        // Required empty public constructor
+    private CommunityEntryFragment() {
+        // 화면 전환(프라그먼트 전환) 간 데이터 보존을 해야 하기 때문에, 일반적인 생성자는 사용하지 않는다.
     }
 
     /**
@@ -36,11 +35,11 @@ public class MyPageFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MyPageFragment.
+     * @return A new instance of fragment CommunityFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyPageFragment newInstance(String param1, String param2) {
-        MyPageFragment fragment = new MyPageFragment();
+    public static CommunityEntryFragment newInstance(String param1, String param2) {
+        CommunityEntryFragment fragment = new CommunityEntryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +60,6 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_page, container, false);
+        return inflater.inflate(R.layout.fragment_community_entry, container, false);
     }
 }

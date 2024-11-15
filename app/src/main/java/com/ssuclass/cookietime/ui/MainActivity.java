@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime;
+package com.ssuclass.cookietime.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.ssuclass.cookietime.badgemanager.BadgeManagerFragment;
-import com.ssuclass.cookietime.community.CommunityFragment;
+import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
-import com.ssuclass.cookietime.home.HomeFragment;
-import com.ssuclass.cookietime.mypage.MyPageFragment;
+import com.ssuclass.cookietime.ui.badgemanager.BadgeManagerFragment;
+import com.ssuclass.cookietime.ui.community.CommunityEntryFragment;
+import com.ssuclass.cookietime.ui.home.HomeFragment;
+import com.ssuclass.cookietime.ui.mypage.MyPageFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new HomeFragment());
                     return true;
                 } else if (itemId == R.id.tab_community) {
-                    replaceFragment(new CommunityFragment());
+                    replaceFragment(CommunityEntryFragment.newInstance("param1", "param2"));
                     return true;
                 } else if (itemId == R.id.tab_badges) {
                     replaceFragment(new BadgeManagerFragment());
