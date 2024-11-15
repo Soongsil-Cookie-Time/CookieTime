@@ -23,7 +23,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        
+
         // resValue를 통해 XML 리소스에서 사용할 수 있도록 설정
         resValue("string", "facebook_app_id", localProperties["facebook_app_id"] as String? ?: "")
         resValue(
@@ -61,5 +61,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    // Facebook SDK
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
+
+    // Material Design Components
+    implementation("com.google.android.material:material:1.11.0")
 }
