@@ -31,7 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:backgroundTint="#4A009843"
         android:text="[영화 이름] 쿠키 정보 보러가기"
+        android:textColor="#009843"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_detail_page_toolbar" />
