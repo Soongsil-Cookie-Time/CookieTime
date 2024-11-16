@@ -1,7 +1,7 @@
 ---
 name: Feature Template
 about: 피처에 관한 템플릿입니다.
-title: "[Feat] "
+title: 'feat: '
 labels: feat
 assignees: ''
 

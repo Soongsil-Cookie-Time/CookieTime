@@ -1,7 +1,7 @@
 ---
 name: Fix Template
 about: 문제 해결 템플릿입니다.
-title: "[Fix] "
+title: 'fix: '
 labels: fix
 assignees: ''
 

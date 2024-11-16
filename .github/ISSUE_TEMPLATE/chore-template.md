@@ -1,7 +1,7 @@
 ---
 name: Chore Template
 about: 잡다한 일 템플릿입니다.
-title: "[Chore] "
+title: 'chore:  '
 labels: chore
 assignees: ''
 
