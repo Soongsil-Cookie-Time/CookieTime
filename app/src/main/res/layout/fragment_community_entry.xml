@@ -17,7 +17,7 @@
         app:navigationIcon="@drawable/uil_arrow_left">
 
         <TextView
-            style="@style/navigation_style"
+            style="@style/navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,9 +39,11 @@
         app:layout_constraintTop_toBottomOf="@+id/page_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/community_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
