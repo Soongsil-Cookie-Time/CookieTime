@@ -5,61 +5,53 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.ssuclass.cookietime.R;
+import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
+import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommunityEntryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
 public class CommunityEntryFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // Fields
+    private FragmentCommunityEntryBinding binding;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Static Methods
+    public static CommunityEntryFragment newInstance() {
 
-    private CommunityEntryFragment() {
-        // 화면 전환(프라그먼트 전환) 간 데이터 보존을 해야 하기 때문에, 일반적인 생성자는 사용하지 않는다.
+        return new CommunityEntryFragment();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CommunityFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CommunityEntryFragment newInstance(String param1, String param2) {
-        CommunityEntryFragment fragment = new CommunityEntryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    // Life Cycle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_community_entry, container, false);
+        binding = FragmentCommunityEntryBinding.inflate(getLayoutInflater(), container, false);
+        setCommunityRecyclerView();
+        return binding.getRoot();
+    }
+
+    // Class Internal Field
+    private void setCommunityRecyclerView() {
+        RecyclerView communityRecyclerView = binding.communityRecyclerview;
+        communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
+        communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        communityRecyclerView.setAdapter(new CommunityEntryAdapter(
+                List.of("[Movie1]",
+                        "[Movie2]",
+                        "[Movie3]",
+                        "[Movie4]",
+                        "[Movie5]",
+                        "[Movie6]")));
     }
 }

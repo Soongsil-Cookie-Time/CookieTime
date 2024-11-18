@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewholder_community_entry"
+    android:layout_width="match_parent"
+    android:layout_height="102dp"
+    android:background="@drawable/rounded_viewholder_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="102dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/movie_poster_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/movie_title_textview"
+            style="@style/movie_title_community_viewholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="17dp"
+            android:text="[영화제목]"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info_community_textview"
+            style="@style/community_info_community_viewholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="쿠키 커뮤니티"
+            app:layout_constraintStart_toEndOf="@+id/movie_title_textview"
+            app:layout_constraintTop_toTopOf="@+id/movie_title_textview" />
+
+        <TextView
+            android:id="@+id/recent_review_textview"
+            style="@style/recent_review_community_viewholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="가장 최근 리뷰"
+            app:layout_constraintStart_toStartOf="@+id/movie_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_textview" />
+
+        <ImageView
+            android:id="@+id/joinable_info_imageview"
+            android:layout_width="47dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/can_join_icon"
+            app:layout_constraintStart_toStartOf="@id/movie_title_textview"
+            app:layout_constraintTop_toBottomOf="@id/recent_review_textview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/movie_poster_imageview"
+        android:layout_width="48dp"
+        android:layout_height="71dp"
+        android:layout_marginEnd="18dp"
+        android:contentDescription="movie poster"
+        android:src="@drawable/sample_movie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/content_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="16dp"
+        android:text="용산 무대인사 후기"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/content_preview_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘 용아맥 무대인사 2시 다녀왔는데 진짜 분위기 좋고 팬서비스도..."
+        app:layout_constraintStart_toStartOf="@+id/content_title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/content_title_textview" />
+
+    <ImageView
+        android:id="@+id/comment_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:contentDescription="댓글 수"
+        android:src="@drawable/uil_comment"
+        app:layout_constraintStart_toStartOf="@id/content_preview_textview"
+        app:layout_constraintTop_toBottomOf="@+id/content_preview_textview" />
+
+    <TextView
+        android:id="@+id/comment_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="3"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_imageview"
+        app:layout_constraintStart_toEndOf="@+id/comment_imageview"
+        app:layout_constraintTop_toTopOf="@+id/comment_imageview" />
+
+
+    <TextView
+        android:id="@+id/posted_time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | N분 전"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_number"
+        app:layout_constraintStart_toEndOf="@+id/comment_number"
+        app:layout_constraintTop_toTopOf="@+id/comment_number" />
+
+    <TextView
+        android:id="@+id/nickname_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | 하이용"
+        app:layout_constraintBottom_toBottomOf="@+id/posted_time_textview"
+        app:layout_constraintStart_toEndOf="@+id/posted_time_textview"
+        app:layout_constraintTop_toTopOf="@+id/posted_time_textview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

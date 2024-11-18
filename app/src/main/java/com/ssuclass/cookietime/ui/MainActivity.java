@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new HomeFragment());
                     return true;
                 } else if (itemId == R.id.tab_community) {
-                    replaceFragment(CommunityEntryFragment.newInstance("param1", "param2"));
+                    replaceFragment(CommunityEntryFragment.newInstance());
                     return true;
                 } else if (itemId == R.id.tab_badges) {
                     replaceFragment(new BadgeManagerFragment());

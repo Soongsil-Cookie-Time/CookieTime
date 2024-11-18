@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/community_background_color">
+    tools:context=".ui.community.CommunityDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/community_detail_page_toolbar"
@@ -21,33 +22,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/page_title_community" />
+            android:text="[영화 이름] 쿠키 커뮤니티" />
     </androidx.appcompat.widget.Toolbar>
 
-
-    <TextView
-        android:id="@+id/page_title"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/go_to_cookie_detail_button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="@string/page_title_community"
-        android:textColor="@color/black"
-        android:textSize="29sp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#4A009843"
+        android:text="[영화 이름] 쿠키 정보 보러가기"
+        android:textColor="#009843"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_detail_page_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/community_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/page_title"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
+        app:layout_constraintTop_toBottomOf="@+id/go_to_cookie_detail_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
