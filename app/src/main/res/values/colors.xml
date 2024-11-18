@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="community_background_color">#EAEAEA</color>
+    <!--디자인 시스템-->
     <color name="primary">#009843</color>
 </resources>
