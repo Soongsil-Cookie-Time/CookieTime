@@ -2,6 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -64,6 +65,8 @@ dependencies {
     // Facebook SDK
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
 
-    // Material Design Components
-    implementation("com.google.android.material:material:1.11.0")
+    // Firebase Module
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 }
