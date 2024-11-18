@@ -21,13 +21,12 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     @Override
     public CommunityDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewholderCommunityDetailBinding binding = ViewholderCommunityDetailBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
         return new CommunityDetailViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
-
+        String item = data.get(position);
     }
 
     @Override
