@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.CommunityModel;
+import com.ssuclass.cookietime.domain.CommunityEntryModel;
 import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 public class CommunityEntryFragment extends Fragment {
     private FragmentCommunityEntryBinding binding;
     private FirebaseFirestore db;
-    private List<CommunityModel> dataList;
+    private List<CommunityEntryModel> dataList;
     private CommunityEntryAdapter adapter;
 
     @Override
@@ -41,8 +41,13 @@ public class CommunityEntryFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentCommunityEntryBinding.inflate(getLayoutInflater(), container, false);
         setCommunityRecyclerView();
-        fetchCommunitiesList();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchCommunitiesList();
     }
 
     private void setCommunityRecyclerView() {
@@ -66,8 +71,12 @@ public class CommunityEntryFragment extends Fragment {
                         if (task.isSuccessful()) {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                CommunityModel community = document.toObject(CommunityModel.class);
-                                dataList.add(community);
+                                CommunityEntryModel model = new CommunityEntryModel();
+                                String id = document.getId();
+                                String title = document.getString("title");
+                                model.setId(id);
+                                model.setTitle(title);
+                                dataList.add(model);
                             }
                             // FIXME: 성능개선을 위한 코드
                             adapter.notifyDataSetChanged();

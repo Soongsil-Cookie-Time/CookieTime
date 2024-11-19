@@ -1,9 +1,9 @@
 package com.ssuclass.cookietime.domain;
 
-public class CommunityModel {
+public class CommunityDetailModel {
     private String title;
 
-    public CommunityModel() {
+    public CommunityDetailModel() {
     }
 
     public String getTitle() {

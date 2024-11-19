@@ -7,31 +7,34 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ViewholderCommunityDetailBinding;
+import com.ssuclass.cookietime.domain.CommunityDetailModel;
 
 import java.util.List;
 
 public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetailAdapter.CommunityDetailViewHolder> {
-    private final List<String> data;
+    private final List<CommunityDetailModel> dataList;
 
-    public CommunityDetailAdapter(List<String> data) {
-        this.data = data;
+    public CommunityDetailAdapter(List<CommunityDetailModel> dataList) {
+        this.dataList = dataList;
     }
 
     @NonNull
     @Override
     public CommunityDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewholderCommunityDetailBinding binding = ViewholderCommunityDetailBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ViewholderCommunityDetailBinding binding = ViewholderCommunityDetailBinding
+                .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new CommunityDetailViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
-        String item = data.get(position);
+        String title = dataList.get(position).getTitle();
+        holder.binding.contentTitleTextview.setText(title);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dataList.size();
     }
 
     public static class CommunityDetailViewHolder extends RecyclerView.ViewHolder {
@@ -39,10 +42,7 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
 
         public CommunityDetailViewHolder(ViewholderCommunityDetailBinding binding) {
             super(binding.getRoot());
-
             this.binding = binding;
         }
-
-
     }
 }

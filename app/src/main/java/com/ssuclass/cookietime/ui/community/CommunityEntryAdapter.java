@@ -10,17 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ViewholderCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.CommunityModel;
+import com.ssuclass.cookietime.domain.CommunityEntryModel;
 
 import java.util.List;
 
 public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAdapter.CommunityEntryViewHolder> {
 
     // Fields
-    private List<CommunityModel> dataList;
+    private List<CommunityEntryModel> dataList;
 
     // Constructor
-    public CommunityEntryAdapter(List<CommunityModel> dataList) {
+    public CommunityEntryAdapter(List<CommunityEntryModel> dataList) {
         this.dataList = dataList;
     }
 
@@ -46,7 +46,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
         return this.dataList.size();
     }
 
-    public void updateDataList(List<CommunityModel> dataList) {
+    public void updateDataList(List<CommunityEntryModel> dataList) {
         this.dataList = dataList;
     }
 
@@ -54,8 +54,12 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                String communityId = dataList.get(position).getId();
+
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CommunityDetailActivity.class);
+                intent.putExtra("communityId", communityId);
                 context.startActivity(intent);
             }
         });
