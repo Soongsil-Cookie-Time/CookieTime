@@ -10,17 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ViewholderCommunityEntryBinding;
+import com.ssuclass.cookietime.domain.CommunityModel;
 
 import java.util.List;
 
 public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAdapter.CommunityEntryViewHolder> {
 
     // Fields
-    private final List<String> data;
+    private List<CommunityModel> dataList;
 
     // Constructor
-    public CommunityEntryAdapter(List<String> data) {
-        this.data = data;
+    public CommunityEntryAdapter(List<CommunityModel> dataList) {
+        this.dataList = dataList;
     }
 
     // Methods
@@ -34,7 +35,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
     @Override
     public void onBindViewHolder(@NonNull CommunityEntryViewHolder holder, int position) {
-        String movieTitle = data.get(position);
+        String movieTitle = dataList.get(position).getTitle();
         holder.binding.movieTitleTextview.setText(movieTitle);
 
         setOnClickListener(holder);
@@ -42,7 +43,11 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
     @Override
     public int getItemCount() {
-        return this.data.size();
+        return this.dataList.size();
+    }
+
+    public void updateDataList(List<CommunityModel> dataList) {
+        this.dataList = dataList;
     }
 
     private void setOnClickListener(CommunityEntryViewHolder holder) {

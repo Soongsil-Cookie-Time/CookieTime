@@ -1,6 +1,7 @@
 package com.ssuclass.cookietime.ui.community;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,48 +11,70 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
+import com.ssuclass.cookietime.domain.CommunityModel;
 import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityEntryFragment extends Fragment {
-
-    // Fields
     private FragmentCommunityEntryBinding binding;
+    private FirebaseFirestore db;
+    private List<CommunityModel> dataList;
+    private CommunityEntryAdapter adapter;
 
-    // Static Methods
-    public static CommunityEntryFragment newInstance() {
-
-        return new CommunityEntryFragment();
-    }
-
-    // Life Cycle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataList = new ArrayList<>();
+        setFirebaseFirestore();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentCommunityEntryBinding.inflate(getLayoutInflater(), container, false);
         setCommunityRecyclerView();
+        fetchCommunitiesList();
         return binding.getRoot();
     }
 
-    // Class Internal Field
     private void setCommunityRecyclerView() {
         RecyclerView communityRecyclerView = binding.communityRecyclerview;
         communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        communityRecyclerView.setAdapter(new CommunityEntryAdapter(
-                List.of("[Movie1]",
-                        "[Movie2]",
-                        "[Movie3]",
-                        "[Movie4]",
-                        "[Movie5]",
-                        "[Movie6]")));
+        adapter = new CommunityEntryAdapter(dataList);
+        communityRecyclerView.setAdapter(adapter);
+    }
+
+    private void setFirebaseFirestore() {
+        db = FirebaseFirestore.getInstance();
+    }
+
+    private void fetchCommunitiesList() {
+        db.collection("Communities")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            dataList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                CommunityModel community = document.toObject(CommunityModel.class);
+                                dataList.add(community);
+                            }
+                            // FIXME: 성능개선을 위한 코드
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("FirebaseError", "Error fetching data: ", task.getException());
+                        }
+                    }
+                });
     }
 }
