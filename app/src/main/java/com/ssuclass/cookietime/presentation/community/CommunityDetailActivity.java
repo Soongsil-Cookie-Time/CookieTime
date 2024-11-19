@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.ui.community;
+package com.ssuclass.cookietime.presentation.community;
 
 import android.content.Intent;
 import android.os.Bundle;
