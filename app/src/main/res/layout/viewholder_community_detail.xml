@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/content_title_textview"
+        android:id="@+id/title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
@@ -15,12 +15,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/content_preview_textview"
+        android:id="@+id/content_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="오늘 용아맥 무대인사 2시 다녀왔는데 진짜 분위기 좋고 팬서비스도..."
-        app:layout_constraintStart_toStartOf="@+id/content_title_textview"
-        app:layout_constraintTop_toBottomOf="@+id/content_title_textview" />
+        app:layout_constraintStart_toStartOf="@+id/title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/title_textview" />
 
     <ImageView
         android:id="@+id/comment_imageview"
@@ -29,8 +29,8 @@
         android:layout_marginTop="8dp"
         android:contentDescription="댓글 수"
         android:src="@drawable/uil_comment"
-        app:layout_constraintStart_toStartOf="@id/content_preview_textview"
-        app:layout_constraintTop_toBottomOf="@+id/content_preview_textview" />
+        app:layout_constraintStart_toStartOf="@id/content_textview"
+        app:layout_constraintTop_toBottomOf="@+id/content_textview" />
 
     <TextView
         android:id="@+id/comment_number"

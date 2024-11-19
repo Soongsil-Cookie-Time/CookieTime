@@ -92,6 +92,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CommunityDetailModel model = new CommunityDetailModel();
                                 model.setTitle(document.getString("title"));
+                                model.setContent(document.getString("content"));
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();

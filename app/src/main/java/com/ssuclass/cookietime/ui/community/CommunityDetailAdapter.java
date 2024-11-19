@@ -29,7 +29,10 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     @Override
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
         String title = dataList.get(position).getTitle();
-        holder.binding.contentTitleTextview.setText(title);
+        String content = dataList.get(position).getContent();
+
+        holder.binding.titleTextview.setText(title);
+        holder.binding.contentTextview.setText(content);
     }
 
     @Override
