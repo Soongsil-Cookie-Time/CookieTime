@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.ui.community;
+package com.ssuclass.cookietime.presentation.community;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
 import com.ssuclass.cookietime.domain.CommunityDetailModel;
+import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     private void setCommunityId() {
         Intent intent = getIntent();
-        this.communityId = intent.getStringExtra("communityId");
+        this.communityId = intent.getStringExtra("communityId"); // FIXME: communityId 하드코딩에서 추출
     }
 
     private void setCommunityDetailRecyclerView() {
@@ -80,9 +81,9 @@ public class CommunityDetailActivity extends AppCompatActivity {
     }
 
     private void fetchPosts(String communityId) {
-        db.collection("Communities")
+        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
                 .document(communityId)
-                .collection("posts")
+                .collection("posts") // FIXME: collectionPath 하드코딩에서 추출
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -97,7 +98,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            // TODO: DB에서 데이터를 가져오지 못 했을 때 로직 설계
+                            ToastHelper.showToast(CommunityDetailActivity.this, "서버에서 게시글을 가져오지 못했습니다."); // FIXME: 토스트 메시지 하드코딩에서 추출
                         }
                     }
                 });
