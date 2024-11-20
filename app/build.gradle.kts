@@ -32,6 +32,7 @@ android {
             "facebook_client_token",
             localProperties["facebook_client_id"] as String? ?: ""
         )
+        resValue("string", "movie_api_key",localProperties["movie_api_key"] as String? ?: "")
     }
 
     buildTypes {
