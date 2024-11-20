@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CookieTime"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.badgemanager.InstagramSharingActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.community.CommunityWriteActivity"
             android:exported="false" />
         <activity
@@ -27,6 +30,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.ssuclass.cookietime.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider@string/facebook_app_id"
+            android:exported="true" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

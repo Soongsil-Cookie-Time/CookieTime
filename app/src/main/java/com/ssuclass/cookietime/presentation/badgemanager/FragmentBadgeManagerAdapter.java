@@ -1,5 +1,6 @@
 package com.ssuclass.cookietime.presentation.badgemanager;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,6 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.databinding.ItemMonthyBadgesBinding;
 
 public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBadgeManagerAdapter.FragmentBadgeManagerViewHolder> {
+
+    private final Context context;
+
+    public FragmentBadgeManagerAdapter(Context context) {
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public FragmentBadgeManagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -19,9 +27,9 @@ public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBa
 
     @Override
     public void onBindViewHolder(@NonNull FragmentBadgeManagerViewHolder holder, int position) {
-        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter();
+        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(this.context);
         RecyclerView recyclerView = holder.binding.badgesRecyclerview;
-        recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(holder.binding.getRoot().getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
     }
 

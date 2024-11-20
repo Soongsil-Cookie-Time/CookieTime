@@ -1,5 +1,7 @@
 package com.ssuclass.cookietime.presentation.badgemanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,6 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.databinding.ItemBadgeBinding;
 
 public class ItemMonthlyBadgesAdapter extends RecyclerView.Adapter<ItemMonthlyBadgesAdapter.ItemMonthlyBadgesViewHolder> {
+
+    private final Context context;
+
+    public ItemMonthlyBadgesAdapter(Context context) {
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public ItemMonthlyBadgesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -18,7 +27,10 @@ public class ItemMonthlyBadgesAdapter extends RecyclerView.Adapter<ItemMonthlyBa
 
     @Override
     public void onBindViewHolder(@NonNull ItemMonthlyBadgesViewHolder holder, int position) {
-        // TODO: 실질적으로 배지 처리되는 코드
+        holder.binding.getRoot().setOnClickListener(view -> {
+            Intent intent = new Intent(context, InstagramSharingActivity.class);
+            context.startActivity(intent);
+        });
     }
 
     @Override

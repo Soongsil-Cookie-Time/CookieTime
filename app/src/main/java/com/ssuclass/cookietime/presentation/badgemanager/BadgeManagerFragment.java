@@ -40,6 +40,6 @@ public class BadgeManagerFragment extends Fragment {
     private void setRecyclerView() {
         RecyclerView recyclerView = binding.monthlyBadgesRecyclerview;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new FragmentBadgeManagerAdapter());
+        recyclerView.setAdapter(new FragmentBadgeManagerAdapter(this.getContext()));
     }
 }
