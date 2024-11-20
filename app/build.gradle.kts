@@ -30,7 +30,7 @@ android {
         resValue(
             "string",
             "facebook_client_token",
-            localProperties["facebook_client_id"] as String? ?: ""
+            localProperties["facebook_client_token"] as String? ?: ""
         )
         resValue("string", "KMDb_api_key",localProperties["KMDb_api_key"] as String? ?: "")
         resValue("string", "KOBIS_api_key",localProperties["KOBIS_api_key"] as String? ?: "")
@@ -65,8 +65,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Facebook SDK
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
