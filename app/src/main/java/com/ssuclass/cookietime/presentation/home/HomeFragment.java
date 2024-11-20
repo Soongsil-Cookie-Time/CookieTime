@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.KOBISSearchResponse;
 import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
+import com.ssuclass.cookietime.network.service.KOBISSearchService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -74,6 +76,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fetchBoxOfficeData();
+        fetchMovieData("청설");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -104,4 +107,28 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    private void fetchMovieData(String movieName) {
+        KOBISSearchService kobisSearchService = MovieAPI.getKOBISSearchInstance().create(KOBISSearchService.class);
+
+        // Retrofit API 호출
+        Call<KOBISSearchResponse> searchCall = kobisSearchService.getMovies(getString(R.string.KOBIS_api_key), movieName);
+
+        searchCall.enqueue(new Callback<KOBISSearchResponse>() {
+            @Override
+            public void onResponse(Call<KOBISSearchResponse> call, Response<KOBISSearchResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("HomeFragment", "Search Results: " + response.body().getMovieListResult().toString());
+                } else {
+                    Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KOBISSearchResponse> call, Throwable t) {
+                Log.e("HomeFragment", "Movie Search API Call Failed: " + t.getMessage());
+            }
+        });
+    }
+
+
 }

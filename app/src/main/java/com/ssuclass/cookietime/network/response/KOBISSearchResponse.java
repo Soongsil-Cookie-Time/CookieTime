@@ -17,18 +17,56 @@ public class KOBISSearchResponse {
         this.movieListResult = movieListResult;
     }
 
+    @Override
+    public String toString() {
+        return "KOBISSearchResponse{" +
+                "movieListResult=" + movieListResult +
+                '}';
+    }
+
     // Inner class for MovieListResult
     public static class MovieListResult {
+        @SerializedName("totCnt")
+        private int totCnt;
+
+        @SerializedName("source")
+        private String source;
+
         @SerializedName("movieList")
         private List<Movie> movieList;
 
         // Getters and Setters
+        public int getTotCnt() {
+            return totCnt;
+        }
+
+        public void setTotCnt(int totCnt) {
+            this.totCnt = totCnt;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
         public List<Movie> getMovieList() {
             return movieList;
         }
 
         public void setMovieList(List<Movie> movieList) {
             this.movieList = movieList;
+        }
+
+        @Override
+        public String toString() {
+            return "MovieListResult{" +
+                    "totCnt=" + totCnt +
+                    ", source='" + source + '\'' +
+                    ", movieList=" + movieList +
+                    '}';
         }
     }
 
@@ -177,6 +215,25 @@ public class KOBISSearchResponse {
         public void setCompanys(List<Company> companys) {
             this.companys = companys;
         }
+
+        @Override
+        public String toString() {
+            return "Movie{" +
+                    "movieCd='" + movieCd + '\'' +
+                    ", movieNm='" + movieNm + '\'' +
+                    ", movieNmEn='" + movieNmEn + '\'' +
+                    ", prdtYear='" + prdtYear + '\'' +
+                    ", openDt='" + openDt + '\'' +
+                    ", typeNm='" + typeNm + '\'' +
+                    ", prdtStatNm='" + prdtStatNm + '\'' +
+                    ", nationAlt='" + nationAlt + '\'' +
+                    ", genreAlt='" + genreAlt + '\'' +
+                    ", repNationNm='" + repNationNm + '\'' +
+                    ", repGenreNm='" + repGenreNm + '\'' +
+                    ", directors=" + directors +
+                    ", companys=" + companys +
+                    '}';
+        }
     }
 
     // Inner class for director details
@@ -191,6 +248,13 @@ public class KOBISSearchResponse {
 
         public void setPeopleNm(String peopleNm) {
             this.peopleNm = peopleNm;
+        }
+
+        @Override
+        public String toString() {
+            return "Director{" +
+                    "peopleNm='" + peopleNm + '\'' +
+                    '}';
         }
     }
 
@@ -217,6 +281,14 @@ public class KOBISSearchResponse {
 
         public void setCompanyNm(String companyNm) {
             this.companyNm = companyNm;
+        }
+
+        @Override
+        public String toString() {
+            return "Company{" +
+                    "companyCd='" + companyCd + '\'' +
+                    ", companyNm='" + companyNm + '\'' +
+                    '}';
         }
     }
 }
