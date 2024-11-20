@@ -34,13 +34,9 @@
         app:layout_constraintTop_toBottomOf="@+id/title_textview" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/monthly_badges_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitle_textview">
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
