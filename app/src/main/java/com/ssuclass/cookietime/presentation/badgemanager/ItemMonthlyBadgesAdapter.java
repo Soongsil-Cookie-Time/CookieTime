@@ -3,7 +3,6 @@ package com.ssuclass.cookietime.presentation.badgemanager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -28,12 +27,9 @@ public class ItemMonthlyBadgesAdapter extends RecyclerView.Adapter<ItemMonthlyBa
 
     @Override
     public void onBindViewHolder(@NonNull ItemMonthlyBadgesViewHolder holder, int position) {
-        holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, InstagramSharingActivity.class);
-                context.startActivity(intent);
-            }
+        holder.binding.getRoot().setOnClickListener(view -> {
+            Intent intent = new Intent(context, InstagramSharingActivity.class);
+            context.startActivity(intent);
         });
     }
 
