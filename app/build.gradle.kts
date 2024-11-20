@@ -32,8 +32,8 @@ android {
             "facebook_client_token",
             localProperties["facebook_client_id"] as String? ?: ""
         )
-        resValue("string", "movie_api_key",localProperties["movie_api_key"] as String? ?: "")
-        resValue("string", "movie_api_key",localProperties["movie_api_key"] as String? ?: "")
+        resValue("string", "KMDb_api_key",localProperties["KMDb_api_key"] as String? ?: "")
+        resValue("string", "KOBIS_api_key",localProperties["KOBIS_api_key"] as String? ?: "")
     }
 
     buildTypes {
