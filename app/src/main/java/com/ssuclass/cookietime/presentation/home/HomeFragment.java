@@ -75,23 +75,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fetchBoxOfficeData();
-        fetchMovieData("청설");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     private void fetchBoxOfficeData() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1); // 하루를 뺌
-        Date yesterday = calendar.getTime();
-
-        // 어제 날짜를 yyyyMMdd 형식으로 변환
-        String formattedDate = new SimpleDateFormat("yyyyMMdd").format(yesterday);
-
-        KOBISBoxOfficeService kobisBoxOfficeService = MovieAPI.getKOBISBoxOfficeInstance().create(KOBISBoxOfficeService.class);
-        Call<KOBISBoxOfficeResponse> boxOfficeCall = kobisBoxOfficeService.getBoxOffice(getString(R.string.KOBIS_api_key), formattedDate);
-
-        boxOfficeCall.enqueue(new Callback<KOBISBoxOfficeResponse>() {
+        MovieAPI.fetchBoxOfficeData(getString(R.string.KOBIS_api_key), new Callback<KOBISBoxOfficeResponse>() {
             @Override
             public void onResponse(Call<KOBISBoxOfficeResponse> call, Response<KOBISBoxOfficeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -107,13 +95,9 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     private void fetchMovieData(String movieName) {
-        KOBISSearchService kobisSearchService = MovieAPI.getKOBISSearchInstance().create(KOBISSearchService.class);
-
-        // Retrofit API 호출
-        Call<KOBISSearchResponse> searchCall = kobisSearchService.getMovies(getString(R.string.KOBIS_api_key), movieName);
-
-        searchCall.enqueue(new Callback<KOBISSearchResponse>() {
+        MovieAPI.fetchMovieData(getString(R.string.KOBIS_api_key), movieName, new Callback<KOBISSearchResponse>() {
             @Override
             public void onResponse(Call<KOBISSearchResponse> call, Response<KOBISSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

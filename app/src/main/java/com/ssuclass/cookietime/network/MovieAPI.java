@@ -1,4 +1,13 @@
 package com.ssuclass.cookietime.network;
+import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.KOBISSearchResponse;
+import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
+import com.ssuclass.cookietime.network.service.KOBISSearchService;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -56,5 +65,24 @@ public class MovieAPI {
         }
         return kobisSearchRetrofit;
     }
+
+    public static void fetchBoxOfficeData(String apiKey, Callback<KOBISBoxOfficeResponse> callback) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        String formattedDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+
+        KOBISBoxOfficeService service = MovieAPI.getKOBISBoxOfficeInstance().create(KOBISBoxOfficeService.class);
+        Call<KOBISBoxOfficeResponse> call = service.getBoxOffice(apiKey, formattedDate);
+        call.enqueue(callback);
+    }
+
+    public static void fetchMovieData(String apiKey, String movieName, Callback<KOBISSearchResponse> callback) {
+        KOBISSearchService service = MovieAPI.getKOBISSearchInstance().create(KOBISSearchService.class);
+        Call<KOBISSearchResponse> call = service.getMovies(apiKey, movieName);
+        call.enqueue(callback);
+    }
+
+    
+
 }
 
