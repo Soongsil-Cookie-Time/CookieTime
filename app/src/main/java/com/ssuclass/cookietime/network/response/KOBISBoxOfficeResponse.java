@@ -5,41 +5,57 @@ import java.util.List;
 
 public class KOBISBoxOfficeResponse {
 
-    @SerializedName("boxofficeType")
-    private String boxOfficeType;
-
-    @SerializedName("showRange")
-    private String showRange;
-
-    @SerializedName("dailyBoxOfficeList")
-    private List<BoxOffice> dailyBoxOfficeList;
+    @SerializedName("boxOfficeResult")
+    private BoxOfficeResult boxOfficeResult;
 
     // Getters and Setters
-    public String getBoxOfficeType() {
-        return boxOfficeType;
+    public BoxOfficeResult getBoxOfficeResult() {
+        return boxOfficeResult;
     }
 
-    public void setBoxOfficeType(String boxOfficeType) {
-        this.boxOfficeType = boxOfficeType;
+    public void setBoxOfficeResult(BoxOfficeResult boxOfficeResult) {
+        this.boxOfficeResult = boxOfficeResult;
     }
 
-    public String getShowRange() {
-        return showRange;
+    // Inner class for the "boxOfficeResult" object
+    public static class BoxOfficeResult {
+
+        @SerializedName("boxofficeType")
+        private String boxOfficeType;
+
+        @SerializedName("showRange")
+        private String showRange;
+
+        @SerializedName("dailyBoxOfficeList")
+        private List<BoxOffice> dailyBoxOfficeList;
+
+        // Getters and Setters
+        public String getBoxOfficeType() {
+            return boxOfficeType;
+        }
+
+        public void setBoxOfficeType(String boxOfficeType) {
+            this.boxOfficeType = boxOfficeType;
+        }
+
+        public String getShowRange() {
+            return showRange;
+        }
+
+        public void setShowRange(String showRange) {
+            this.showRange = showRange;
+        }
+
+        public List<BoxOffice> getDailyBoxOfficeList() {
+            return dailyBoxOfficeList;
+        }
+
+        public void setDailyBoxOfficeList(List<BoxOffice> dailyBoxOfficeList) {
+            this.dailyBoxOfficeList = dailyBoxOfficeList;
+        }
     }
 
-    public void setShowRange(String showRange) {
-        this.showRange = showRange;
-    }
-
-    public List<BoxOffice> getDailyBoxOfficeList() {
-        return dailyBoxOfficeList;
-    }
-
-    public void setDailyBoxOfficeList(List<BoxOffice> dailyBoxOfficeList) {
-        this.dailyBoxOfficeList = dailyBoxOfficeList;
-    }
-
-    // Inner class for box office details
+    // Inner class for "dailyBoxOfficeList" items
     public static class BoxOffice {
 
         @SerializedName("rnum")
@@ -240,5 +256,16 @@ public class KOBISBoxOfficeResponse {
         public void setShowCnt(String showCnt) {
             this.showCnt = showCnt;
         }
+        @Override
+        public String toString() {
+            return "BoxOffice{" +
+                    "rnum='" + rnum + '\'' +
+                    ", rank='" + rank + '\'' +
+                    ", movieNm='" + movieNm + '\'' +
+                    ", salesAmt='" + salesAmt + '\'' +
+                    ", audiCnt='" + audiCnt + '\'' +
+                    '}';
+        }
     }
+
 }

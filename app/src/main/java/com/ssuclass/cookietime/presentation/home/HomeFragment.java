@@ -14,6 +14,7 @@ import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
 import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -77,7 +78,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchBoxOfficeData() {
-        String formattedDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1); // 하루를 뺌
+        Date yesterday = calendar.getTime();
+
+        // 어제 날짜를 yyyyMMdd 형식으로 변환
+        String formattedDate = new SimpleDateFormat("yyyyMMdd").format(yesterday);
+
         KOBISBoxOfficeService kobisBoxOfficeService = MovieAPI.getKOBISBoxOfficeInstance().create(KOBISBoxOfficeService.class);
         Call<KOBISBoxOfficeResponse> boxOfficeCall = kobisBoxOfficeService.getBoxOffice(getString(R.string.KOBIS_api_key), formattedDate);
 
@@ -85,7 +92,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<KOBISBoxOfficeResponse> call, Response<KOBISBoxOfficeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("HomeFragment", "Box Office Data: " + response.body());
+                    Log.d("HomeFragment", "Box Office Data: " + response.body().getBoxOfficeResult().getDailyBoxOfficeList().toString());
                 } else {
                     Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
                 }
