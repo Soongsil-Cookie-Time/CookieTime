@@ -1,6 +1,7 @@
 package com.ssuclass.cookietime.presentation.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,19 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.ssuclass.cookietime.R;
+import com.ssuclass.cookietime.network.MovieAPI;
+import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.KOBISSearchResponse;
+import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
+import com.ssuclass.cookietime.network.service.KOBISSearchService;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +34,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,4 +77,42 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
+    private void fetchBoxOfficeData() {
+        MovieAPI.fetchBoxOfficeData(getString(R.string.KOBIS_api_key), new Callback<KOBISBoxOfficeResponse>() {
+            @Override
+            public void onResponse(Call<KOBISBoxOfficeResponse> call, Response<KOBISBoxOfficeResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("HomeFragment", "Box Office Data: " + response.body().getBoxOfficeResult().getDailyBoxOfficeList().toString());
+                } else {
+                    Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KOBISBoxOfficeResponse> call, Throwable t) {
+                Log.e("HomeFragment", "Box Office API Call Failed: " + t.getMessage());
+            }
+        });
+    }
+
+    private void fetchMovieData(String movieName) {
+        MovieAPI.fetchMovieData(getString(R.string.KOBIS_api_key), movieName, new Callback<KOBISSearchResponse>() {
+            @Override
+            public void onResponse(Call<KOBISSearchResponse> call, Response<KOBISSearchResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("HomeFragment", "Search Results: " + response.body().getMovieListResult().toString());
+                } else {
+                    Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KOBISSearchResponse> call, Throwable t) {
+                Log.e("HomeFragment", "Movie Search API Call Failed: " + t.getMessage());
+            }
+        });
+    }
+
+
 }
