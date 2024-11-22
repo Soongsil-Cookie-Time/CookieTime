@@ -54,7 +54,7 @@ public class CommunityEntryFragment extends Fragment {
         RecyclerView communityRecyclerView = binding.communityRecyclerview;
         communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CommunityEntryAdapter(dataList);
+        adapter = new CommunityEntryAdapter(this.getContext(), dataList);
         communityRecyclerView.setAdapter(adapter);
     }
 
@@ -74,11 +74,12 @@ public class CommunityEntryFragment extends Fragment {
                                 CommunityEntryModel model = new CommunityEntryModel();
                                 String id = document.getId();
                                 String title = document.getString("title");
-                                model.setId(id);
+                                String imageUrl = document.getString("image_url");
                                 model.setTitle(title);
+                                model.setId(id);
+                                model.setMoviePosterUrl(imageUrl);
                                 dataList.add(model);
                             }
-                            // FIXME: 성능개선을 위한 코드
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.e("FirebaseError", "Error fetching data: ", task.getException());

@@ -2,6 +2,7 @@ package com.ssuclass.cookietime.presentation.community;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
 import com.ssuclass.cookietime.databinding.ViewholderCommunityEntryBinding;
 import com.ssuclass.cookietime.domain.CommunityEntryModel;
 
@@ -17,10 +20,12 @@ import java.util.List;
 public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAdapter.CommunityEntryViewHolder> {
 
     // Fields
+    private final Context context;
     private List<CommunityEntryModel> dataList;
 
     // Constructor
-    public CommunityEntryAdapter(List<CommunityEntryModel> dataList) {
+    public CommunityEntryAdapter(Context context, List<CommunityEntryModel> dataList) {
+        this.context = context;
         this.dataList = dataList;
     }
 
@@ -38,7 +43,18 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
         String movieTitle = dataList.get(position).getTitle();
         holder.binding.movieTitleTextview.setText(movieTitle);
 
-        setOnClickListener(holder);
+        String gsUrl = dataList.get(position).getMoviePosterUrl(); // gs:// 경로
+
+        FirebaseStorage.getInstance().getReferenceFromUrl(gsUrl)
+                .getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Glide.with(context)
+                            .load(uri.toString()) // HTTPS URL로 변환 후 Glide 로드
+                            .into(holder.binding.moviePosterImageview);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ImageLoadError", "Failed to load image: " + e.getMessage());
+                });
     }
 
     @Override
