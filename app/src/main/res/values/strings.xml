@@ -11,4 +11,6 @@
     <string name="mypage">마이페이지</string>
     <!--탭: 커뮤니티 화면 네비게이션 타이틀-->
     <string name="page_title_community">전체 커뮤니티</string>
+    <!--탭: 홈 영화 포스터 이미지 뷰-->
+    <string name="boxoffice_posterImageView">박스오피스 순위에서 영화의 포스터</string>
 </resources>
