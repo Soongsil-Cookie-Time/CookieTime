@@ -1,6 +1,5 @@
 package com.ssuclass.cookietime.presentation.home;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.R;
-import com.ssuclass.cookietime.databinding.ViewholderCommunityEntryBinding;
 import com.ssuclass.cookietime.domain.BoxOfficeDataModel;
-import com.ssuclass.cookietime.domain.CommunityDetailModel;
 
 import java.util.List;
 

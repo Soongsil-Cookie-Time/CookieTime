@@ -12,20 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.R;
-import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
 import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.domain.BoxOfficeDataModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
 import com.ssuclass.cookietime.network.response.KOBISSearchResponse;
-import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
-import com.ssuclass.cookietime.network.service.KOBISSearchService;
-import com.ssuclass.cookietime.presentation.community.CommunityEntryAdapter;
-import com.ssuclass.cookietime.util.SpaceingItemDecoration;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
