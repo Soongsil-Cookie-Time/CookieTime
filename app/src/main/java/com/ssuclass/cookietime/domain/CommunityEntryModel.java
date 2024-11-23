@@ -3,6 +3,7 @@ package com.ssuclass.cookietime.domain;
 public class CommunityEntryModel {
     private String id;
     private String title;
+    private String moviePosterUrl;
 
     public CommunityEntryModel() {
     }
@@ -21,5 +22,13 @@ public class CommunityEntryModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getMoviePosterUrl() {
+        return moviePosterUrl;
+    }
+
+    public void setMoviePosterUrl(String moviePosterUrl) {
+        this.moviePosterUrl = moviePosterUrl;
     }
 }
