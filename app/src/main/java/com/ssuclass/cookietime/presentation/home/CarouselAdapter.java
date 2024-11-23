@@ -11,16 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.R;
-import com.ssuclass.cookietime.domain.BoxOfficeDataModel;
+import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
 
 import java.util.List;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
 
-    private final List<BoxOfficeDataModel> dataList;
+    private final List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList;
     private final OnCookieButtonClickListener listener;
 
-    public CarouselAdapter(List<BoxOfficeDataModel> dataList, OnCookieButtonClickListener listener) {
+    public CarouselAdapter(List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList, OnCookieButtonClickListener listener) {
         this.dataList = dataList;
         this.listener = listener;
     }
@@ -34,17 +34,18 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
 
     @Override
     public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
-        BoxOfficeDataModel data = dataList.get(position);
+        KOBISBoxOfficeResponse.DailyBoxOffice data = dataList.get(position);
         // TODO: 이미지 로드
-        holder.titleText.setText(data.getTitle());
-        holder.rankText.setText(position + 1);
+        holder.titleText.setText(data.getMovieNm());
+        holder.rankText.setText(data.getRank());
         holder.cookieButton.setOnClickListener(v -> listener.onCookieButtonClick(data));
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return (dataList != null) ? dataList.size() : 0; // Null 체크
     }
+
 
     public static class CarouselViewHolder extends RecyclerView.ViewHolder {
         TextView titleText;

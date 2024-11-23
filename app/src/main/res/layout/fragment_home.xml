@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/white"
     android:scrollbars="vertical"
     tools:context=".presentation.home.HomeFragment">
 
@@ -34,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:gravity="center_vertical"
+        android:textColor="@color/primary"
+        android:fontFamily="@font/baloo_regular"
         android:text="COOKIE TIME : " />
 </LinearLayout>
 
@@ -42,7 +45,12 @@
     android:layout_height="51dp"
     android:layout_marginHorizontal="24dp"
     android:layout_marginTop="36dp"
+    android:queryHint="영화를 검색해보세요"
+    android:theme="@style/CustomSearchView"
+    android:searchIcon="@drawable/searchview_icon"
+    android:iconifiedByDefault="false"
     android:background="@drawable/home_searchview" />
+
 
 <TextView
     android:layout_width="wrap_content"
@@ -66,6 +74,7 @@
     android:textSize="16sp" />
 
 <TextView
+    android:id="@+id/boxoffice_date_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="24dp"
