@@ -9,15 +9,15 @@
     <ImageView
         android:id="@+id/boxoffice_posterImageView"
         android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_height="384dp"
         android:contentDescription="@string/boxoffice_posterImageView"
         android:scaleType="centerCrop"
-        android:background="@color/com_facebook_blue"
         app:layout_constraintBaseline_toTopOf="parent" />
 
     <TextView
         android:id="@+id/boxoffice_rankText"
         android:textColor="@color/primary"
+        android:text="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/boxoffice_titleText"
-        android:textColor="black"
+        android:textColor="@color/black"
         style = "@style/movie_title_boxoffice_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

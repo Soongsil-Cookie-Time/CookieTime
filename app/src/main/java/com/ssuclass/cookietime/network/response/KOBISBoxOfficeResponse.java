@@ -266,6 +266,10 @@ public class KOBISBoxOfficeResponse {
                     ", audiCnt='" + audiCnt + '\'' +
                     '}';
         }
+
+        public String getTitle() {
+            return this.movieNm;
+        }
     }
 
 }
