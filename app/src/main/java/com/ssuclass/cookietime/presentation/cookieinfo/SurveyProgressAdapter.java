@@ -1,6 +1,9 @@
 package com.ssuclass.cookietime.presentation.cookieinfo;
 
 import android.annotation.SuppressLint;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +38,6 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
     public void onBindViewHolder(@NonNull SurveyViewHolder holder, int position) {
         switch (position) {
             case 0: // 첫 번째 아이템 (예: 쿠키 개수)
-                holder.title.setText("쿠키 개수");
-
                 // 쿠키 개수 응답 값들
                 int[] cookieCounts = {
                         surveyList.getCookieZeroCount(),
@@ -45,7 +46,7 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                         surveyList.getCookieThreeCount()
                 };
 
-                // 가장 높은 두 응답 값 및 인덱스 찾기
+                // 가장 높은 응답 값 및 인덱스 찾기
                 int[] topTwoIndexes = findTopTwoIndexes(cookieCounts);
                 int topIndex1 = topTwoIndexes[0];
                 int topIndex2 = topTwoIndexes[1];
@@ -57,33 +58,54 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
 
                 // 텍스트 표시
                 String[] labels = {"0개", "1개", "2개", "3개"};
+                String titleText = "쿠키 개수 : ";
+                String dynamicText = labels[topIndex1];
+
+                // 텍스트뷰에 부분 색상 적용
+                setColoredText(holder.title, titleText, dynamicText);
                 holder.startText.setText(labels[topIndex1] + " " + topPercent1 + "%");
                 holder.endText.setText(labels[topIndex2] + " " + topPercent2 + "%");
 
                 // ProgressBar 설정
                 holder.progressBar.setProgress(topPercent1);
-
                 break;
+
             case 1: // 두 번째 아이템 (예: 쿠키 길이)
-                holder.title.setText("쿠키 길이");
+                // 쿠키 길이 데이터
                 int totalCookieLength = surveyList.getCookieLongCount() + surveyList.getCookieShortCount();
                 int cookieLongPercent = calculatePercentage(surveyList.getCookieLongCount(), totalCookieLength);
                 int cookieShortPercent = calculatePercentage(surveyList.getCookieShortCount(), totalCookieLength);
 
-                holder.progressBar.setProgress(cookieLongPercent);
+                // 가장 높은 투표율 기준으로 제목 설정
+                String cookieLengthTitle = (surveyList.getCookieLongCount() >= surveyList.getCookieShortCount())
+                        ? "길어요" : "짧아요";
+                // 텍스트뷰에 부분 색상 적용
+                setColoredText(holder.title, "쿠키 길이 : ", cookieLengthTitle);
+
                 holder.startText.setText("길어요 " + cookieLongPercent + "%");
                 holder.endText.setText("짧아요 " + cookieShortPercent + "%");
+
+                // ProgressBar 설정
+                holder.progressBar.setProgress(cookieLongPercent);
                 break;
 
             case 2: // 세 번째 아이템 (예: 쿠키 중요도)
-                holder.title.setText("쿠키 중요도");
+                // 쿠키 중요도 데이터
                 int totalCookieImportance = surveyList.getCookieImportantCount() + surveyList.getCookieNotImportantCount();
                 int cookieImportantPercent = calculatePercentage(surveyList.getCookieImportantCount(), totalCookieImportance);
                 int cookieNotImportantPercent = calculatePercentage(surveyList.getCookieNotImportantCount(), totalCookieImportance);
 
-                holder.progressBar.setProgress(cookieImportantPercent);
+                // 가장 높은 투표율 기준으로 제목 설정
+                String cookieImportanceTitle = (surveyList.getCookieImportantCount() >= surveyList.getCookieNotImportantCount())
+                        ? "중요해요" : "중요하지 않아요";
+                // 텍스트뷰에 부분 색상 적용
+                setColoredText(holder.title, "쿠키 중요도 : ", cookieImportanceTitle);
+
                 holder.startText.setText("중요해요 " + cookieImportantPercent + "%");
                 holder.endText.setText("중요하지 않아요 " + cookieNotImportantPercent + "%");
+
+                // ProgressBar 설정
+                holder.progressBar.setProgress(cookieImportantPercent);
                 break;
 
             default: // 기본 처리 (포지션이 예상 범위 바깥인 경우)
@@ -94,6 +116,34 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 break;
         }
     }
+    private void setColoredText(TextView textView, String staticText, String dynamicText) {
+        // 전체 문자열 결합
+        String fullText = staticText + dynamicText;
+
+        // SpannableString을 사용하여 특정 부분에 색상 적용
+        SpannableString spannableString = new SpannableString(fullText);
+
+        // staticText 부분은 검정색 유지
+        spannableString.setSpan(
+                new ForegroundColorSpan(textView.getContext().getResources().getColor(android.R.color.black)),
+                0,
+                staticText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        // dynamicText 부분은 @primary 색상 적용
+        spannableString.setSpan(
+                new ForegroundColorSpan(textView.getContext().getResources().getColor(R.color.primary)),
+                staticText.length(),
+                fullText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        // TextView에 적용
+        textView.setText(spannableString);
+    }
+
+
 
     private int[] findTopTwoIndexes(int[] array) {
         int max1 = -1, max2 = -1; // 가장 큰 값, 두 번째로 큰 값
