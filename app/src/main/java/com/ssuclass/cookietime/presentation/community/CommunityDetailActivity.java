@@ -81,7 +81,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
     }
 
     private void fetchPosts(String communityId) {
-        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
+        db.collection("Movie") // FIXME: collectionPath 하드코딩에서 추출
                 .document(communityId)
                 .collection("posts") // FIXME: collectionPath 하드코딩에서 추출
                 .get()
