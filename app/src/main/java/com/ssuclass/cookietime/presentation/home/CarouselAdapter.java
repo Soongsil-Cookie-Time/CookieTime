@@ -1,5 +1,6 @@
 package com.ssuclass.cookietime.presentation.home;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ssuclass.cookietime.R;
-import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
 
 import java.util.List;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
 
-    private final List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList;
+    private final List<TMDBNowPlayingResponse.Movie> dataList;
     private final OnCookieButtonClickListener listener;
 
-    public CarouselAdapter(List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList, OnCookieButtonClickListener listener) {
+    public CarouselAdapter(List<TMDBNowPlayingResponse.Movie> dataList, OnCookieButtonClickListener listener) {
         this.dataList = dataList;
         this.listener = listener;
     }
@@ -32,12 +34,14 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         return new CarouselViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
-        KOBISBoxOfficeResponse.DailyBoxOffice data = dataList.get(position);
-        // TODO: 이미지 로드
-        holder.titleText.setText(data.getMovieNm());
-        holder.rankText.setText(data.getRank());
+        TMDBNowPlayingResponse.Movie data = dataList.get(position);
+        holder.titleText.setText(data.getTitle());
+        holder.rankText.setText(String.valueOf(position + 1));
+        holder.rateText.setText(String.format("%.1f",data.getVoteAverage()));
+        Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + data.getPosterPath()).into(holder.posterImage);
         holder.cookieButton.setOnClickListener(v -> listener.onCookieButtonClick(data));
     }
 
@@ -52,9 +56,11 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         ImageView posterImage;
         TextView rankText;
         Button cookieButton;
+        TextView rateText;
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
+            rateText = itemView.findViewById(R.id.rate_Text);
             posterImage = itemView.findViewById(R.id.boxoffice_posterImageView);
             titleText = itemView.findViewById(R.id.boxoffice_titleText);
             rankText = itemView.findViewById(R.id.boxoffice_rankText);
