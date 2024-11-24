@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.Login.Login"
+    android:background="#FFFFFF">
+
+    <!-- Back Icon -->
+    <ImageView
+        android:id="@+id/backIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uil_arrow_left"
+        android:contentDescription="뒤로가기"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="16dp" />
+
+    <!-- Title Text -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/login_page_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/uil_arrow_left">
+
+        <TextView
+            android:id="@+id/community_detail_toolbar_title_textview"
+            style="@style/navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="로그인" />
+    </androidx.appcompat.widget.Toolbar>
+    <!-- Cookie ImageView -->
+    <ImageView
+        android:id="@+id/cookieImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cookie_time_icon"
+        app:layout_constraintTop_toBottomOf="@id/login_page_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="200dp" />
+
+    <!-- Cookie Title -->
+    <TextView
+        android:id="@+id/cookieTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COOKIE TIME :"
+        android:textColor="#009843"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/baloo_regular"
+        app:layout_constraintTop_toBottomOf="@id/cookieImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- 아이디 입력 -->
+    <EditText
+        android:id="@+id/inputId"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="아이디를 입력해주세요."
+        android:background="@drawable/edit_text_background"
+        android:textColor="#000000"
+        android:textColorHint="#A0A0A0"
+        android:padding="12dp"
+        android:textSize="16dp"
+        android:fontFamily="@font/pretendard_regular"
+        app:layout_constraintTop_toBottomOf="@id/cookieTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginTop="24dp" />
+
+    <!-- 비밀번호 입력 -->
+    <EditText
+        android:id="@+id/inputPassword"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="비밀번호를 입력해주세요."
+        android:background="@drawable/edit_text_background"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textColorHint="#A0A0A0"
+        android:padding="12dp"
+        android:textSize="16dp"
+        android:fontFamily="@font/pretendard_regular"
+        app:layout_constraintTop_toBottomOf="@id/inputId"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginTop="12dp" />
+
+    <!-- 로그인 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:text="로그인"
+        android:background="@drawable/button_rounded"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/inputPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginTop="24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
