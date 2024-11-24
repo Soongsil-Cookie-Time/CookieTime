@@ -40,7 +40,7 @@
             android:layout_marginStart="30dp"/>
         <TextView
             android:id="@+id/cookie_info_page_titleText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="영화제목"
             android:fontFamily="@font/pretendard_semi_bold"
@@ -52,7 +52,7 @@
             android:layout_marginStart="23dp"/>
         <TextView
             android:id="@+id/cookie_info_releaseDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_light"
             android:textSize="16sp"
@@ -65,7 +65,7 @@
             android:layout_marginStart="23dp"/>
         <TextView
             android:id="@+id/runningTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_light"
             android:textSize="16sp"
@@ -78,7 +78,7 @@
             android:layout_marginStart="23dp"/>
         <TextView
             android:id="@+id/cookie_info_company"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_light"
             android:textSize="16sp"
