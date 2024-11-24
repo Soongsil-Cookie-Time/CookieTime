@@ -27,25 +27,30 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.appcompat.widget.SearchView;
 
 public class HomeFragment extends Fragment implements OnCookieButtonClickListener {
 
     private FragmentHomeBinding binding;
-    private List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList = new ArrayList<>(); // 초기화
-    private CarouselAdapter adapter; // 어댑터를 멤버 변수로 정의
+    private List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList = new ArrayList<>();
+    private CarouselAdapter adapter;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // 바인딩 객체 초기화
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
         @SuppressLint("SimpleDateFormat") String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime());
         binding.boxofficeDateText.setText(formattedDate + " 실시간 박스오피스 기준 순위");
-        // RecyclerView 설정
+
+        // RecyclerView 초기화
         setupCarouselRecyclerView();
+
+        // SearchView 초기화
+        setupSearchView();
 
         return binding.getRoot();
     }
@@ -53,26 +58,37 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     @Override
     public void onStart() {
         super.onStart();
-        // API 호출하여 데이터 로드
-        fetchBoxOfficeData();
+        fetchBoxOfficeData(); // 박스오피스 데이터 로드
+    }
+
+    private void setupCarouselRecyclerView() {
+        RecyclerView recyclerView = binding.boxofficeRecyclerView;
+        adapter = new CarouselAdapter(dataList, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(adapter);
     }
 
     /**
-     * RecyclerView 설정 메서드
+     * SearchView 설정
      */
-    private void setupCarouselRecyclerView() {
-        if (binding != null) {
-            RecyclerView recyclerView = binding.boxofficeRecyclerView;
+    private void setupSearchView() {
+        SearchView searchView = binding.homeSearchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // 검색 버튼을 눌렀을 때 처리
+                if (!query.isEmpty()) {
+                    searchMovies(query);
+                }
+                return true;
+            }
 
-            // 어댑터 초기화
-            adapter = new CarouselAdapter(dataList, this);
-
-            // RecyclerView 설정
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.setAdapter(adapter);
-        } else {
-            Log.e("HomeFragment", "Binding is null in setupCarouselRecyclerView");
-        }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // 사용자가 입력하는 동안 처리 (실시간 처리 필요시 사용)
+                return false;
+            }
+        });
     }
 
     /**
@@ -108,28 +124,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         });
     }
 
-    /**
-     * TMDB API를 호출하여 영화 상세 데이터를 가져오는 메서드
-     */
-    private void fetchMovieDetail(int movieId) {
-        MovieAPI.fetchMovieDetail(movieId, getString(R.string.TMDB_api_key), "ko-KR", new Callback<TMDBMovieDetailResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Response<TMDBMovieDetailResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    TMDBMovieDetailResponse movieDetail = response.body();
-                    // 영화 상세 정보 처리
-                    Log.d("HomeFragment", "Fetched Movie Detail: " + movieDetail.getTitle());
-                } else {
-                    Log.e("HomeFragment", "Failed to fetch movie details: " + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Throwable t) {
-                Log.e("HomeFragment", "Movie Detail API Call Failed: " + t.getMessage());
-            }
-        });
-    }
 
     /**
      * TMDB API를 호출하여 영화 검색 결과를 가져오는 메서드
@@ -140,11 +135,16 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
             public void onResponse(@NonNull Call<TMDBMovieSearchResponse> call, @NonNull Response<TMDBMovieSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<TMDBMovieSearchResponse.Movie> movies = response.body().getResults();
-                    for (TMDBMovieSearchResponse.Movie movie : movies) {
-                        Log.d("HomeFragment", "Found Movie: " + movie.getTitle());
+                    if (movies != null && !movies.isEmpty()) {
+                        // 검색 결과 출력 (Log 또는 RecyclerView 업데이트)
+                        for (TMDBMovieSearchResponse.Movie movie : movies) {
+                            Log.d("HomeFragment", "Found Movie: " + movie.getTitle());
+                        }
+                    } else {
+                        Log.w("HomeFragment", "No movies found for query: " + query);
                     }
                 } else {
-                    Log.e("HomeFragment", "Failed to search movies: " + response.message());
+                    Log.e("HomeFragment", "Search API Response Error: " + response.message());
                 }
             }
 
@@ -157,8 +157,26 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
 
     @Override
     public void onCookieButtonClick(KOBISBoxOfficeResponse.DailyBoxOffice dataModel) {
-        // 박스오피스 데이터 클릭 시 영화 상세 정보 가져오기
-        int movieId = Integer.parseInt(dataModel.getMovieCd()); // KOBIS의 movieCd를 TMDB의 movieId로 변환 필요
+        int movieId = Integer.parseInt(dataModel.getMovieCd());
         fetchMovieDetail(movieId);
+    }
+
+    private void fetchMovieDetail(int movieId) {
+        MovieAPI.fetchMovieDetail(movieId, getString(R.string.TMDB_api_key), "ko-KR", new Callback<TMDBMovieDetailResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Response<TMDBMovieDetailResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    TMDBMovieDetailResponse movieDetail = response.body();
+                    Log.d("HomeFragment", "Fetched Movie Detail: " + movieDetail.getTitle());
+                } else {
+                    Log.e("HomeFragment", "Failed to fetch movie details: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Throwable t) {
+                Log.e("HomeFragment", "Movie Detail API Call Failed: " + t.getMessage());
+            }
+        });
     }
 }
