@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.domain.SurveyProgressModel;
 
-import java.util.List;
-
 public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAdapter.SurveyViewHolder> {
 
     private final SurveyProgressModel surveyList;

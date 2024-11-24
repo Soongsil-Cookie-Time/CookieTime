@@ -13,7 +13,6 @@ import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.domain.CookieKeywordModel;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class KeywordAdapter extends RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder> {
