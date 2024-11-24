@@ -55,6 +55,8 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
                 .addOnFailureListener(e -> {
                     Log.e("ImageLoadError", "Failed to load image: " + e.getMessage());
                 });
+        
+        implementViewHolderListener(holder);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
         this.dataList = dataList;
     }
 
-    private void setOnClickListener(CommunityEntryViewHolder holder) {
+    private void implementViewHolderListener(CommunityEntryViewHolder holder) {
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
