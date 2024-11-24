@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
-import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
-import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
 import com.ssuclass.cookietime.network.response.TMDBMovieSearchResponse;
+import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,8 +30,8 @@ import androidx.appcompat.widget.SearchView;
 
 public class HomeFragment extends Fragment implements OnCookieButtonClickListener {
 
+    private final List<TMDBNowPlayingResponse.Movie> dataList = new ArrayList<>();
     private FragmentHomeBinding binding;
-    private List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList = new ArrayList<>();
     private CarouselAdapter adapter;
 
     @SuppressLint("SetTextI18n")
@@ -42,9 +41,8 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
         @SuppressLint("SimpleDateFormat") String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime());
-        binding.boxofficeDateText.setText(formattedDate + " 실시간 박스오피스 기준 순위");
+        binding.boxofficeDateText.setText(formattedDate + " 기준 현재 상영작");
 
         // RecyclerView 초기화
         setupCarouselRecyclerView();
@@ -58,7 +56,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     @Override
     public void onStart() {
         super.onStart();
-        fetchBoxOfficeData(); // 박스오피스 데이터 로드
+        fetchNowPlayingMovies(); // 현재 상영작 데이터 로드
     }
 
     private void setupCarouselRecyclerView() {
@@ -92,38 +90,43 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     }
 
     /**
-     * API를 호출하여 데이터를 가져오는 메서드
+     * TMDB Now Playing API를 호출하여 현재 상영 중인 영화 데이터를 가져오는 메서드
      */
-    private void fetchBoxOfficeData() {
-        // KOBIS API에서 박스오피스 데이터를 가져오는 Retrofit 호출
-        MovieAPI.fetchBoxOfficeData(getString(R.string.KOBIS_api_key), new Callback<KOBISBoxOfficeResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onResponse(@NonNull Call<KOBISBoxOfficeResponse> call, @NonNull Response<KOBISBoxOfficeResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // 성공적으로 데이터를 받아온 경우
-                    List<KOBISBoxOfficeResponse.DailyBoxOffice> newData = response.body().getBoxOfficeResult().getDailyBoxOfficeList();
-                    if (newData != null && !newData.isEmpty()) {
-                        dataList.clear(); // 기존 데이터를 제거
-                        dataList.addAll(newData); // 새 데이터 추가
-                        adapter.notifyDataSetChanged(); // RecyclerView에 변경사항 알림
-                    } else {
-                        Log.w("HomeFragment", "Empty box office data");
+    private void fetchNowPlayingMovies() {
+        MovieAPI.fetchNowPlayingMovies(
+                getString(R.string.TMDB_api_key), // API 키
+                "ko-KR",                         // 언어
+                "KR",                            // 지역
+                1,                               // 페이지 번호
+                new Callback<TMDBNowPlayingResponse>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<TMDBNowPlayingResponse> call, @NonNull Response<TMDBNowPlayingResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<TMDBNowPlayingResponse.Movie> movies = response.body().getResults();
+                            if (movies != null && !movies.isEmpty()) {
+                                // boxOfficeDetailList를 갱신하고 RecyclerView 업데이트
+                                dataList.clear();
+                                dataList.addAll(movies);
+
+                                // UI 업데이트
+                                Log.d("HomeFragment", "Now Playing Movies Fetched: " + movies.size());
+                                adapter.notifyDataSetChanged();
+                            } else {
+                                Log.w("HomeFragment", "No Now Playing movies found");
+                            }
+                        } else {
+                            Log.e("HomeFragment", "TMDB API Response Error: " + response.message());
+                        }
                     }
-                } else {
-                    // 응답이 실패한 경우 로그 출력
-                    Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
+
+                    @Override
+                    public void onFailure(@NonNull Call<TMDBNowPlayingResponse> call, @NonNull Throwable t) {
+                        Log.e("HomeFragment", "TMDB Now Playing API Call Failed: " + t.getMessage());
+                    }
                 }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<KOBISBoxOfficeResponse> call, @NonNull Throwable t) {
-                // API 호출 실패 로그 출력
-                Log.e("HomeFragment", "Box Office API Call Failed: " + t.getMessage());
-            }
-        });
+        );
     }
-
 
 
     /**
@@ -156,27 +159,8 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     }
 
     @Override
-    public void onCookieButtonClick(KOBISBoxOfficeResponse.DailyBoxOffice dataModel) {
-        int movieId = Integer.parseInt(dataModel.getMovieCd());
-        fetchMovieDetail(movieId);
-    }
+    public void onCookieButtonClick(TMDBNowPlayingResponse.Movie dataModel) {
 
-    private void fetchMovieDetail(int movieId) {
-        MovieAPI.fetchMovieDetail(movieId, getString(R.string.TMDB_api_key), "ko-KR", new Callback<TMDBMovieDetailResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Response<TMDBMovieDetailResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    TMDBMovieDetailResponse movieDetail = response.body();
-                    Log.d("HomeFragment", "Fetched Movie Detail: " + movieDetail.getTitle());
-                } else {
-                    Log.e("HomeFragment", "Failed to fetch movie details: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Throwable t) {
-                Log.e("HomeFragment", "Movie Detail API Call Failed: " + t.getMessage());
-            }
-        });
     }
 }
+

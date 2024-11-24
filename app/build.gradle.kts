@@ -33,7 +33,6 @@ android {
             localProperties["facebook_client_token"] as String? ?: ""
         )
         resValue("string", "TMDB_api_key",localProperties["TMDB_api_key"] as String? ?: "")
-        resValue("string", "KOBIS_api_key",localProperties["KOBIS_api_key"] as String? ?: "")
     }
 
     buildTypes {

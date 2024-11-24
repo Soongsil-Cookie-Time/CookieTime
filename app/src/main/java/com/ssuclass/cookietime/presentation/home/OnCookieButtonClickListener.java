@@ -1,7 +1,7 @@
 package com.ssuclass.cookietime.presentation.home;
 
-import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
 
 public interface OnCookieButtonClickListener {
-    void onCookieButtonClick(KOBISBoxOfficeResponse.DailyBoxOffice dataModel);
+    void onCookieButtonClick(TMDBNowPlayingResponse.Movie dataModel);
 }

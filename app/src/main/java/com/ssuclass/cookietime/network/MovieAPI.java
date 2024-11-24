@@ -1,16 +1,11 @@
 package com.ssuclass.cookietime.network;
 
-import android.annotation.SuppressLint;
-
-import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
 import com.ssuclass.cookietime.network.response.TMDBMovieSearchResponse;
-import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
+import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
 import com.ssuclass.cookietime.network.service.TMDBMovieDetailService;
+import com.ssuclass.cookietime.network.service.TMDBNowPlayingService;
 import com.ssuclass.cookietime.network.service.TMDBMovieSearchService;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -19,25 +14,10 @@ import retrofit2.Call;
 
 public class MovieAPI {
     // Base URLs for the APIs
-    private static final String KOBIS_BOXOFFICE_URL = "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/";
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
 
     // Retrofit instances
-    private static Retrofit kobisBoxOfficeRetrofit;
     private static Retrofit tmdbRetrofit;
-
-    /**
-     * Returns Retrofit instance for KOBIS Box Office API
-     */
-    public static Retrofit getKOBISBoxOfficeInstance() {
-        if (kobisBoxOfficeRetrofit == null) {
-            kobisBoxOfficeRetrofit = new Retrofit.Builder()
-                    .baseUrl(KOBIS_BOXOFFICE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return kobisBoxOfficeRetrofit;
-    }
 
     /**
      * Returns Retrofit instance for TMDB API
@@ -53,15 +33,11 @@ public class MovieAPI {
     }
 
     /**
-     * Fetch daily box office data from KOBIS
+     * Fetch now playing movies from TMDB
      */
-    public static void fetchBoxOfficeData(String apiKey, Callback<KOBISBoxOfficeResponse> callback) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
-        @SuppressLint("SimpleDateFormat") String formattedDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
-
-        KOBISBoxOfficeService service = MovieAPI.getKOBISBoxOfficeInstance().create(KOBISBoxOfficeService.class);
-        Call<KOBISBoxOfficeResponse> call = service.getBoxOffice(apiKey, formattedDate);
+    public static void fetchNowPlayingMovies(String apiKey, String language, String region, int page, Callback<TMDBNowPlayingResponse> callback) {
+        TMDBNowPlayingService service = MovieAPI.getTMDBInstance().create(TMDBNowPlayingService.class);
+        Call<TMDBNowPlayingResponse> call = service.getNowPlayingMovies(apiKey, language, region, page);
         call.enqueue(callback);
     }
 
