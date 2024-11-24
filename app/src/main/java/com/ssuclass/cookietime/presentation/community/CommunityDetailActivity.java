@@ -2,6 +2,7 @@ package com.ssuclass.cookietime.presentation.community;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
 import com.ssuclass.cookietime.domain.CommunityDetailModel;
-import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CommunityDetailAdapter adapter;
 
-    private String communityId;
+    private String movieId;
 
     public CommunityDetailActivity() {
         dataList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        fetchPosts(this.communityId);
+        fetchCommunityData(this.movieId);
     }
 
     private void setFirebaseInstance() {
@@ -59,7 +59,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     private void setCommunityId() {
         Intent intent = getIntent();
-        this.communityId = intent.getStringExtra("communityId"); // FIXME: communityId 하드코딩에서 추출
+        this.movieId = intent.getStringExtra("movieId"); // FIXME: communityId 하드코딩에서 추출
     }
 
     private void setCommunityDetailRecyclerView() {
@@ -80,10 +80,10 @@ public class CommunityDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchPosts(String communityId) {
-        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
-                .document(communityId)
-                .collection("posts") // FIXME: collectionPath 하드코딩에서 추출
+    private void fetchCommunityData(String movieId) {
+        db.collection("Movie") // FIXME: collectionPath 하드코딩에서 추출
+                .document(movieId)
+                .collection("Community")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -91,14 +91,14 @@ public class CommunityDetailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                CommunityDetailModel model = new CommunityDetailModel();
-                                model.setTitle(document.getString("title"));
-                                model.setContent(document.getString("content"));
+                                String title = document.getString("Title");
+                                ArrayList<String> comment = (ArrayList<String>) document.get("Comment");
+                                CommunityDetailModel model = new CommunityDetailModel(title, comment);
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            ToastHelper.showToast(CommunityDetailActivity.this, "서버에서 게시글을 가져오지 못했습니다."); // FIXME: 토스트 메시지 하드코딩에서 추출
+                            Log.e("FirebaseError", "Error fetching data: ", task.getException());
                         }
                     }
                 });

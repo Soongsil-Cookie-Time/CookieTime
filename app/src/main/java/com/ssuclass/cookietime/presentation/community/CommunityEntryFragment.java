@@ -63,7 +63,7 @@ public class CommunityEntryFragment extends Fragment {
     }
 
     private void fetchCommunitiesList() {
-        db.collection("Communities")
+        db.collection("Movie")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -73,11 +73,10 @@ public class CommunityEntryFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CommunityEntryModel model = new CommunityEntryModel();
                                 String id = document.getId();
-                                String title = document.getString("title");
-                                String imageUrl = document.getString("image_url");
+                                String title = document.getString("movieName");
                                 model.setTitle(title);
                                 model.setId(id);
-                                model.setMoviePosterUrl(imageUrl);
+                                model.setMoviePosterUrl("");
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();

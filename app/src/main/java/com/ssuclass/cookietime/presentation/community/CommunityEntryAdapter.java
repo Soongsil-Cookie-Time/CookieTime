@@ -45,17 +45,20 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
         String gsUrl = dataList.get(position).getMoviePosterUrl(); // gs:// 경로
 
-        FirebaseStorage.getInstance().getReferenceFromUrl(gsUrl)
-                .getDownloadUrl()
-                .addOnSuccessListener(uri -> {
-                    Glide.with(context)
-                            .load(uri.toString()) // HTTPS URL로 변환 후 Glide 로드
-                            .into(holder.binding.moviePosterImageview);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ImageLoadError", "Failed to load image: " + e.getMessage());
-                });
-        
+        // URL이 비어있지 않을 때만 이미지 로딩 시도
+        if (gsUrl != null && !gsUrl.isEmpty()) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(gsUrl)
+                    .getDownloadUrl()
+                    .addOnSuccessListener(uri -> {
+                        Glide.with(context)
+                                .load(uri.toString())
+                                .into(holder.binding.moviePosterImageview);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ImageLoadError", "Failed to load image: " + e.getMessage());
+                    });
+        }
+
         implementViewHolderListener(holder);
     }
 
@@ -77,7 +80,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CommunityDetailActivity.class);
-                intent.putExtra("communityId", communityId);
+                intent.putExtra("movieId", communityId);
                 context.startActivity(intent);
             }
         });
