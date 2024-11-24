@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setBottomNavigationView();
-        replaceFragment(CookieInfoFragment.newInstance(558449));
+        replaceFragment(new HomeFragment());
     }
 
     private void setBottomNavigationView() {
