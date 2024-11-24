@@ -80,7 +80,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CommunityDetailActivity.class);
-                intent.putExtra("communityId", communityId);
+                intent.putExtra("movieId", communityId);
                 context.startActivity(intent);
             }
         });

@@ -1,25 +1,31 @@
 package com.ssuclass.cookietime.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommunityDetailModel {
     private String title;
-    private String content;
+    private ArrayList<String> comments;
 
-    public CommunityDetailModel() {
+    public CommunityDetailModel(String title, ArrayList<String> comments) {
+        this.title = title;
+        this.comments = comments;
     }
 
+    // Getter와 Setter
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getContent() {
-        return this.content;
+    public List<String> getComments() {
+        return comments;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setComments(ArrayList<String> comments) {
+        this.comments = comments;
     }
 }
