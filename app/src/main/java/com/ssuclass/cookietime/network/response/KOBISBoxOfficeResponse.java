@@ -67,6 +67,7 @@ public class KOBISBoxOfficeResponse {
         @SerializedName("rankOldAndNew")
         private String rankOldAndNew;
 
+        sdfdsfsd
         @SerializedName("movieCd")
         private String movieCd;
 
