@@ -1,4 +1,6 @@
 package com.ssuclass.cookietime.network;
+import android.annotation.SuppressLint;
+
 import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
 import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
 
@@ -34,7 +36,7 @@ public class MovieAPI {
     public static void fetchBoxOfficeData(String apiKey, Callback<KOBISBoxOfficeResponse> callback) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
-        String formattedDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+        @SuppressLint("SimpleDateFormat") String formattedDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
 
         KOBISBoxOfficeService service = MovieAPI.getKOBISBoxOfficeInstance().create(KOBISBoxOfficeService.class);
         Call<KOBISBoxOfficeResponse> call = service.getBoxOffice(apiKey, formattedDate);

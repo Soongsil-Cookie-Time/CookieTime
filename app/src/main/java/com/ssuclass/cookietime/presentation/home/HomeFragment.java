@@ -1,5 +1,6 @@
 package com.ssuclass.cookietime.presentation.home;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     private List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList = new ArrayList<>(); // 초기화
     private CarouselAdapter adapter; // 어댑터를 멤버 변수로 정의
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
-        String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime());
+        @SuppressLint("SimpleDateFormat") String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime());
         binding.boxofficeDateText.setText(formattedDate + " 실시간 박스오피스 기준 순위");
         // RecyclerView 설정
         setupCarouselRecyclerView();
@@ -77,6 +79,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     private void fetchBoxOfficeData() {
         // KOBIS API에서 박스오피스 데이터를 가져오는 Retrofit 호출
         MovieAPI.fetchBoxOfficeData(getString(R.string.KOBIS_api_key), new Callback<KOBISBoxOfficeResponse>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<KOBISBoxOfficeResponse> call, @NonNull Response<KOBISBoxOfficeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
