@@ -16,6 +16,8 @@ import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
+import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
+import com.ssuclass.cookietime.network.response.TMDBMovieSearchResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,9 +108,57 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         });
     }
 
+    /**
+     * TMDB API를 호출하여 영화 상세 데이터를 가져오는 메서드
+     */
+    private void fetchMovieDetail(int movieId) {
+        MovieAPI.fetchMovieDetail(movieId, getString(R.string.TMDB_api_key), "ko-KR", new Callback<TMDBMovieDetailResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Response<TMDBMovieDetailResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    TMDBMovieDetailResponse movieDetail = response.body();
+                    // 영화 상세 정보 처리
+                    Log.d("HomeFragment", "Fetched Movie Detail: " + movieDetail.getTitle());
+                } else {
+                    Log.e("HomeFragment", "Failed to fetch movie details: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TMDBMovieDetailResponse> call, @NonNull Throwable t) {
+                Log.e("HomeFragment", "Movie Detail API Call Failed: " + t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * TMDB API를 호출하여 영화 검색 결과를 가져오는 메서드
+     */
+    private void searchMovies(String query) {
+        MovieAPI.searchMovies(query, getString(R.string.TMDB_api_key), "ko-KR", "KR", new Callback<TMDBMovieSearchResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TMDBMovieSearchResponse> call, @NonNull Response<TMDBMovieSearchResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<TMDBMovieSearchResponse.Movie> movies = response.body().getResults();
+                    for (TMDBMovieSearchResponse.Movie movie : movies) {
+                        Log.d("HomeFragment", "Found Movie: " + movie.getTitle());
+                    }
+                } else {
+                    Log.e("HomeFragment", "Failed to search movies: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TMDBMovieSearchResponse> call, @NonNull Throwable t) {
+                Log.e("HomeFragment", "Search Movies API Call Failed: " + t.getMessage());
+            }
+        });
+    }
 
     @Override
     public void onCookieButtonClick(KOBISBoxOfficeResponse.DailyBoxOffice dataModel) {
-        // TODO: 버튼 클릭 시 이벤트 구현
+        // 박스오피스 데이터 클릭 시 영화 상세 정보 가져오기
+        int movieId = Integer.parseInt(dataModel.getMovieCd()); // KOBIS의 movieCd를 TMDB의 movieId로 변환 필요
+        fetchMovieDetail(movieId);
     }
 }
