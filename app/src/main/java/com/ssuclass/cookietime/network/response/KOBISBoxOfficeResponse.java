@@ -17,25 +17,23 @@ public class KOBISBoxOfficeResponse {
         this.boxOfficeResult = boxOfficeResult;
     }
 
-    // Inner class for the "boxOfficeResult" object
     public static class BoxOfficeResult {
-
         @SerializedName("boxofficeType")
-        private String boxOfficeType;
+        private String boxofficeType;
 
         @SerializedName("showRange")
         private String showRange;
 
         @SerializedName("dailyBoxOfficeList")
-        private List<BoxOffice> dailyBoxOfficeList;
+        private List<DailyBoxOffice> dailyBoxOfficeList;
 
         // Getters and Setters
-        public String getBoxOfficeType() {
-            return boxOfficeType;
+        public String getBoxofficeType() {
+            return boxofficeType;
         }
 
-        public void setBoxOfficeType(String boxOfficeType) {
-            this.boxOfficeType = boxOfficeType;
+        public void setBoxofficeType(String boxofficeType) {
+            this.boxofficeType = boxofficeType;
         }
 
         public String getShowRange() {
@@ -46,17 +44,16 @@ public class KOBISBoxOfficeResponse {
             this.showRange = showRange;
         }
 
-        public List<BoxOffice> getDailyBoxOfficeList() {
+        public List<DailyBoxOffice> getDailyBoxOfficeList() {
             return dailyBoxOfficeList;
         }
 
-        public void setDailyBoxOfficeList(List<BoxOffice> dailyBoxOfficeList) {
+        public void setDailyBoxOfficeList(List<DailyBoxOffice> dailyBoxOfficeList) {
             this.dailyBoxOfficeList = dailyBoxOfficeList;
         }
     }
 
-    // Inner class for "dailyBoxOfficeList" items
-    public static class BoxOffice {
+    public static class DailyBoxOffice {
 
         @SerializedName("rnum")
         private String rnum;
@@ -112,7 +109,7 @@ public class KOBISBoxOfficeResponse {
         @SerializedName("showCnt")
         private String showCnt;
 
-        // Getters and Setters for all fields
+        // Getters and Setters
         public String getRnum() {
             return rnum;
         }
@@ -256,16 +253,5 @@ public class KOBISBoxOfficeResponse {
         public void setShowCnt(String showCnt) {
             this.showCnt = showCnt;
         }
-        @Override
-        public String toString() {
-            return "BoxOffice{" +
-                    "rnum='" + rnum + '\'' +
-                    ", rank='" + rank + '\'' +
-                    ", movieNm='" + movieNm + '\'' +
-                    ", salesAmt='" + salesAmt + '\'' +
-                    ", audiCnt='" + audiCnt + '\'' +
-                    '}';
-        }
     }
-
 }

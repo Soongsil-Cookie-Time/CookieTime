@@ -6,113 +6,106 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.R;
+import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.KOBISBoxOfficeResponse;
-import com.ssuclass.cookietime.network.response.KOBISSearchResponse;
-import com.ssuclass.cookietime.network.service.KOBISBoxOfficeService;
-import com.ssuclass.cookietime.network.service.KOBISSearchService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnCookieButtonClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FragmentHomeBinding binding;
+    private List<KOBISBoxOfficeResponse.DailyBoxOffice> dataList = new ArrayList<>(); // 초기화
+    private CarouselAdapter adapter; // 어댑터를 멤버 변수로 정의
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // 바인딩 객체 초기화
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime());
+        binding.boxofficeDateText.setText(formattedDate + " 실시간 박스오피스 기준 순위");
+        // RecyclerView 설정
+        setupCarouselRecyclerView();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+        return binding.getRoot();
+    }
 
-    public HomeFragment() {
-        // Required empty public constructor
+    @Override
+    public void onStart() {
+        super.onStart();
+        // API 호출하여 데이터 로드
+        fetchBoxOfficeData();
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * RecyclerView 설정 메서드
      */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private void setupCarouselRecyclerView() {
+        if (binding != null) {
+            RecyclerView recyclerView = binding.boxofficeRecyclerView;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // 어댑터 초기화
+            adapter = new CarouselAdapter(dataList, this);
+
+            // RecyclerView 설정
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerView.setAdapter(adapter);
+        } else {
+            Log.e("HomeFragment", "Binding is null in setupCarouselRecyclerView");
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
+    /**
+     * API를 호출하여 데이터를 가져오는 메서드
+     */
     private void fetchBoxOfficeData() {
+        // KOBIS API에서 박스오피스 데이터를 가져오는 Retrofit 호출
         MovieAPI.fetchBoxOfficeData(getString(R.string.KOBIS_api_key), new Callback<KOBISBoxOfficeResponse>() {
             @Override
-            public void onResponse(Call<KOBISBoxOfficeResponse> call, Response<KOBISBoxOfficeResponse> response) {
+            public void onResponse(@NonNull Call<KOBISBoxOfficeResponse> call, @NonNull Response<KOBISBoxOfficeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("HomeFragment", "Box Office Data: " + response.body().getBoxOfficeResult().getDailyBoxOfficeList().toString());
+                    // 성공적으로 데이터를 받아온 경우
+                    List<KOBISBoxOfficeResponse.DailyBoxOffice> newData = response.body().getBoxOfficeResult().getDailyBoxOfficeList();
+                    if (newData != null && !newData.isEmpty()) {
+                        dataList.clear(); // 기존 데이터를 제거
+                        dataList.addAll(newData); // 새 데이터 추가
+                        adapter.notifyDataSetChanged(); // RecyclerView에 변경사항 알림
+                    } else {
+                        Log.w("HomeFragment", "Empty box office data");
+                    }
                 } else {
+                    // 응답이 실패한 경우 로그 출력
                     Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<KOBISBoxOfficeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<KOBISBoxOfficeResponse> call, @NonNull Throwable t) {
+                // API 호출 실패 로그 출력
                 Log.e("HomeFragment", "Box Office API Call Failed: " + t.getMessage());
             }
         });
     }
 
-    private void fetchMovieData(String movieName) {
-        MovieAPI.fetchMovieData(getString(R.string.KOBIS_api_key), movieName, new Callback<KOBISSearchResponse>() {
-            @Override
-            public void onResponse(Call<KOBISSearchResponse> call, Response<KOBISSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("HomeFragment", "Search Results: " + response.body().getMovieListResult().toString());
-                } else {
-                    Log.e("HomeFragment", "API Response Error: " + response.code() + " - " + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<KOBISSearchResponse> call, Throwable t) {
-                Log.e("HomeFragment", "Movie Search API Call Failed: " + t.getMessage());
-            }
-        });
+    @Override
+    public void onCookieButtonClick(KOBISBoxOfficeResponse.DailyBoxOffice dataModel) {
+        // TODO: 버튼 클릭 시 이벤트 구현
     }
-
-
 }
