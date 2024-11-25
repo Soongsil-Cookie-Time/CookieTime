@@ -13,6 +13,7 @@ import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.BadgeManagerFragment;
 import com.ssuclass.cookietime.presentation.community.CommunityEntryFragment;
+import com.ssuclass.cookietime.presentation.cookieinfo.CookieInfoFragment;
 import com.ssuclass.cookietime.presentation.home.HomeFragment;
 import com.ssuclass.cookietime.presentation.mypage.MyPageFragment;
 
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setBottomNavigationView();
+        replaceFragment(new HomeFragment());
     }
 
     private void setBottomNavigationView() {

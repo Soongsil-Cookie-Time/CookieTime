@@ -17,6 +17,7 @@ import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieSearchResponse;
 import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
+import com.ssuclass.cookietime.presentation.cookieinfo.CookieInfoFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,7 +161,17 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
 
     @Override
     public void onCookieButtonClick(TMDBNowPlayingResponse.Movie dataModel) {
+        // CookieInfoFragment 생성 및 Movie ID 전달
+        CookieInfoFragment cookieInfoFragment = CookieInfoFragment.newInstance(dataModel.getId());
 
+        // Fragment 전환
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, cookieInfoFragment) // Replace with the ID of your container
+                .addToBackStack(null) // 뒤로 가기 지원
+                .commit();
     }
+
+
 }
 
