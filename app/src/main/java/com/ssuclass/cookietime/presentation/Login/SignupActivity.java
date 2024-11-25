@@ -13,11 +13,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.databinding.ActivitySignupBinding;
+import com.ssuclass.cookietime.util.ToastHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -72,8 +78,29 @@ public class SignupActivity extends AppCompatActivity {
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO: Firestore에 개별 사용자 정보 보관 로직 구현
-                        makeSigninRequestDialog();
+                        String username = binding.inputNameEditText.getText().toString();
+                        String nickname = binding.inputNicknameEditText.getText().toString();
+
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("username", username);
+                        user.put("nickname", nickname);
+
+                        String uid = mAuth.getCurrentUser().getUid();
+                        db.collection("User")
+                                .document(uid)
+                                .set(user)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        makeSigninRequestDialog();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        ToastHelper.showToast(SignupActivity.this, "사용자 정보 저장에 실패했습니다.");
+                                    }
+                                });
                     }
                 })
                 .show();
