@@ -17,13 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.Login.Signup"
+            android:name=".presentation.Login.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.Login"
+            android:name=".presentation.Login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.MainLogin"
+            android:name=".presentation.Login.MainLoginActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.badgemanager.InstagramSharingActivity"
