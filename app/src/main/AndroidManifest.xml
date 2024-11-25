@@ -20,11 +20,19 @@
             android:name=".presentation.Login.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.LoginActivity"
+            android:name=".presentation.Login.SigninActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.MainLoginActivity"
-            android:exported="false" />
+            android:name=".presentation.Login.AuthentiacationActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".presentation.badgemanager.InstagramSharingActivity"
             android:exported="false" />

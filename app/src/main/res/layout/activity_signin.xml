@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".presentation.Login.LoginActivity">
+    tools:context=".presentation.Login.SigninActivity">
 
     <!-- Back Icon -->
     <ImageView
@@ -21,7 +21,7 @@
 
     <!-- Title Text -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/login_page_toolbar"
+        android:id="@+id/signin_page_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -38,6 +38,7 @@
             android:layout_gravity="center"
             android:text="로그인" />
     </androidx.appcompat.widget.Toolbar>
+
     <!-- Cookie ImageView -->
     <ImageView
         android:id="@+id/cookieImage"
@@ -47,7 +48,7 @@
         android:src="@drawable/cookie_time_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_page_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/signin_page_toolbar" />
 
     <!-- Cookie Title -->
     <TextView
@@ -66,7 +67,7 @@
 
     <!-- 아이디 입력 -->
     <EditText
-        android:id="@+id/inputId"
+        android:id="@+id/input_email_edittext"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="52dp"
@@ -85,7 +86,7 @@
 
     <!-- 비밀번호 입력 -->
     <EditText
-        android:id="@+id/inputPassword"
+        android:id="@+id/input_password_edittext"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="52dp"
@@ -101,11 +102,11 @@
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputId" />
+        app:layout_constraintTop_toBottomOf="@id/input_email_edittext" />
 
     <!-- 로그인 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
+        android:id="@+id/signin_button"
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginStart="52dp"
@@ -117,6 +118,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputPassword" />
+        app:layout_constraintTop_toBottomOf="@id/input_password_edittext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
