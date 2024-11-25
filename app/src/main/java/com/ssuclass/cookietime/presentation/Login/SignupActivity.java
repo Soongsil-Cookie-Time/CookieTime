@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.ssuclass.cookietime.R;
 
-public class Signup extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

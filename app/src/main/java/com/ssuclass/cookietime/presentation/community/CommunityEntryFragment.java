@@ -53,8 +53,8 @@ public class CommunityEntryFragment extends Fragment {
     private void setCommunityRecyclerView() {
         RecyclerView communityRecyclerView = binding.communityRecyclerview;
         communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
-        communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CommunityEntryAdapter(this.getContext(), dataList);
+        communityRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new CommunityEntryAdapter(requireContext(), dataList);
         communityRecyclerView.setAdapter(adapter);
     }
 

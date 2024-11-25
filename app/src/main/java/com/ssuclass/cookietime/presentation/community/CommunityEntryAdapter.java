@@ -21,7 +21,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
 
     // Fields
     private final Context context;
-    private List<CommunityEntryModel> dataList;
+    private final List<CommunityEntryModel> dataList;
 
     // Constructor
     public CommunityEntryAdapter(Context context, List<CommunityEntryModel> dataList) {
@@ -65,10 +65,6 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
     @Override
     public int getItemCount() {
         return this.dataList.size();
-    }
-
-    public void updateDataList(List<CommunityEntryModel> dataList) {
-        this.dataList = dataList;
     }
 
     private void implementViewHolderListener(CommunityEntryViewHolder holder) {
