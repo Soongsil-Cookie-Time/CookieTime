@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation;
+package com.ssuclass.cookietime.presentation.bottomnavigation;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,7 +13,6 @@ import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.BadgeManagerFragment;
 import com.ssuclass.cookietime.presentation.community.CommunityEntryFragment;
-import com.ssuclass.cookietime.presentation.cookieinfo.CookieInfoFragment;
 import com.ssuclass.cookietime.presentation.home.HomeFragment;
 import com.ssuclass.cookietime.presentation.mypage.MyPageFragment;
 

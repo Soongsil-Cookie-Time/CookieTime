@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivitySigninBinding;
-import com.ssuclass.cookietime.presentation.MainActivity;
+import com.ssuclass.cookietime.presentation.bottomnavigation.MainActivity;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 public class SigninActivity extends AppCompatActivity {
