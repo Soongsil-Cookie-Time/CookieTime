@@ -5,4 +5,5 @@
     <color name="community_background_color">#EAEAEA</color>
     <!--디자인 시스템-->
     <color name="primary">#009843</color>
+    <color name="mypage_background_color">#40009843</color>
 </resources>
