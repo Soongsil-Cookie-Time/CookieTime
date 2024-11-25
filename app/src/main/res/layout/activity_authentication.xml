@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.Login.MainLoginActivity">
+    tools:context=".presentation.Login.AuthentiacationActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:textSize="40sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/loginButton"
+            android:id="@+id/signin_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/titleText"
@@ -50,7 +50,7 @@
             android:id="@+id/signupButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_below="@id/loginButton"
+            android:layout_below="@id/signin_button"
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/button_rounded"

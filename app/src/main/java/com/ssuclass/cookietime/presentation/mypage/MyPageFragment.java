@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ssuclass.cookietime.databinding.FragmentMyPageBinding;
-import com.ssuclass.cookietime.presentation.Login.MainLoginActivity;
+import com.ssuclass.cookietime.presentation.Login.AuthentiacationActivity;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 public class MyPageFragment extends Fragment {
@@ -82,7 +82,7 @@ public class MyPageFragment extends Fragment {
         firebaseAuth.signOut();
         ToastHelper.showToast(requireContext(), "로그아웃 되었습니다.");
 
-        Intent loginIntent = new Intent(requireContext(), MainLoginActivity.class);
+        Intent loginIntent = new Intent(requireContext(), AuthentiacationActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
     }
