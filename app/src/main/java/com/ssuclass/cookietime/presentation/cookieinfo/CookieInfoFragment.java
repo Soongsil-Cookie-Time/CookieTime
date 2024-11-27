@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentCookieInfoBinding;
 import com.ssuclass.cookietime.domain.CookieKeywordModel;
+import com.ssuclass.cookietime.domain.MovieDetailModel;
 import com.ssuclass.cookietime.domain.SurveyProgressModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
@@ -26,15 +28,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class CookieInfoFragment extends Fragment {
 
     private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
+    private FirebaseFirestore db;
 
     /**
      * Fragment 생성 메서드: movieId를 Argument로 전달
@@ -51,7 +57,7 @@ public class CookieInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // 뷰 바인딩 초기화
         binding = FragmentCookieInfoBinding.inflate(inflater, container, false);
-
+        db = FirebaseFirestore.getInstance();
         // Argument에서 movieId 가져오기
         if (getArguments() != null) {
             int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
@@ -64,10 +70,6 @@ public class CookieInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // RecyclerView 설정
-        setKeywordRecyclerView();
-        setSurveyRecyclerView();
     }
 
     @Override
@@ -88,6 +90,10 @@ public class CookieInfoFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     TMDBMovieDetailResponse dataModel = response.body();
                     updateUIWithMovieDetail(dataModel); // UI 업데이트
+                    // 해당 도큐먼트가 없는 경우에만 신규 도큐먼트 생성
+                    if (!checkMovieDocument(dataModel.getId())) {
+                        addMovieDocumentWithId(movieId, dataModel);
+                    }
                 } else {
                     try {
                         String errorBody = response.errorBody().string(); // 에러 메시지 읽기
@@ -128,6 +134,60 @@ public class CookieInfoFragment extends Fragment {
         }
     }
 
+    private void updateUIWithSurveyData(MovieDetailModel dataModel) {
+        setKeywordRecyclerView(dataModel.getCookieKeywordCountArray());
+        setSurveyRecyclerView(dataModel.getSurveyProgressModel());
+    }
+
+    private Boolean checkMovieDocument(Integer movieId) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        db.collection("Movie")
+                .document(movieId.toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Firestore 데이터를 MovieDetailModel 객체로 변환
+                            MovieDetailModel movie = document.toObject(MovieDetailModel.class);
+                            future.complete(true); // 도큐먼트가 존재하면 true
+                            if (movie != null) {
+                                updateUIWithSurveyData(movie);
+                            }
+                        } else {
+                            Log.d("Firestore", "No such document!");
+                            future.complete(false); // 도큐먼트가 존재하지 않으면 false
+                        }
+                    } else {
+                        Log.e("Firestore", "Error getting document", task.getException());
+                        future.complete(false); // 작업 실패 시 false
+                    }
+                });
+        try {
+            return future.get(); // 결과를 기다림
+        } catch (Exception e) {
+            return false; // 예외 발생 시 false 반환
+        }
+    }
+
+
+
+    private void addMovieDocumentWithId(Integer movieId, TMDBMovieDetailResponse dataModel) {
+        db.collection("Movie")
+                .document(movieId.toString())
+                .set(dataModel)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Document 추가 성공
+                        System.out.println("Document successfully created with ID: " + movieId);
+                    } else {
+                        // Document 추가 실패
+                        System.err.println("Error creating document: " + task.getException());
+                    }
+                });
+    }
+
     /**
      * 러닝타임과 첫 번째 장르를 포맷팅하여 반환하는 메서드
      */
@@ -166,19 +226,8 @@ public class CookieInfoFragment extends Fragment {
     /**
      * 키워드 RecyclerView 설정
      */
-    private void setKeywordRecyclerView() {
+    private void setKeywordRecyclerView(List<CookieKeywordModel> keywordList) {
         binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // 예시 데이터
-        List<CookieKeywordModel> keywordList = new ArrayList<>();
-        keywordList.add(new CookieKeywordModel("감동적인 엔딩", 45));
-        keywordList.add(new CookieKeywordModel("지루하지 않은 전개", 30));
-        keywordList.add(new CookieKeywordModel("예상치 못한 반전", 25));
-        keywordList.add(new CookieKeywordModel("캐릭터 매력적", 20));
-        keywordList.add(new CookieKeywordModel("완벽한 음악", 15));
-        keywordList.add(new CookieKeywordModel("압도적인 비주얼", 10));
-        keywordList.add(new CookieKeywordModel("다소 긴 러닝타임", 5));
-
         // 어댑터 설정
         KeywordAdapter keywordAdapter = new KeywordAdapter(keywordList);
         binding.keywordRecyclerView.setAdapter(keywordAdapter);
@@ -187,24 +236,8 @@ public class CookieInfoFragment extends Fragment {
     /**
      * 설문 RecyclerView 설정
      */
-    private void setSurveyRecyclerView() {
+    private void setSurveyRecyclerView(SurveyProgressModel surveyProgressModel) {
         binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // 예시 데이터
-        SurveyProgressModel surveyProgressModel = new SurveyProgressModel();
-        surveyProgressModel.setCookieZeroCount(5);
-        surveyProgressModel.setCookieOneCount(15);
-        surveyProgressModel.setCookieTwoCount(25);
-        surveyProgressModel.setCookieThreeCount(10);
-
-        // 쿠키 길이 데이터
-        surveyProgressModel.setCookieLongCount(30);
-        surveyProgressModel.setCookieShortCount(20);
-
-        // 쿠키 중요도 데이터
-        surveyProgressModel.setCookieImportantCount(35);
-        surveyProgressModel.setCookieNotImportantCount(15);
-
         // 어댑터 설정
         SurveyProgressAdapter surveyAdapter = new SurveyProgressAdapter(surveyProgressModel);
         binding.cookieSurveyRecyclerView.setAdapter(surveyAdapter);
