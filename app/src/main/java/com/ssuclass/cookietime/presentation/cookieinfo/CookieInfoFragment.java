@@ -23,6 +23,7 @@ import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
 
 import java.io.IOException;
+import java.security.Key;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CookieInfoFragment extends Fragment {
 
+    private SurveyProgressAdapter surveyAdapter;
+    private KeywordAdapter keywordAdapter;
     private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
     private FirebaseFirestore db;
@@ -63,6 +66,12 @@ public class CookieInfoFragment extends Fragment {
             int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
             fetchMovieDetail(movieId); // API 호출
         }
+        // RecyclerView 초기화 시 빈 어댑터 설정
+        binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.keywordRecyclerView.setAdapter(new KeywordAdapter(new ArrayList<>()));
+
+        binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.cookieSurveyRecyclerView.setAdapter(new SurveyProgressAdapter(new SurveyProgressModel()));
 
         return binding.getRoot();
     }
@@ -91,9 +100,11 @@ public class CookieInfoFragment extends Fragment {
                     TMDBMovieDetailResponse dataModel = response.body();
                     updateUIWithMovieDetail(dataModel); // UI 업데이트
                     // 해당 도큐먼트가 없는 경우에만 신규 도큐먼트 생성
-                    if (!checkMovieDocument(dataModel.getId())) {
-                        addMovieDocumentWithId(movieId, dataModel);
-                    }
+                    checkMovieDocument(movieId, exists -> {
+                        if (!exists) {
+                            addMovieDocumentWithId(movieId, dataModel);
+                        }
+                    });
                 } else {
                     try {
                         String errorBody = response.errorBody().string(); // 에러 메시지 읽기
@@ -135,41 +146,45 @@ public class CookieInfoFragment extends Fragment {
     }
 
     private void updateUIWithSurveyData(MovieDetailModel dataModel) {
-        setKeywordRecyclerView(dataModel.getCookieKeywordCountArray());
+        List<CookieKeywordModel> keywordList = dataModel.getCookieKeywordCountArray();
+
+        // Null 또는 빈 리스트 처리
+        if (keywordList == null) {
+            keywordList = new ArrayList<>();
+        }
+
+        setKeywordRecyclerView(keywordList);
         setSurveyRecyclerView(dataModel.getSurveyProgressModel());
     }
 
-    private Boolean checkMovieDocument(Integer movieId) {
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
+    private void checkMovieDocument(Integer movieId, OnCheckMovieCallback callback) {
         db.collection("Movie")
                 .document(movieId.toString())
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            // Firestore 데이터를 MovieDetailModel 객체로 변환
                             MovieDetailModel movie = document.toObject(MovieDetailModel.class);
-                            future.complete(true); // 도큐먼트가 존재하면 true
                             if (movie != null) {
                                 updateUIWithSurveyData(movie);
                             }
+                            callback.onCheckResult(true); // 콜백으로 결과 전달
                         } else {
-                            Log.d("Firestore", "No such document!");
-                            future.complete(false); // 도큐먼트가 존재하지 않으면 false
+                            callback.onCheckResult(false);
                         }
                     } else {
-                        Log.e("Firestore", "Error getting document", task.getException());
-                        future.complete(false); // 작업 실패 시 false
+                        Log.e("Firestore", "Error checking document", task.getException());
+                        callback.onCheckResult(false);
                     }
                 });
-        try {
-            return future.get(); // 결과를 기다림
-        } catch (Exception e) {
-            return false; // 예외 발생 시 false 반환
-        }
     }
+
+    interface OnCheckMovieCallback {
+        void onCheckResult(boolean exists);
+    }
+
 
 
 
@@ -227,19 +242,33 @@ public class CookieInfoFragment extends Fragment {
      * 키워드 RecyclerView 설정
      */
     private void setKeywordRecyclerView(List<CookieKeywordModel> keywordList) {
-        binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // 어댑터 설정
-        KeywordAdapter keywordAdapter = new KeywordAdapter(keywordList);
-        binding.keywordRecyclerView.setAdapter(keywordAdapter);
+        // 데이터가 null이면 빈 리스트로 초기화
+        if (keywordList == null) {
+            keywordList = new ArrayList<>();
+        }
+
+        if (keywordAdapter == null) {
+            keywordAdapter = new KeywordAdapter(keywordList);
+            binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.keywordRecyclerView.setAdapter(keywordAdapter);
+        } else {
+//            keywordAdapter.updateData(keywordList); // 데이터를 업데이트하는 메서드
+            keywordAdapter.notifyDataSetChanged();
+        }
     }
 
-    /**
-     * 설문 RecyclerView 설정
-     */
     private void setSurveyRecyclerView(SurveyProgressModel surveyProgressModel) {
-        binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // 어댑터 설정
-        SurveyProgressAdapter surveyAdapter = new SurveyProgressAdapter(surveyProgressModel);
-        binding.cookieSurveyRecyclerView.setAdapter(surveyAdapter);
+        if (surveyProgressModel == null) {
+            surveyProgressModel = new SurveyProgressModel();
+        }
+
+        if (surveyAdapter == null) {
+            surveyAdapter = new SurveyProgressAdapter(surveyProgressModel);
+            binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.cookieSurveyRecyclerView.setAdapter(surveyAdapter);
+        } else {
+//            surveyAdapter.update(surveyAdapter);
+            surveyAdapter.notifyDataSetChanged();
+        }
     }
 }

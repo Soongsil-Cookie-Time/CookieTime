@@ -18,7 +18,7 @@ import com.ssuclass.cookietime.domain.SurveyProgressModel;
 
 public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAdapter.SurveyViewHolder> {
 
-    private final SurveyProgressModel surveyList;
+    private SurveyProgressModel surveyList;
 
     public SurveyProgressAdapter(SurveyProgressModel surveyList) {
         this.surveyList = surveyList;
@@ -31,17 +31,23 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
         return new SurveyViewHolder(view);
     }
 
+    // 데이터를 업데이트하고 RecyclerView 갱신
+    public void updateSurveyData(SurveyProgressModel newSurveyList) {
+        this.surveyList = newSurveyList;
+        notifyDataSetChanged(); // 데이터가 변경되었음을 RecyclerView에 알림
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SurveyViewHolder holder, int position) {
         switch (position) {
-            case 0: // 첫 번째 아이템 (예: 쿠키 개수)
-                // 쿠키 개수 응답 값들
+            case 0: // 첫 번째 아이템 (쿠키 개수)
+                // 쿠키 개수 데이터
                 int[] cookieCounts = {
-                        surveyList.getCookieZeroCount(),
-                        surveyList.getCookieOneCount(),
-                        surveyList.getCookieTwoCount(),
-                        surveyList.getCookieThreeCount()
+                    safeGetInt(surveyList.getCookieZeroCount()),
+                    safeGetInt(surveyList.getCookieOneCount()),
+                    safeGetInt(surveyList.getCookieTwoCount()),
+                    safeGetInt(surveyList.getCookieThreeCount())
                 };
 
                 // 가장 높은 응답 값 및 인덱스 찾기
@@ -68,16 +74,17 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 holder.progressBar.setProgress(topPercent1);
                 break;
 
-            case 1: // 두 번째 아이템 (예: 쿠키 길이)
+            case 1: // 두 번째 아이템 (쿠키 길이)
                 // 쿠키 길이 데이터
-                int totalCookieLength = surveyList.getCookieLongCount() + surveyList.getCookieShortCount();
-                int cookieLongPercent = calculatePercentage(surveyList.getCookieLongCount(), totalCookieLength);
-                int cookieShortPercent = calculatePercentage(surveyList.getCookieShortCount(), totalCookieLength);
+                int cookieLongCount = safeGetInt(surveyList.getCookieLongCount());
+                int cookieShortCount = safeGetInt(surveyList.getCookieShortCount());
+                int totalCookieLength = cookieLongCount + cookieShortCount;
+
+                int cookieLongPercent = calculatePercentage(cookieLongCount, totalCookieLength);
+                int cookieShortPercent = calculatePercentage(cookieShortCount, totalCookieLength);
 
                 // 가장 높은 투표율 기준으로 제목 설정
-                String cookieLengthTitle = (surveyList.getCookieLongCount() >= surveyList.getCookieShortCount())
-                        ? "길어요" : "짧아요";
-                // 텍스트뷰에 부분 색상 적용
+                String cookieLengthTitle = (cookieLongCount >= cookieShortCount) ? "길어요" : "짧아요";
                 setColoredText(holder.title, "쿠키 길이 : ", cookieLengthTitle);
 
                 holder.startText.setText("길어요 " + cookieLongPercent + "%");
@@ -87,16 +94,17 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 holder.progressBar.setProgress(cookieLongPercent);
                 break;
 
-            case 2: // 세 번째 아이템 (예: 쿠키 중요도)
+            case 2: // 세 번째 아이템 (쿠키 중요도)
                 // 쿠키 중요도 데이터
-                int totalCookieImportance = surveyList.getCookieImportantCount() + surveyList.getCookieNotImportantCount();
-                int cookieImportantPercent = calculatePercentage(surveyList.getCookieImportantCount(), totalCookieImportance);
-                int cookieNotImportantPercent = calculatePercentage(surveyList.getCookieNotImportantCount(), totalCookieImportance);
+                int cookieImportantCount = safeGetInt(surveyList.getCookieImportantCount());
+                int cookieNotImportantCount = safeGetInt(surveyList.getCookieNotImportantCount());
+                int totalCookieImportance = cookieImportantCount + cookieNotImportantCount;
+
+                int cookieImportantPercent = calculatePercentage(cookieImportantCount, totalCookieImportance);
+                int cookieNotImportantPercent = calculatePercentage(cookieNotImportantCount, totalCookieImportance);
 
                 // 가장 높은 투표율 기준으로 제목 설정
-                String cookieImportanceTitle = (surveyList.getCookieImportantCount() >= surveyList.getCookieNotImportantCount())
-                        ? "중요해요" : "중요하지 않아요";
-                // 텍스트뷰에 부분 색상 적용
+                String cookieImportanceTitle = (cookieImportantCount >= cookieNotImportantCount) ? "중요해요" : "중요하지 않아요";
                 setColoredText(holder.title, "쿠키 중요도 : ", cookieImportanceTitle);
 
                 holder.startText.setText("중요해요 " + cookieImportantPercent + "%");
@@ -114,6 +122,13 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 break;
         }
     }
+
+    private int safeGetInt(Integer value) {
+        return value != null ? value : 0;
+    }
+
+
+
     private void setColoredText(TextView textView, String staticText, String dynamicText) {
         // 전체 문자열 결합
         String fullText = staticText + dynamicText;
