@@ -76,4 +76,18 @@ public class SurveyProgressModel {
     public void setCookieNotImportantCount(Integer cookieNotImportantCount) {
         this.cookieNotImportantCount = cookieNotImportantCount;
     }
+
+    public SurveyProgressModel(Integer cookieZeroCount, Integer cookieOneCount, Integer cookieTwoCount, Integer cookieThreeCount, Integer cookieLongCount, Integer cookieShortCount, Integer cookieImportantCount, Integer cookieNotImportantCount) {
+        this.cookieZeroCount = cookieZeroCount;
+        this.cookieOneCount = cookieOneCount;
+        this.cookieTwoCount = cookieTwoCount;
+        this.cookieThreeCount = cookieThreeCount;
+        this.cookieLongCount = cookieLongCount;
+        this.cookieShortCount = cookieShortCount;
+        this.cookieImportantCount = cookieImportantCount;
+        this.cookieNotImportantCount = cookieNotImportantCount;
+    }
+
+    public SurveyProgressModel() {
+    }
 }

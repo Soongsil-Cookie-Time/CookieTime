@@ -26,10 +26,6 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
 
     // 데이터 업데이트 메서드
     public void updateSurveyData(SurveyProgressModel newSurveyList) {
-        if (newSurveyList == null) {
-            newSurveyList = new SurveyProgressModel();
-        }
-
         this.surveyList = newSurveyList;
         notifyDataSetChanged(); // 데이터 변경 사항 반영
     }
