@@ -33,7 +33,7 @@
             android:id="@+id/cookie_info_posterImageView"
             android:layout_width="153dp"
             android:layout_height="227dp"
-            android:src="@drawable/sample_movie"
+            android:src="@drawable/cookie_time_icon"
             app:layout_constraintTop_toBottomOf="@+id/cookie_info_page_toolbar"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"

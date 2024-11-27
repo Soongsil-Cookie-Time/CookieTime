@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.domain.CookieKeywordModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordAdapter extends RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder> {
@@ -32,12 +33,23 @@ public class KeywordAdapter extends RecyclerView.Adapter<KeywordAdapter.KeywordV
 
     // 키워드를 정렬하는 메서드
     public List<CookieKeywordModel> getTopKeywords(List<CookieKeywordModel> newKeywordList) {
+        // 필터링된 리스트를 저장할 새로운 리스트 생성
+        List<CookieKeywordModel> filteredList = new ArrayList<>();
+
+        // count가 0보다 큰 항목만 추가
+        for (CookieKeywordModel keyword : newKeywordList) {
+            if (keyword.getCount() > 0) {
+                filteredList.add(keyword);
+            }
+        }
+
         // 리스트 정렬 (예: 빈도 순)
-        newKeywordList.sort((k1, k2) -> Integer.compare(k2.getCount(), k1.getCount()));
+        filteredList.sort((k1, k2) -> Integer.compare(k2.getCount(), k1.getCount()));
 
         // 상위 5개의 키워드 반환
-        return newKeywordList.size() > 5 ? newKeywordList.subList(0, 5) : newKeywordList;
+        return filteredList.size() > 5 ? filteredList.subList(0, 5) : filteredList;
     }
+
 
     @NonNull
     @Override
