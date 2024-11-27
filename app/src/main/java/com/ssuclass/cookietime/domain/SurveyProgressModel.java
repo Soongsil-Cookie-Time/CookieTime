@@ -1,17 +1,18 @@
 package com.ssuclass.cookietime.domain;
 
 public class SurveyProgressModel {
-    private Integer cookieZeroCount;
-    private Integer cookieOneCount;
-    private Integer cookieTwoCount;
-    private Integer cookieThreeCount;
+    private Integer cookieZeroCount = 0;
+    private Integer cookieOneCount = 0;
+    private Integer cookieTwoCount = 0;
+    private Integer cookieThreeCount = 0;
 
-    private Integer cookieLongCount;
-    private Integer cookieShortCount;
+    private Integer cookieLongCount = 0;
+    private Integer cookieShortCount = 0;
 
-    private Integer cookieImportantCount;
-    private Integer cookieNotImportantCount;
+    private Integer cookieImportantCount = 0;
+    private Integer cookieNotImportantCount = 0;
 
+    // 게터와 세터
     public Integer getCookieZeroCount() {
         return cookieZeroCount;
     }
@@ -74,5 +75,19 @@ public class SurveyProgressModel {
 
     public void setCookieNotImportantCount(Integer cookieNotImportantCount) {
         this.cookieNotImportantCount = cookieNotImportantCount;
+    }
+
+    public SurveyProgressModel(Integer cookieZeroCount, Integer cookieOneCount, Integer cookieTwoCount, Integer cookieThreeCount, Integer cookieLongCount, Integer cookieShortCount, Integer cookieImportantCount, Integer cookieNotImportantCount) {
+        this.cookieZeroCount = cookieZeroCount;
+        this.cookieOneCount = cookieOneCount;
+        this.cookieTwoCount = cookieTwoCount;
+        this.cookieThreeCount = cookieThreeCount;
+        this.cookieLongCount = cookieLongCount;
+        this.cookieShortCount = cookieShortCount;
+        this.cookieImportantCount = cookieImportantCount;
+        this.cookieNotImportantCount = cookieNotImportantCount;
+    }
+
+    public SurveyProgressModel() {
     }
 }

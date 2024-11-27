@@ -33,7 +33,7 @@
             android:id="@+id/cookie_info_posterImageView"
             android:layout_width="153dp"
             android:layout_height="227dp"
-            android:src="@drawable/sample_movie"
+            android:src="@drawable/cookie_time_icon"
             app:layout_constraintTop_toBottomOf="@+id/cookie_info_page_toolbar"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="30dp"
             app:layout_constraintTop_toBottomOf="@+id/cookie_info_page_titleText"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/cookie_info_posterImageView"
             android:layout_marginStart="23dp"/>
         <TextView
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="30dp"
             app:layout_constraintTop_toBottomOf="@+id/cookie_info_releaseDate"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toEndOf="@+id/cookie_info_posterImageView"
             android:layout_marginStart="23dp"/>
         <TextView
@@ -94,7 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="30dp"
             app:layout_constraintTop_toBottomOf="@+id/runningTime"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toEndOf="@+id/cookie_info_posterImageView"
             android:layout_marginStart="23dp"/>
         <TextView
