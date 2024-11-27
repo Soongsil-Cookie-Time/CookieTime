@@ -238,11 +238,7 @@ public class CookieInfoFragment extends Fragment {
         }
     }
 
-    /**
-     * 키워드 RecyclerView 설정
-     */
     private void setKeywordRecyclerView(List<CookieKeywordModel> keywordList) {
-        // 데이터가 null이면 빈 리스트로 초기화
         if (keywordList == null) {
             keywordList = new ArrayList<>();
         }
@@ -252,8 +248,8 @@ public class CookieInfoFragment extends Fragment {
             binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.keywordRecyclerView.setAdapter(keywordAdapter);
         } else {
-//            keywordAdapter.updateData(keywordList); // 데이터를 업데이트하는 메서드
-            keywordAdapter.notifyDataSetChanged();
+            // 데이터 업데이트
+            keywordAdapter.updateKeywords(keywordList);
         }
     }
 
@@ -267,8 +263,9 @@ public class CookieInfoFragment extends Fragment {
             binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.cookieSurveyRecyclerView.setAdapter(surveyAdapter);
         } else {
-//            surveyAdapter.update(surveyAdapter);
-            surveyAdapter.notifyDataSetChanged();
+            // 데이터 업데이트
+            surveyAdapter.updateSurveyData(surveyProgressModel);
         }
     }
+
 }

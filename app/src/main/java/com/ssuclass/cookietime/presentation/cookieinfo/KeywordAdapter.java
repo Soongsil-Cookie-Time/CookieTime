@@ -20,12 +20,17 @@ public class KeywordAdapter extends RecyclerView.Adapter<KeywordAdapter.KeywordV
     private List<CookieKeywordModel> keywordList;
 
     public KeywordAdapter(List<CookieKeywordModel> keywordList) {
-        // Null 체크 및 초기화
-        if (keywordList == null) {
-            this.keywordList = new ArrayList<>();
-        } else {
-            this.keywordList = keywordList;
+        this.keywordList = keywordList != null ? keywordList : new ArrayList<>();
+    }
+
+    // 데이터 업데이트 메서드
+    public void updateKeywords(List<CookieKeywordModel> newKeywordList) {
+        if (newKeywordList == null) {
+            newKeywordList = new ArrayList<>();
         }
+
+        this.keywordList = newKeywordList;
+        notifyDataSetChanged(); // 데이터 변경 사항 반영
     }
 
     // 키워드를 정렬하는 메서드

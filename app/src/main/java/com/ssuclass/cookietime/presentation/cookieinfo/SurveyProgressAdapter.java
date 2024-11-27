@@ -24,6 +24,15 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
         this.surveyList = surveyList;
     }
 
+    // 데이터 업데이트 메서드
+    public void updateSurveyData(SurveyProgressModel newSurveyList) {
+        if (newSurveyList == null) {
+            newSurveyList = new SurveyProgressModel();
+        }
+
+        this.surveyList = newSurveyList;
+        notifyDataSetChanged(); // 데이터 변경 사항 반영
+    }
     @NonNull
     @Override
     public SurveyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,11 +40,6 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
         return new SurveyViewHolder(view);
     }
 
-    // 데이터를 업데이트하고 RecyclerView 갱신
-    public void updateSurveyData(SurveyProgressModel newSurveyList) {
-        this.surveyList = newSurveyList;
-        notifyDataSetChanged(); // 데이터가 변경되었음을 RecyclerView에 알림
-    }
 
     @SuppressLint("SetTextI18n")
     @Override
