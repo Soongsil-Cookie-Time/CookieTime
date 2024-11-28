@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="AuthentiacationActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-28T07:37:14.482331Z">
+        <DropdownSelection timestamp="2024-11-28T07:38:57.167292Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/jiwoongchoi/.android/avd/Pixel_9_Pro_XL_API_35.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=2b34de2d391c7ece" />
             </handle>
           </Target>
         </DropdownSelection>
