@@ -68,7 +68,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String movieId = intent.getStringExtra("movieId");
 
-        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
+        db.collection("Communities")
                 .document(movieId)
                 .collection("Posts")
                 .get()

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/icon_imageview"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/cookie_time_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="닉네임"
+        app:layout_constraintBottom_toBottomOf="@id/icon_imageview"
+        app:layout_constraintStart_toEndOf="@+id/icon_imageview"
+        app:layout_constraintTop_toTopOf="@+id/icon_imageview" />
+
+    <TextView
+        android:id="@+id/content_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="댓글 내용 어쩌구 저쩌고"
+        app:layout_constraintStart_toStartOf="@+id/icon_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/icon_imageview" />
+
+    <TextView
+        android:id="@+id/timestamp_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11/24 21:58"
+        app:layout_constraintStart_toStartOf="@id/content_textview"
+        app:layout_constraintTop_toBottomOf="@+id/content_textview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

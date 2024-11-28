@@ -13,6 +13,7 @@ import java.util.List;
 
 public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetailAdapter.CommunityDetailViewHolder> {
     private final List<CommunityDetailModel> dataList;
+    private ItemCommunityDetailBinding binding;
 
     public CommunityDetailAdapter(List<CommunityDetailModel> dataList) {
         this.dataList = dataList;
@@ -21,7 +22,7 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     @NonNull
     @Override
     public CommunityDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemCommunityDetailBinding binding = ItemCommunityDetailBinding
+        binding = ItemCommunityDetailBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new CommunityDetailViewHolder(binding);
     }
@@ -30,11 +31,19 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
         String title = dataList.get(position).getTitle();
         holder.binding.titleTextview.setText(title);
+
+        addViewHolderListener();
     }
 
     @Override
     public int getItemCount() {
         return dataList.size();
+    }
+
+    private void addViewHolderListener() {
+        binding.getRoot().setOnClickListener(view -> {
+            
+        });
     }
 
     public static class CommunityDetailViewHolder extends RecyclerView.ViewHolder {
