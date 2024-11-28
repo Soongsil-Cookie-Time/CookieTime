@@ -72,8 +72,10 @@ public class CommunityEntryFragment extends Fragment {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CommunityEntryModel model = new CommunityEntryModel();
+                                String id = document.getId();
                                 String title = document.getString("title");
                                 String posterPath = document.getString("poster_path");
+                                model.setId(id);
                                 model.setTitle(title);
                                 model.setMoviePosterPath(posterPath);
                                 dataList.add(model);

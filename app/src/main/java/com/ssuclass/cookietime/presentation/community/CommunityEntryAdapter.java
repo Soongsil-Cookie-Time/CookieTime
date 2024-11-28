@@ -57,11 +57,11 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
     private void implementViewHolderListener(CommunityEntryViewHolder holder) {
         holder.binding.getRoot().setOnClickListener(view -> {
             int position = holder.getAdapterPosition();
-            String communityId = dataList.get(position).getId();
+            String movieId = dataList.get(position).getId();
 
             Context context = view.getContext();
             Intent intent = new Intent(context, CommunityDetailActivity.class);
-            intent.putExtra("movieId", communityId);
+            intent.putExtra("movieId", movieId);
             context.startActivity(intent);
         });
     }
