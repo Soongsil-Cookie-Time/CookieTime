@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.community.PostActivity"
+            android:name=".presentation.community.post.CommentsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.Login.SignupActivity"
@@ -38,10 +38,10 @@
             android:name=".presentation.badgemanager.InstagramSharingActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.community.CommunityWriteActivity"
+            android:name=".presentation.community.write.PostsWriteActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.community.CommunityDetailActivity"
+            android:name=".presentation.community.detail.PostsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.bottomnavigation.MainActivity"
