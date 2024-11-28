@@ -40,7 +40,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         TMDBNowPlayingResponse.Movie data = dataList.get(position);
         holder.titleText.setText(data.getTitle());
         holder.rankText.setText(String.valueOf(position + 1));
-        holder.rateText.setText(String.format("%.1f",data.getVoteAverage()));
+        holder.rateText.setText(String.format("%.1f", data.getVoteAverage()));
         Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + data.getPosterPath()).into(holder.posterImage);
         holder.cookieButton.setOnClickListener(v -> listener.onCookieButtonClick(data));
     }

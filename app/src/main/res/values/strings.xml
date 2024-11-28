@@ -13,6 +13,4 @@
     <string name="page_title_community">전체 커뮤니티</string>
     <!--탭: 홈 영화 포스터 이미지 뷰-->
     <string name="boxoffice_posterImageView">박스오피스 순위에서 영화의 포스터</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

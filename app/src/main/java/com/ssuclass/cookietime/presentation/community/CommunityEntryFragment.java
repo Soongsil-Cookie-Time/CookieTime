@@ -54,7 +54,7 @@ public class CommunityEntryFragment extends Fragment {
         RecyclerView communityRecyclerView = binding.communityRecyclerview;
         communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new CommunityEntryAdapter(requireContext(), dataList);
+        adapter = new CommunityEntryAdapter(dataList);
         communityRecyclerView.setAdapter(adapter);
     }
 
@@ -73,7 +73,9 @@ public class CommunityEntryFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CommunityEntryModel model = new CommunityEntryModel();
                                 String title = document.getString("title");
+                                String posterPath = document.getString("poster_path");
                                 model.setTitle(title);
+                                model.setMoviePosterPath(posterPath);
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();

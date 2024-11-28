@@ -28,7 +28,7 @@ public class CommunityEntryModel {
         return moviePosterUrl;
     }
 
-    public void setMoviePosterUrl(String moviePosterUrl) {
+    public void setMoviePosterPath(String moviePosterUrl) {
         this.moviePosterUrl = moviePosterUrl;
     }
 }
