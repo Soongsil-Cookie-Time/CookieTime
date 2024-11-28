@@ -61,7 +61,6 @@
         android:layout_height="71dp"
         android:layout_marginEnd="18dp"
         android:contentDescription="movie poster"
-        android:src="@drawable/sample_movie"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

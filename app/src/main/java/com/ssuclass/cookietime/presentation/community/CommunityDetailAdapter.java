@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ssuclass.cookietime.databinding.ViewholderCommunityDetailBinding;
+import com.ssuclass.cookietime.databinding.ItemCommunityDetailBinding;
 import com.ssuclass.cookietime.domain.CommunityDetailModel;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     @NonNull
     @Override
     public CommunityDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewholderCommunityDetailBinding binding = ViewholderCommunityDetailBinding
+        ItemCommunityDetailBinding binding = ItemCommunityDetailBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new CommunityDetailViewHolder(binding);
     }
@@ -38,9 +38,9 @@ public class CommunityDetailAdapter extends RecyclerView.Adapter<CommunityDetail
     }
 
     public static class CommunityDetailViewHolder extends RecyclerView.ViewHolder {
-        ViewholderCommunityDetailBinding binding;
+        ItemCommunityDetailBinding binding;
 
-        public CommunityDetailViewHolder(ViewholderCommunityDetailBinding binding) {
+        public CommunityDetailViewHolder(ItemCommunityDetailBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
