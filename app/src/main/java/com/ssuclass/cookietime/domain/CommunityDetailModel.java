@@ -7,11 +7,6 @@ public class CommunityDetailModel {
     private String title;
     private ArrayList<String> comments;
 
-    public CommunityDetailModel(String title, ArrayList<String> comments) {
-        this.title = title;
-        this.comments = comments;
-    }
-
     // Getter와 Setter
     public String getTitle() {
         return title;

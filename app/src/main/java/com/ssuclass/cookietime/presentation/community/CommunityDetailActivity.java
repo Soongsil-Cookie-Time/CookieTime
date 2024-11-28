@@ -81,9 +81,9 @@ public class CommunityDetailActivity extends AppCompatActivity {
     }
 
     private void fetchCommunityData(String movieId) {
-        db.collection("Movie") // FIXME: collectionPath 하드코딩에서 추출
+        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
                 .document(movieId)
-                .collection("Community")
+                .collection("Communities")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -91,9 +91,9 @@ public class CommunityDetailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String title = document.getString("Title");
-                                ArrayList<String> comment = (ArrayList<String>) document.get("Comment");
-                                CommunityDetailModel model = new CommunityDetailModel(title, comment);
+                                String title = document.getString("title");
+                                CommunityDetailModel model = new CommunityDetailModel();
+                                model.setTitle(title);
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();
