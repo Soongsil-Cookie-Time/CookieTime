@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community;
+package com.ssuclass.cookietime.presentation.community.entry;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,18 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ssuclass.cookietime.databinding.ItemCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.CommunityEntryModel;
+import com.ssuclass.cookietime.domain.community.CommunityModel;
+import com.ssuclass.cookietime.presentation.community.detail.PostsActivity;
 
 import java.util.List;
 
-public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAdapter.CommunityEntryViewHolder> {
+public class CommunitiesAdapter extends RecyclerView.Adapter<CommunitiesAdapter.CommunityEntryViewHolder> {
 
     // Fields
-    private final List<CommunityEntryModel> dataList;
+    private final List<CommunityModel> dataList;
     ItemCommunityEntryBinding binding;
 
     // Constructor
-    public CommunityEntryAdapter(List<CommunityEntryModel> dataList) {
+    public CommunitiesAdapter(List<CommunityModel> dataList) {
         this.dataList = dataList;
     }
 
@@ -60,7 +61,7 @@ public class CommunityEntryAdapter extends RecyclerView.Adapter<CommunityEntryAd
             String movieId = dataList.get(position).getId();
 
             Context context = view.getContext();
-            Intent intent = new Intent(context, CommunityDetailActivity.class);
+            Intent intent = new Intent(context, PostsActivity.class);
             intent.putExtra("movieId", movieId);
             context.startActivity(intent);
         });

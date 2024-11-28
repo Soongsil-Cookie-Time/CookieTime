@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community;
+package com.ssuclass.cookietime.presentation.community.entry;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,17 +17,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.CommunityEntryModel;
+import com.ssuclass.cookietime.domain.community.CommunityModel;
 import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityEntryFragment extends Fragment {
+public class CommunitiesFragment extends Fragment {
     private FragmentCommunityEntryBinding binding;
     private FirebaseFirestore db;
-    private List<CommunityEntryModel> dataList;
-    private CommunityEntryAdapter adapter;
+    private List<CommunityModel> dataList;
+    private CommunitiesAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class CommunityEntryFragment extends Fragment {
         RecyclerView communityRecyclerView = binding.communityRecyclerview;
         communityRecyclerView.addItemDecoration(new SpaceingItemDecoration(14));
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new CommunityEntryAdapter(dataList);
+        adapter = new CommunitiesAdapter(dataList);
         communityRecyclerView.setAdapter(adapter);
     }
 
@@ -71,7 +71,7 @@ public class CommunityEntryFragment extends Fragment {
                         if (task.isSuccessful()) {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                CommunityEntryModel model = new CommunityEntryModel();
+                                CommunityModel model = new CommunityModel();
                                 String id = document.getId();
                                 String title = document.getString("title");
                                 String posterPath = document.getString("poster_path");

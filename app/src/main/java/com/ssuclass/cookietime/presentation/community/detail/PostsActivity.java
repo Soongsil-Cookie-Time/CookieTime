@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community;
+package com.ssuclass.cookietime.presentation.community.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,19 +12,22 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
-import com.ssuclass.cookietime.domain.CommunityDetailModel;
+import com.ssuclass.cookietime.domain.community.PostsModel;
+import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityDetailActivity extends AppCompatActivity {
+public class PostsActivity extends AppCompatActivity {
 
-    private final List<CommunityDetailModel> dataList;
+    private final List<PostsModel> dataList;
     private ActivityCommunityDetailBinding binding;
     private FirebaseFirestore db;
-    private CommunityDetailAdapter adapter;
+    private PostsAdapter adapter;
+    private String movieId;
+    private String postId;
 
-    public CommunityDetailActivity() {
+    public PostsActivity() {
         dataList = new ArrayList<>();
     }
 
@@ -34,6 +37,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         binding = ActivityCommunityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getMovieId();
         setFirebaseInstance();
         setCommunityDetailRecyclerView();
         setFloatingButtonOnClickListener();
@@ -52,23 +56,25 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private void setCommunityDetailRecyclerView() {
         RecyclerView communityDetailRecyclerView = binding.communityDetailRecyclerview;
         communityDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommunityDetailAdapter(this.dataList);
+        adapter = new PostsAdapter(this.dataList, this.movieId);
         communityDetailRecyclerView.setAdapter(adapter);
     }
 
     private void setFloatingButtonOnClickListener() {
         ExtendedFloatingActionButton button = binding.communityWriteButton;
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(CommunityDetailActivity.this, CommunityWriteActivity.class);
+            Intent intent = new Intent(PostsActivity.this, PostsWriteActivity.class);
             startActivity(intent);
         });
     }
 
-    private void fetchCommunityData() {
+    private void getMovieId() {
         Intent intent = getIntent();
-        String movieId = intent.getStringExtra("movieId");
+        movieId = intent.getStringExtra("movieId");
+    }
 
-        db.collection("Communities") // FIXME: collectionPath 하드코딩에서 추출
+    private void fetchCommunityData() {
+        db.collection("Communities")
                 .document(movieId)
                 .collection("Posts")
                 .get()
@@ -76,8 +82,10 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         dataList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getId();
                             String title = document.getString("title");
-                            CommunityDetailModel model = new CommunityDetailModel();
+                            PostsModel model = new PostsModel();
+                            model.setId(id);
                             model.setTitle(title);
                             dataList.add(model);
                         }

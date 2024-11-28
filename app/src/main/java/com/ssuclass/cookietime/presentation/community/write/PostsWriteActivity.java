@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community;
+package com.ssuclass.cookietime.presentation.community.write;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.databinding.ActivityCommunityWriteBinding;
 
-public class CommunityWriteActivity extends AppCompatActivity {
+public class PostsWriteActivity extends AppCompatActivity {
 
     ActivityCommunityWriteBinding binding;
     FirebaseFirestore db;

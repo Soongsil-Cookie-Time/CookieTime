@@ -12,7 +12,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.BadgeManagerFragment;
-import com.ssuclass.cookietime.presentation.community.CommunityEntryFragment;
+import com.ssuclass.cookietime.presentation.community.entry.CommunitiesFragment;
 import com.ssuclass.cookietime.presentation.home.HomeFragment;
 import com.ssuclass.cookietime.presentation.mypage.MyPageFragment;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new HomeFragment());
                     return true;
                 } else if (itemId == R.id.tab_community) {
-                    replaceFragment(new CommunityEntryFragment());
+                    replaceFragment(new CommunitiesFragment());
                     return true;
                 } else if (itemId == R.id.tab_badges) {
                     replaceFragment(new BadgeManagerFragment());
