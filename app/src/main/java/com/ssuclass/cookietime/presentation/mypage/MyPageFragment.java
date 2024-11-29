@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.databinding.FragmentMyPageBinding;
 import com.ssuclass.cookietime.presentation.authentication.AuthentiacationActivity;
+import com.ssuclass.cookietime.presentation.mypage.change.nickname.ChangeNicknameActivity;
+import com.ssuclass.cookietime.presentation.mypage.change.password.ChangePasswordActivity;
 import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
@@ -110,11 +112,13 @@ public class MyPageFragment extends Fragment {
         });
 
         binding.changeNicknameViewgroup.setOnClickListener(view -> {
-            // Change nickname implementation
+            Intent intent = new Intent(getContext(), ChangeNicknameActivity.class);
+            startActivity(intent);
         });
 
         binding.changePasswordViewgroup.setOnClickListener(view -> {
-            // Change password implementation
+            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+            startActivity(intent);
         });
 
         binding.logoutViewgroup.setOnClickListener(view -> {
