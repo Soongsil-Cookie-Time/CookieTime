@@ -19,6 +19,7 @@ import com.ssuclass.cookietime.databinding.FragmentMyPageBinding;
 import com.ssuclass.cookietime.presentation.authentication.AuthentiacationActivity;
 import com.ssuclass.cookietime.presentation.mypage.change.nickname.ChangeNicknameActivity;
 import com.ssuclass.cookietime.presentation.mypage.change.password.ChangePasswordActivity;
+import com.ssuclass.cookietime.presentation.mypage.friendlist.FriendListActivity;
 import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
@@ -108,7 +109,8 @@ public class MyPageFragment extends Fragment {
 
     private void addButtonListener() {
         binding.friendListViewgroup.setOnClickListener(view -> {
-            // Friend list implementation
+            Intent intent = new Intent(getContext(), FriendListActivity.class);
+            startActivity(intent);
         });
 
         binding.changeNicknameViewgroup.setOnClickListener(view -> {
