@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.post;
+package com.ssuclass.cookietime.presentation.community.comments;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemCommentBinding;
-import com.ssuclass.cookietime.domain.community.CommentsModel;
 
 import java.util.ArrayList;
 
@@ -29,6 +28,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     @Override
     public void onBindViewHolder(@NonNull CommentItemViewHolder holder, int position) {
         binding.contentTextview.setText(dataList.get(position).getTitle());
+        binding.nicknameTextview.setText(dataList.get(position).getNickname());
     }
 
     @Override

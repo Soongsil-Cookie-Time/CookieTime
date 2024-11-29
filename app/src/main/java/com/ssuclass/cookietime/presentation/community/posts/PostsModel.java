@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.domain.community;
+package com.ssuclass.cookietime.presentation.community.posts;
 
 public class PostsModel {
     private String title;

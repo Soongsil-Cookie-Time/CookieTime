@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.detail;
+package com.ssuclass.cookietime.presentation.community.posts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
-import com.ssuclass.cookietime.domain.community.PostsModel;
 import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.community.detail.PostsActivity">
+    tools:context=".presentation.community.posts.PostsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/community_detail_page_toolbar"

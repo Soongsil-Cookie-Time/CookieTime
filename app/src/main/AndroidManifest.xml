@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.community.post.CommentsActivity"
+            android:name=".presentation.community.comments.CommentsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.Login.SignupActivity"
@@ -41,7 +41,7 @@
             android:name=".presentation.community.write.PostsWriteActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.community.detail.PostsActivity"
+            android:name=".presentation.community.posts.PostsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.bottomnavigation.MainActivity"

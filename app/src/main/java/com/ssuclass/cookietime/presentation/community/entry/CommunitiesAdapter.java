@@ -11,19 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ssuclass.cookietime.databinding.ItemCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.community.CommunityModel;
-import com.ssuclass.cookietime.presentation.community.detail.PostsActivity;
+import com.ssuclass.cookietime.presentation.community.posts.PostsActivity;
 
 import java.util.List;
 
 public class CommunitiesAdapter extends RecyclerView.Adapter<CommunitiesAdapter.CommunityEntryViewHolder> {
 
     // Fields
-    private final List<CommunityModel> dataList;
+    private final List<CommunitiesModel> dataList;
     ItemCommunityEntryBinding binding;
 
     // Constructor
-    public CommunitiesAdapter(List<CommunityModel> dataList) {
+    public CommunitiesAdapter(List<CommunitiesModel> dataList) {
         this.dataList = dataList;
     }
 

@@ -1,11 +1,11 @@
-package com.ssuclass.cookietime.domain.community;
+package com.ssuclass.cookietime.presentation.community.entry;
 
-public class CommunityModel {
+public class CommunitiesModel {
     private String id;
     private String title;
     private String moviePosterUrl;
 
-    public CommunityModel() {
+    public CommunitiesModel() {
     }
 
     public String getTitle() {

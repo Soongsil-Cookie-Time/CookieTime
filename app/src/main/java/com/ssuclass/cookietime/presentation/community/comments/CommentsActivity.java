@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.post;
+package com.ssuclass.cookietime.presentation.community.comments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityPostBinding;
-import com.ssuclass.cookietime.domain.community.CommentsModel;
 
 import java.util.ArrayList;
 
@@ -83,8 +82,11 @@ public class CommentsActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String title = document.getString("title");
                             String timestamp = document.getString("timestamp");
+                            String nickname = document.getString("nickname");
+
                             CommentsModel model = new CommentsModel();
                             model.setTitle(title);
+                            model.setNickname(nickname);
                             model.setTimestamp(timestamp);
                             dataList.add(model);
                         }
