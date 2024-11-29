@@ -42,7 +42,7 @@ public class CommentsActivity extends AppCompatActivity {
             return insets;
         });
 
-        getMovieIdData();
+        getDatabaseData();
         setFirebaseInstance();
         implementRecyclerView();
     }
@@ -59,7 +59,7 @@ public class CommentsActivity extends AppCompatActivity {
         binding.commentRecyclerview.setAdapter(adapter);
     }
 
-    private void getMovieIdData() {
+    private void getDatabaseData() {
         Intent intent = getIntent();
         movieId = intent.getStringExtra("movieId");
         postId = intent.getStringExtra("postId");
@@ -83,6 +83,10 @@ public class CommentsActivity extends AppCompatActivity {
                             String title = document.getString("title");
                             String timestamp = document.getString("timestamp");
                             String nickname = document.getString("nickname");
+
+                            Log.d("Comment", title);
+                            Log.d("Comment", timestamp);
+                            Log.d("Comment", nickname);
 
                             CommentsModel model = new CommentsModel();
                             model.setTitle(title);
