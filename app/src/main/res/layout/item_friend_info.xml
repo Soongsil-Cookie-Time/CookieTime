@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/name_textview"
+        android:id="@+id/friend_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:text="닉네임"
-        app:layout_constraintBottom_toBottomOf="@id/name_textview"
-        app:layout_constraintStart_toEndOf="@+id/name_textview"
-        app:layout_constraintTop_toTopOf="@id/name_textview" />
+        app:layout_constraintBottom_toBottomOf="@id/friend_name_textview"
+        app:layout_constraintStart_toEndOf="@+id/friend_name_textview"
+        app:layout_constraintTop_toTopOf="@id/friend_name_textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemFriendInfoBinding;
 
+import java.util.ArrayList;
+
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendListViewHolder> {
-    ItemFriendInfoBinding binding;
+    private final ArrayList<FriendListModel> dataList;
+    private ItemFriendInfoBinding binding;
+
+    public FriendListAdapter(ArrayList<FriendListModel> dataList) {
+        this.dataList = dataList;
+    }
 
     @NonNull
     @Override
@@ -20,12 +27,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     @Override
     public void onBindViewHolder(@NonNull FriendListViewHolder holder, int position) {
-
+        binding.friendNameTextview.setText(dataList.get(position).getFriendName());
+        binding.nicknameTextview.setText(dataList.get(position).getNickname());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return dataList.size();
     }
 
     public static class FriendListViewHolder extends RecyclerView.ViewHolder {
