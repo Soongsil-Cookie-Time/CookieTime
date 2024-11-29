@@ -68,13 +68,13 @@
                     android:id="@+id/profile_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="영화가좋아님 안녕하세요!" />
+                    android:text="닉네임님 안녕하세요!" />
 
                 <TextView
-                    android:id="@+id/profile_id"
+                    android:id="@+id/profile_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="eohneey" />
+                    android:text="사용자이름" />
 
             </LinearLayout>
 

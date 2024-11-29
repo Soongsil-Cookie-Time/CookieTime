@@ -21,13 +21,13 @@
             android:name=".presentation.community.comments.CommentsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.SignupActivity"
+            android:name=".presentation.authentication.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.SigninActivity"
+            android:name=".presentation.authentication.SigninActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Login.AuthentiacationActivity"
+            android:name=".presentation.authentication.AuthentiacationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

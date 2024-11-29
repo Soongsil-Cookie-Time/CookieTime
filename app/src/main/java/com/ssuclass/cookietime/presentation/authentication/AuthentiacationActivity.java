@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.Login;
+package com.ssuclass.cookietime.presentation.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;

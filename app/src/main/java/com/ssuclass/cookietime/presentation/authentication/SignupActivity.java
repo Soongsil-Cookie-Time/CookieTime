@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.Login;
+package com.ssuclass.cookietime.presentation.authentication;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.databinding.ActivitySignupBinding;
+import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.HashMap;
@@ -86,7 +87,7 @@ public class SignupActivity extends AppCompatActivity {
                         user.put("nickname", nickname);
 
                         String uid = mAuth.getCurrentUser().getUid();
-                        db.collection("User")
+                        db.collection(FirebaseConstants.USERS_COLLECTION)
                                 .document(uid)
                                 .set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
