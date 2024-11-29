@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemCommunityDetailBinding;
 import com.ssuclass.cookietime.presentation.community.comments.CommentsActivity;
+import com.ssuclass.cookietime.util.FirebaseConstants;
 
 import java.util.List;
 
@@ -32,8 +33,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.CommunityDet
 
     @Override
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
-        String title = dataList.get(position).getTitle();
-        holder.binding.titleTextview.setText(title);
+        binding.titleTextview.setText(dataList.get(position).getTitle());
+        binding.contentTextview.setText(dataList.get(position).getContent());
+        binding.nicknameTextview.setText("| " + dataList.get(position).getNickname());
         addViewHolderListener(position);
     }
 
@@ -45,8 +47,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.CommunityDet
     private void addViewHolderListener(int position) {
         binding.getRoot().setOnClickListener(view -> {
             Intent intent = new Intent(binding.getRoot().getContext(), CommentsActivity.class);
-            intent.putExtra("movieId", this.movieId);
+            intent.putExtra(FirebaseConstants.MOVIEID_DOCUMENT, this.movieId);
+            intent.putExtra("title", dataList.get(position).getTitle());
+            intent.putExtra("content", dataList.get(position).getContent());
             intent.putExtra("postId", dataList.get(position).getPostId());
+            intent.putExtra("nickname", dataList.get(position).getNickname());
             binding.getRoot().getContext().startActivity(intent);
         });
     }

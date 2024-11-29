@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityPostBinding;
+import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,9 @@ public class CommentsActivity extends AppCompatActivity {
     private ActivityPostBinding binding;
     private FirebaseFirestore db;
     private String movieId;
+    private String title;
+    private String content;
+    private String nickname;
     private String postId;
     private CommentsAdapter adapter;
 
@@ -44,6 +48,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         getDatabaseData();
         setFirebaseInstance();
+        showPostData();
         implementRecyclerView();
     }
 
@@ -61,8 +66,17 @@ public class CommentsActivity extends AppCompatActivity {
 
     private void getDatabaseData() {
         Intent intent = getIntent();
-        movieId = intent.getStringExtra("movieId");
-        postId = intent.getStringExtra("postId");
+        this.movieId = intent.getStringExtra("movieId");
+        this.title = intent.getStringExtra("title");
+        this.content = intent.getStringExtra("content");
+        this.postId = intent.getStringExtra("postId");
+        this.nickname = intent.getStringExtra("nickname");
+    }
+
+    private void showPostData() {
+        binding.titleTextview.setText(this.title);
+        binding.contentTextview.setText(this.content);
+        binding.nicknameTextview.setText(this.nickname);
     }
 
     private void setFirebaseInstance() {
@@ -70,34 +84,39 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void fetchCommentsData() {
-        db.collection("Communities")
-                .document(movieId)
-                .collection("Posts")
-                .document(postId)
-                .collection("Comments")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataList.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String title = document.getString("title");
-                            String timestamp = document.getString("timestamp");
-                            String nickname = document.getString("nickname");
+        try {
+            db.collection("Communities")
+                    .document(movieId)
+                    .collection("Posts")
+                    .document(postId)
+                    .collection("Comments")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            dataList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String title = document.getString("title");
+                                String timestamp = document.getString("timestamp");
+                                String nickname = document.getString("nickname");
 
-                            Log.d("Comment", title);
-                            Log.d("Comment", timestamp);
-                            Log.d("Comment", nickname);
+                                Log.d("Comment", title);
+                                Log.d("Comment", timestamp);
+                                Log.d("Comment", nickname);
 
-                            CommentsModel model = new CommentsModel();
-                            model.setTitle(title);
-                            model.setNickname(nickname);
-                            model.setTimestamp(timestamp);
-                            dataList.add(model);
+                                CommentsModel model = new CommentsModel();
+                                model.setTitle(title);
+                                model.setNickname(nickname);
+                                model.setTimestamp(timestamp);
+                                dataList.add(model);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("FirebaseError", "Error fetching data: ", task.getException());
                         }
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Log.e("FirebaseError", "Error fetching data: ", task.getException());
-                    }
-                });
+                    });
+        } catch (RuntimeException e) {
+            ToastHelper.showToast(this, "데이터를 불러오지 못했습니다.");
+        }
+
     }
 }

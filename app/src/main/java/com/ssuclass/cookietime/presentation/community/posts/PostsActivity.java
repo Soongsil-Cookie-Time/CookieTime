@@ -13,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
 import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
+import com.ssuclass.cookietime.util.FirebaseConstants;
+import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,39 +65,48 @@ public class PostsActivity extends AppCompatActivity {
         ExtendedFloatingActionButton button = binding.communityWriteButton;
         button.setOnClickListener(view -> {
             Intent intent = new Intent(PostsActivity.this, PostsWriteActivity.class);
+            intent.putExtra(FirebaseConstants.MOVIEID_DOCUMENT, this.movieId);
             startActivity(intent);
         });
     }
 
     private void getMovieId() {
         Intent intent = getIntent();
-        movieId = intent.getStringExtra("movieId");
+        movieId = intent.getStringExtra(FirebaseConstants.MOVIEID_DOCUMENT);
     }
 
     private void fetchCommunityData() {
-        db.collection("Communities")
-                .document(movieId)
-                .collection("Posts")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        dataList.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String postId = document.getId();
-                            String title = document.getString("title");
+        try {
+            db.collection(FirebaseConstants.COMMUNITIES_COLLECTION)
+                    .document(movieId)
+                    .collection(FirebaseConstants.POSTS_COLLECTION)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            dataList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String postId = document.getId();
+                                String title = document.getString("title");
+                                String nickname = document.getString("nickname");
+                                String content = document.getString("content");
 
-                            Log.d("Movie", postId);
-                            Log.d("Movie", title);
+                                Log.d("Movie", postId);
+                                Log.d("Movie", title);
+                                Log.d("Movie", nickname);
+                                Log.d("Movie", content);
 
-                            PostsModel model = new PostsModel();
-                            model.setPostId(postId);
-                            model.setTitle(title);
-                            dataList.add(model);
+                                PostsModel model = new PostsModel(title, postId, content, nickname);
+
+                                dataList.add(model);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("FirebaseError", "Error fetching data: ", task.getException());
                         }
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Log.e("FirebaseError", "Error fetching data: ", task.getException());
-                    }
-                });
+                    });
+        } catch (RuntimeException e) {
+            ToastHelper.showToast(this, "데이터를 가져오는데 실패했습니다.");
+        }
+
     }
 }
