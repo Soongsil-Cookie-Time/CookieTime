@@ -95,7 +95,7 @@ public class PostsActivity extends AppCompatActivity {
                                 Log.d("Movie", nickname);
                                 Log.d("Movie", content);
 
-                                PostsModel model = new PostsModel(title, postId, nickname, content);
+                                PostsModel model = new PostsModel(title, postId, content, nickname);
 
                                 dataList.add(model);
                             }

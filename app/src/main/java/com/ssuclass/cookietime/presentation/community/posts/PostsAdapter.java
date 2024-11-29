@@ -35,7 +35,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.CommunityDet
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
         binding.titleTextview.setText(dataList.get(position).getTitle());
         binding.contentTextview.setText(dataList.get(position).getContent());
-        binding.nicknameTextview.setText(dataList.get(position).getNickname());
+        binding.nicknameTextview.setText("| " + dataList.get(position).getNickname());
         addViewHolderListener(position);
     }
 
