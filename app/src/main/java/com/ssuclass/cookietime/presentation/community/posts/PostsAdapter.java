@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.detail;
+package com.ssuclass.cookietime.presentation.community.posts;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,8 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemCommunityDetailBinding;
-import com.ssuclass.cookietime.domain.community.PostsModel;
-import com.ssuclass.cookietime.presentation.community.post.CommentsActivity;
+import com.ssuclass.cookietime.presentation.community.comments.CommentsActivity;
 
 import java.util.List;
 

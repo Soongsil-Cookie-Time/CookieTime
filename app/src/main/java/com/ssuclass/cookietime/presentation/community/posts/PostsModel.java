@@ -1,8 +1,8 @@
-package com.ssuclass.cookietime.domain.community;
+package com.ssuclass.cookietime.presentation.community.posts;
 
 public class PostsModel {
     private String title;
-    private String id;
+    private String postId;
 
     // Getter와 Setter
     public String getTitle() {
@@ -14,10 +14,10 @@ public class PostsModel {
     }
 
     public String getPostId() {
-        return this.id;
+        return this.postId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }

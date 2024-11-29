@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
-import com.ssuclass.cookietime.domain.community.CommunityModel;
 import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import java.util.List;
 public class CommunitiesFragment extends Fragment {
     private FragmentCommunityEntryBinding binding;
     private FirebaseFirestore db;
-    private List<CommunityModel> dataList;
+    private List<CommunitiesModel> dataList;
     private CommunitiesAdapter adapter;
 
     @Override
@@ -71,7 +70,7 @@ public class CommunitiesFragment extends Fragment {
                         if (task.isSuccessful()) {
                             dataList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                CommunityModel model = new CommunityModel();
+                                CommunitiesModel model = new CommunitiesModel();
                                 String id = document.getId();
                                 String title = document.getString("title");
                                 String posterPath = document.getString("poster_path");

@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.detail;
+package com.ssuclass.cookietime.presentation.community.posts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
-import com.ssuclass.cookietime.domain.community.PostsModel;
 import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
 
 import java.util.ArrayList;
@@ -82,10 +81,14 @@ public class PostsActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         dataList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String id = document.getId();
+                            String postId = document.getId();
                             String title = document.getString("title");
+
+                            Log.d("Movie", postId);
+                            Log.d("Movie", title);
+
                             PostsModel model = new PostsModel();
-                            model.setId(id);
+                            model.setPostId(postId);
                             model.setTitle(title);
                             dataList.add(model);
                         }

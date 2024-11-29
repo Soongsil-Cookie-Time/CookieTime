@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.post;
+package com.ssuclass.cookietime.presentation.community.comments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityPostBinding;
-import com.ssuclass.cookietime.domain.community.CommentsModel;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,7 @@ public class CommentsActivity extends AppCompatActivity {
             return insets;
         });
 
-        getMovieIdData();
+        getDatabaseData();
         setFirebaseInstance();
         implementRecyclerView();
     }
@@ -60,7 +59,7 @@ public class CommentsActivity extends AppCompatActivity {
         binding.commentRecyclerview.setAdapter(adapter);
     }
 
-    private void getMovieIdData() {
+    private void getDatabaseData() {
         Intent intent = getIntent();
         movieId = intent.getStringExtra("movieId");
         postId = intent.getStringExtra("postId");
@@ -83,8 +82,15 @@ public class CommentsActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String title = document.getString("title");
                             String timestamp = document.getString("timestamp");
+                            String nickname = document.getString("nickname");
+
+                            Log.d("Comment", title);
+                            Log.d("Comment", timestamp);
+                            Log.d("Comment", nickname);
+
                             CommentsModel model = new CommentsModel();
                             model.setTitle(title);
+                            model.setNickname(nickname);
                             model.setTimestamp(timestamp);
                             dataList.add(model);
                         }

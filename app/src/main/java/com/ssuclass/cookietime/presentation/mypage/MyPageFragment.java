@@ -10,28 +10,36 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.databinding.FragmentMyPageBinding;
-import com.ssuclass.cookietime.presentation.Login.AuthentiacationActivity;
+import com.ssuclass.cookietime.presentation.authentication.AuthentiacationActivity;
+import com.ssuclass.cookietime.presentation.mypage.change.nickname.ChangeNicknameActivity;
+import com.ssuclass.cookietime.presentation.mypage.change.password.ChangePasswordActivity;
+import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 public class MyPageFragment extends Fragment {
+    private final MutableLiveData<UserData> userData = new MutableLiveData<>();
     private FragmentMyPageBinding binding;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     public MyPageFragment() {
         // Required empty public constructor
     }
 
-    public static MyPageFragment newInstance(String param1, String param2) {
+    public static MyPageFragment newInstance() {
         return new MyPageFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
+        setFirebaseInstance();
     }
 
     @Override
@@ -44,7 +52,58 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // 먼저 옵저버 설정
+        setupObservers();
+
+        // 그 다음 데이터 로드
+        fetchUserData();
         addButtonListener();
+    }
+
+    private void setupObservers() {
+        userData.observe(getViewLifecycleOwner(), data -> {
+            if (data != null) {
+                binding.profileNickname.setText(data.nickname + "님 안녕하세요!");
+                binding.profileUsername.setText(data.username);
+            } else {
+                binding.profileNickname.setText("");
+                binding.profileUsername.setText("");
+            }
+        });
+    }
+
+    private void setFirebaseInstance() {
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+    }
+
+    private void fetchUserData() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            ToastHelper.showToast(getContext(), "사용자 정보를 확인할 수 없습니다.");
+            return;
+        }
+
+        String uid = currentUser.getUid();
+        db.collection(FirebaseConstants.USERS_COLLECTION)
+                .document(uid)
+                .get()
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        String nickname = document.getString("nickname");
+                        String username = document.getString("username");
+                        // 메인 스레드에서 UI 업데이트
+                        requireActivity().runOnUiThread(() -> {
+                            userData.setValue(new UserData(nickname, username));
+                        });
+                    } else {
+                        ToastHelper.showToast(getContext(), "사용자 데이터가 존재하지 않습니다.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    ToastHelper.showToast(getContext(), "데이터를 불러오는데 실패했습니다: " + e.getMessage());
+                });
     }
 
     private void addButtonListener() {
@@ -53,11 +112,13 @@ public class MyPageFragment extends Fragment {
         });
 
         binding.changeNicknameViewgroup.setOnClickListener(view -> {
-            // Change nickname implementation
+            Intent intent = new Intent(getContext(), ChangeNicknameActivity.class);
+            startActivity(intent);
         });
 
         binding.changePasswordViewgroup.setOnClickListener(view -> {
-            // Change password implementation
+            Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+            startActivity(intent);
         });
 
         binding.logoutViewgroup.setOnClickListener(view -> {
@@ -79,7 +140,7 @@ public class MyPageFragment extends Fragment {
     }
 
     private void performLogout() {
-        firebaseAuth.signOut();
+        mAuth.signOut();
         ToastHelper.showToast(requireContext(), "로그아웃 되었습니다.");
 
         Intent loginIntent = new Intent(requireContext(), AuthentiacationActivity.class);
@@ -91,5 +152,15 @@ public class MyPageFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private static class UserData {
+        String nickname;
+        String username;
+
+        UserData(String nickname, String username) {
+            this.nickname = nickname;
+            this.username = username;
+        }
     }
 }
