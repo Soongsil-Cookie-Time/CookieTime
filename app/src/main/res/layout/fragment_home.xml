@@ -1,102 +1,101 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/white"
+    android:fillViewport="true"
     android:scrollbars="vertical"
     tools:context=".presentation.home.HomeFragment">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/logo_ImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cookie_time_icon" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="49dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/cookie_time"
-        style="@style/movie_title_boxoffice_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:gravity="center_vertical"
-        android:textColor="@color/primary"
-        android:fontFamily="@font/baloo_regular"
-        android:text="COOKIE TIME : " />
-</LinearLayout>
+            <ImageView
+                android:id="@+id/logo_ImageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cookie_time_icon" />
 
-<androidx.appcompat.widget.SearchView
-    android:id="@+id/home_search_view"
-    android:layout_width="match_parent"
-    android:layout_height="51dp"
-    android:layout_marginHorizontal="24dp"
-    android:layout_marginTop="36dp"
-    android:queryHint="영화를 검색해보세요"
-    android:theme="@style/CustomSearchView"
-    android:searchIcon="@drawable/searchview_icon"
-    android:iconifiedByDefault="false"
-    android:background="@drawable/home_searchview" />
+            <TextView
+                android:id="@+id/cookie_time"
+                style="@style/movie_title_boxoffice_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/baloo_regular"
+                android:gravity="center_vertical"
+                android:text="COOKIE TIME : "
+                android:textColor="@color/primary" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/home_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/home_searchview"
+            android:iconifiedByDefault="false"
+            android:queryHint="영화를 검색해보세요"
+            android:searchIcon="@drawable/searchview_icon"
+            android:theme="@style/CustomSearchView" />
 
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="47dp"
-    android:fontFamily="@font/pretendard_bold"
-    android:gravity="left"
-    android:text="지금 인기 있는,"
-    android:textSize="24sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="47dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="left"
+            android:text="지금 인기 있는,"
+            android:textSize="24sp" />
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="8dp"
-    android:fontFamily="@font/pretendard_regular"
-    android:gravity="left"
-    android:text="어떤 영화의 쿠키가 궁금하세요?"
-    android:textColor="#8C8C8C"
-    android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:gravity="left"
+            android:text="어떤 영화의 쿠키가 궁금하세요?"
+            android:textColor="#8C8C8C"
+            android:textSize="16sp" />
 
-<TextView
-    android:id="@+id/boxoffice_date_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="17dp"
-    android:fontFamily="@font/pretendard_regular"
-    android:gravity="left"
-    android:text="2024.11.10 실시간 박스오피스 기준 순위"
-    android:textColor="#8C8C8C"
-    android:textSize="12sp" />
+        <TextView
+            android:id="@+id/boxoffice_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="17dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:gravity="left"
+            android:text="2024.11.10 실시간 박스오피스 기준 순위"
+            android:textColor="#8C8C8C"
+            android:textSize="12sp" />
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/boxoffice_recyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="453dp"
-    android:layout_marginTop="30dp"
-    android:clipToPadding="false"
-    android:orientation="horizontal"
-    android:overScrollMode="never"
-    android:paddingStart="53dp"
-    android:paddingEnd="53dp"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/item_boxoffice" />
-</LinearLayout>
-    </ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/boxoffice_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="453dp"
+            android:layout_marginTop="30dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:paddingStart="53dp"
+            android:paddingEnd="53dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_boxoffice" />
+    </LinearLayout>
+</ScrollView>
