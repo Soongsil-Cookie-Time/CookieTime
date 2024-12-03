@@ -35,7 +35,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.CommunityDet
     public void onBindViewHolder(@NonNull CommunityDetailViewHolder holder, int position) {
         binding.titleTextview.setText(dataList.get(position).getTitle());
         binding.contentTextview.setText(dataList.get(position).getContent());
-        binding.nicknameTextview.setText("| " + dataList.get(position).getNickname());
+        binding.nicknameTextview.setText(" | " + dataList.get(position).getNickname()); // FIXME: 11/29/24 텍스트 위치 진짜 이러면 안되는거임... 근데 알면서 그냥 해둠...ㅠㅠ
         addViewHolderListener(position);
     }
 
