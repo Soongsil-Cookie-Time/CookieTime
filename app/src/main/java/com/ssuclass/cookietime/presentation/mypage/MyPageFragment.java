@@ -44,7 +44,7 @@ public class MyPageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMyPageBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -60,6 +60,12 @@ public class MyPageFragment extends Fragment {
         // 그 다음 데이터 로드
         fetchUserData();
         addButtonListener();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private void setupObservers() {
@@ -94,7 +100,6 @@ public class MyPageFragment extends Fragment {
                     if (document.exists()) {
                         String nickname = document.getString("nickname");
                         String username = document.getString("username");
-                        // 메인 스레드에서 UI 업데이트
                         requireActivity().runOnUiThread(() -> {
                             userData.setValue(new UserData(nickname, username));
                         });
@@ -103,7 +108,19 @@ public class MyPageFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    ToastHelper.showToast(getContext(), "데이터를 불러오는데 실패했습니다: " + e.getMessage());
+                    ToastHelper.showToast(getContext(), "데이터를 불러오는데 실패했습니다.");
+                });
+
+        db.collection((FirebaseConstants.USERS_COLLECTION))
+                .document(uid)
+                .collection(FirebaseConstants.WATCHED_MOVIE_COLLECTION)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int watchedMoviesCount = queryDocumentSnapshots.size();
+                    binding.badgeCountTextview.setText("지금까지 총" + watchedMoviesCount + "개의 쿠키 인증 뱃지를 획득했어요!");
+                })
+                .addOnFailureListener(e -> {
+                    ToastHelper.showToast(getContext(), "데이터를 불러오는데 실패했습니다.");
                 });
     }
 
@@ -150,12 +167,6 @@ public class MyPageFragment extends Fragment {
         startActivity(loginIntent);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
     private static class UserData {
         String nickname;
         String username;
@@ -165,4 +176,6 @@ public class MyPageFragment extends Fragment {
             this.username = username;
         }
     }
+
+
 }
