@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssuclass.cookietime.databinding.ItemMonthyBadgesBinding;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBadgeManagerAdapter.FragmentBadgeManagerViewHolder> {
 
@@ -32,10 +34,28 @@ public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBa
 
     @Override
     public void onBindViewHolder(@NonNull FragmentBadgeManagerViewHolder holder, int position) {
-        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(this.context);
+        // 현재 월의 영화 목록 필터링
+        String currentMonth = dataList.get(position).getMonth();
+        String currentYear = dataList.get(position).getYear();
+
+        // 현재 년도와 월에 해당하는 영화들만 필터링
+        List<BadgeModel> monthlyMovies = dataList.stream()
+                .filter(movie -> movie.getYear().equals(currentYear)
+                        && movie.getMonth().equals(currentMonth))
+                .collect(Collectors.toList());
+
+        // 월 표시 설정
         setMonthTextView(position);
+
+        // 필터링된 영화 목록으로 어댑터 생성
+        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(context, monthlyMovies);
+
         RecyclerView recyclerView = holder.binding.badgesRecyclerview;
-        recyclerView.setLayoutManager(new LinearLayoutManager(holder.binding.getRoot().getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(
+                holder.binding.getRoot().getContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        ));
         recyclerView.setAdapter(adapter);
     }
 
