@@ -9,20 +9,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemMonthyBadgesBinding;
+import com.ssuclass.cookietime.presentation.badgemanager.model.MonthGroup;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBadgeManagerAdapter.FragmentBadgeManagerViewHolder> {
 
     private final Context context;
-    private final ArrayList<BadgeModel> dataList;
+    private final List<MonthGroup> monthGroups;  // 월별 그룹 리스트로 변경
     ItemMonthyBadgesBinding binding;
 
-    public FragmentBadgeManagerAdapter(Context context, ArrayList<BadgeModel> dataList) {
+    public FragmentBadgeManagerAdapter(Context context, List<MonthGroup> monthGroups) {
         this.context = context;
-        this.dataList = dataList;
+        this.monthGroups = monthGroups;
     }
 
     @NonNull
@@ -34,22 +33,15 @@ public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBa
 
     @Override
     public void onBindViewHolder(@NonNull FragmentBadgeManagerViewHolder holder, int position) {
-        // 현재 월의 영화 목록 필터링
-        String currentMonth = dataList.get(position).getMonth();
-        String currentYear = dataList.get(position).getYear();
-
-        // 현재 년도와 월에 해당하는 영화들만 필터링
-        List<BadgeModel> monthlyMovies = dataList.stream()
-                .filter(movie -> movie.getYear().equals(currentYear)
-                        && movie.getMonth().equals(currentMonth))
-                .collect(Collectors.toList());
+        MonthGroup currentMonth = monthGroups.get(position);
 
         // 월 표시 설정
-        setMonthTextView(position);
+        holder.binding.monthlyTitleTextview.setText(
+                String.format("%s년 %s월", currentMonth.getYear(), currentMonth.getMonth())
+        );
 
-        // 필터링된 영화 목록으로 어댑터 생성
-        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(context, monthlyMovies);
-
+        // 해당 월의 영화들로 어댑터 생성
+        ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(context, currentMonth.getMovies());
         RecyclerView recyclerView = holder.binding.badgesRecyclerview;
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 holder.binding.getRoot().getContext(),
@@ -61,11 +53,7 @@ public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBa
 
     @Override
     public int getItemCount() {
-        return dataList.size();
-    }
-
-    private void setMonthTextView(int position) {
-        binding.monthlyTitleTextview.setText(dataList.get(position).getMonth() + "월");
+        return monthGroups.size();  // 월 그룹의 개수만 반환
     }
 
     public static class FragmentBadgeManagerViewHolder extends RecyclerView.ViewHolder {

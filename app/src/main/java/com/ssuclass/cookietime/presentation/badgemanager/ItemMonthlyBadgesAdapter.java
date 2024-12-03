@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemBadgeBinding;
+import com.ssuclass.cookietime.presentation.badgemanager.model.BadgeModel;
 
 import java.util.List;
 

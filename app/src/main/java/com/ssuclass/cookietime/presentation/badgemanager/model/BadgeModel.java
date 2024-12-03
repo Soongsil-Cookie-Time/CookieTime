@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.badgemanager;
+package com.ssuclass.cookietime.presentation.badgemanager.model;
 
 public class BadgeModel {
     private String title;
