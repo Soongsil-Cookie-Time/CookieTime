@@ -10,24 +10,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ssuclass.cookietime.databinding.ItemMonthyBadgesBinding;
 
+import java.util.ArrayList;
+
 public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBadgeManagerAdapter.FragmentBadgeManagerViewHolder> {
 
     private final Context context;
+    private final ArrayList<BadgeModel> dataList;
+    ItemMonthyBadgesBinding binding;
 
-    public FragmentBadgeManagerAdapter(Context context) {
+    public FragmentBadgeManagerAdapter(Context context, ArrayList<BadgeModel> dataList) {
         this.context = context;
+        this.dataList = dataList;
     }
 
     @NonNull
     @Override
     public FragmentBadgeManagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemMonthyBadgesBinding binding = ItemMonthyBadgesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding = ItemMonthyBadgesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new FragmentBadgeManagerViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FragmentBadgeManagerViewHolder holder, int position) {
         ItemMonthlyBadgesAdapter adapter = new ItemMonthlyBadgesAdapter(this.context);
+        setMonthTextView(position);
         RecyclerView recyclerView = holder.binding.badgesRecyclerview;
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.binding.getRoot().getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
@@ -35,7 +41,11 @@ public class FragmentBadgeManagerAdapter extends RecyclerView.Adapter<FragmentBa
 
     @Override
     public int getItemCount() {
-        return 10;
+        return dataList.size();
+    }
+
+    private void setMonthTextView(int position) {
+        binding.monthlyTitleTextview.setText(dataList.get(position).getMonth() + "월");
     }
 
     public static class FragmentBadgeManagerViewHolder extends RecyclerView.ViewHolder {
