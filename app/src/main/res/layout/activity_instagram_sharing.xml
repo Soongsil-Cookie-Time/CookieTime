@@ -71,7 +71,6 @@
                 android:layout_marginEnd="34dp"
                 android:layout_marginBottom="67dp"
                 android:background="@drawable/rounded_rectangle_instagram_card"
-                android:src="@drawable/sample_movie"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

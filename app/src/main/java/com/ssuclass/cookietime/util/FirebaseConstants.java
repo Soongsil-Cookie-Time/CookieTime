@@ -15,5 +15,6 @@ public class FirebaseConstants {
 
     // Field
     public static final String TITLE_FIELD = "title";
+    public static final String MOVIEID_TITLE = "movieId";
     public static final String TIMESTAMP_FIELD = "timestamp";
 }
