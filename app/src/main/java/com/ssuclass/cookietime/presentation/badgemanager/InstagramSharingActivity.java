@@ -22,6 +22,9 @@ import com.ssuclass.cookietime.util.ToastHelper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +57,10 @@ public class InstagramSharingActivity extends AppCompatActivity {
 
     private void setMovieDataIntoView() {
         binding.movieTitleTextview.setText(movieTitle);
+        binding.movieTitleTextview.setText(movieTitle);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
+        String formattedDate = sdf.format(new Date());
+        binding.dateTextview.setText(formattedDate);
     }
 
     private void addButtonListener() {
