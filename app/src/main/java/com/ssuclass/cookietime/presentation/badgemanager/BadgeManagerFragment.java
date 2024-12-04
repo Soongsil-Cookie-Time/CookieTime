@@ -90,16 +90,14 @@ public class BadgeManagerFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             try {
                                 String title = documentSnapshot.getString(FirebaseConstants.TITLE_FIELD);
+                                String movieId = documentSnapshot.getString(FirebaseConstants.MOVIEID_TITLE);
                                 Timestamp timestamp = documentSnapshot.getTimestamp(FirebaseConstants.TIMESTAMP_FIELD);
                                 LocalDate localDate = timestamp.toDate()
                                         .toInstant()
                                         .atZone(ZoneId.of("Asia/Seoul"))
                                         .toLocalDate();
-
                                 String year = String.valueOf(localDate.getYear());
                                 String month = String.valueOf(localDate.getMonthValue());
-
-                                // 월을 두 자리 숫자로 포맷팅하여 키 생성
                                 String key = String.format("%s-%02d", year, Integer.parseInt(month));
 
                                 if (!monthGroupMap.containsKey(key)) {
@@ -107,6 +105,7 @@ public class BadgeManagerFragment extends Fragment {
                                 }
 
                                 BadgeModel movie = new BadgeModel();
+                                movie.setMovieId(movieId);
                                 movie.setTitle(title);
                                 movie.setYear(year);
                                 movie.setMonth(month);
@@ -117,7 +116,6 @@ public class BadgeManagerFragment extends Fragment {
                             }
                         }
 
-                        // 어댑터 설정
                         adapter = new FragmentBadgeManagerAdapter(getContext(),
                                 new ArrayList<>(monthGroupMap.values())
                         );

@@ -45,6 +45,7 @@ public class ItemMonthlyBadgesAdapter extends RecyclerView.Adapter<ItemMonthlyBa
             Intent intent = new Intent(context, InstagramSharingActivity.class);
             // 인스타그램 공유 화면에 영화 제목 전달
             intent.putExtra("movie_title", movie.getTitle());
+            intent.putExtra("movie_id", movie.getMovieId());
             context.startActivity(intent);
         });
     }
