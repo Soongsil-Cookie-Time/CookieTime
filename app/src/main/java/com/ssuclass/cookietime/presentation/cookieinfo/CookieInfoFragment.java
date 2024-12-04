@@ -13,14 +13,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentCookieInfoBinding;
 import com.ssuclass.cookietime.domain.CookieKeywordModel;
 import com.ssuclass.cookietime.domain.SurveyProgressModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
+import com.ssuclass.cookietime.presentation.survey.SurveyFragment;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,13 +37,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class CookieInfoFragment extends Fragment {
 
+    private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
     private SurveyProgressAdapter surveyAdapter;
     private KeywordAdapter keywordAdapter;
-    private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
     private FirebaseFirestore db;
 
@@ -61,6 +62,11 @@ public class CookieInfoFragment extends Fragment {
         binding = FragmentCookieInfoBinding.inflate(inflater, container, false);
         db = FirebaseFirestore.getInstance();
 
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+
         // RecyclerView 초기화 시 어댑터를 클래스 필드에 설정
         keywordAdapter = new KeywordAdapter(new ArrayList<>());
         binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -70,6 +76,32 @@ public class CookieInfoFragment extends Fragment {
         binding.cookieSurveyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.cookieSurveyRecyclerView.setAdapter(surveyAdapter);
 
+        binding.cookieInfoSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getArguments() != null) {
+                    int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
+                    if (movieId != -1) {
+                        // SurveyFragment 생성
+                        SurveyFragment surveyFragment = SurveyFragment.newInstance(movieId);
+
+                        // Fragment 전환
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, surveyFragment) // Replace with your container ID
+                                .addToBackStack(null)
+                                .commit();
+
+                    } else {
+                        Log.e("CookieInfoFragment", "Invalid movieId");
+                    }
+                } else {
+                    Log.e("CookieInfoFragment", "Arguments are null");
+                }
+            }
+        });
+
+
         // Argument에서 movieId 가져오기
         if (getArguments() != null) {
             int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
@@ -78,7 +110,6 @@ public class CookieInfoFragment extends Fragment {
 
         return binding.getRoot();
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -191,47 +222,43 @@ public class CookieInfoFragment extends Fragment {
                 });
     }
 
-    interface OnCheckMovieCallback {
-        void onCheckResult(boolean exists);
-    }
-
     private void addMovieDocumentWithId(Integer movieId) {
         // 쿠키정보 데이터베이스 초깃값 설정
         db.collection("Cookie")
-            .document(movieId.toString())
-            .set(new SurveyProgressModel(0,0,0,0,0,0,0,0))
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    System.out.println("Document successfully added under movieId: " + movieId);
-                } else {
-                    System.err.println("Error adding document: " + task.getException());
-                }
-            });
+                .document(movieId.toString())
+                .set(new SurveyProgressModel(0, 0, 0, 0, 0, 0, 0, 0))
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        System.out.println("Document successfully added under movieId: " + movieId);
+                    } else {
+                        System.err.println("Error adding document: " + task.getException());
+                    }
+                });
         // 하위 컬렉션 참조 생성
         CollectionReference subCollectionRef = db.collection("Cookie").document(movieId.toString()).collection("Keyword");
 
         // 여러 데이터 모델 생성
         List<CookieKeywordModel> dataModels = Arrays.asList(
-            new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
-            new CookieKeywordModel("보길 잘했어요", 0, true),
-            new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true),
-            new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
-            new CookieKeywordModel("괜히 봤어요", 0, false),
-            new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true),
-            new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true),
-            new CookieKeywordModel("이스터에그가 포함되어 있어요", 0, true)
+                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
+                new CookieKeywordModel("보길 잘했어요", 0, true),
+                new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true),
+                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
+                new CookieKeywordModel("괜히 봤어요", 0, false),
+                new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true),
+                new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true),
+                new CookieKeywordModel("이스터에그가 포함되어 있어요", 0, true)
         );
 
         // 각각의 데이터를 하위 컬렉션에 추가
         for (CookieKeywordModel dataModel : dataModels) {
             subCollectionRef.add(dataModel)
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    System.out.println("Document successfully added under movieId: " + movieId);
-                } else {
-                    System.err.println("Error adding document: " + task.getException());
-                }
-            });
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            System.out.println("Document successfully added under movieId: " + movieId);
+                        } else {
+                            System.err.println("Error adding document: " + task.getException());
+                        }
+                    });
         }
     }
 
@@ -248,7 +275,6 @@ public class CookieInfoFragment extends Fragment {
 
         return hours + "시간 " + minutes + "분 | " + genreName;
     }
-
 
     /**
      * 날짜 형식을 "YYYY.MM.DD 개봉"으로 변환하는 메서드
@@ -268,6 +294,11 @@ public class CookieInfoFragment extends Fragment {
             e.printStackTrace();
             return "날짜 형식 오류";
         }
+    }
+
+
+    interface OnCheckMovieCallback {
+        void onCheckResult(boolean exists);
     }
 
 }
