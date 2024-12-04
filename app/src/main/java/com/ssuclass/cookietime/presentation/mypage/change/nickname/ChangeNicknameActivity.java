@@ -3,14 +3,11 @@ package com.ssuclass.cookietime.presentation.mypage.change.nickname;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,26 +44,30 @@ public class ChangeNicknameActivity extends AppCompatActivity {
                 uid = user.getUid();
             } catch (RuntimeException e) {
                 ToastHelper.showToast(ChangeNicknameActivity.this, "사용자 정보를 찾지 못했습니다.");
+                return;
+            }
+
+            // 입력값 가져오기
+            String newNickname = binding.inputChangeNicknameEdittext.getText().toString();
+
+            // 입력값 검증
+            if (newNickname.trim().isEmpty()) {
+                ToastHelper.showToast(ChangeNicknameActivity.this, "닉네임을 입력해주세요.");
+                return;
             }
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection(FirebaseConstants.USERS_COLLECTION)
                     .document(uid)
-                    .update("nickname", binding.inputChangeNicknameEdittext.getText().toString())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            ToastHelper.showToast(ChangeNicknameActivity.this, "닉네임 변경에 성공했습니다.");
-                            finish();
-                        }
+                    .update("nickname", newNickname)
+                    .addOnSuccessListener(unused -> {
+                        ToastHelper.showToast(ChangeNicknameActivity.this, "닉네임 변경에 성공했습니다.");
+                        setResult(RESULT_OK); // 결과 코드 설정
+                        finish();
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            ToastHelper.showToast(ChangeNicknameActivity.this, "닉네임 변경에 실패했습니다.");
-                        }
+                    .addOnFailureListener(e -> {
+                        ToastHelper.showToast(ChangeNicknameActivity.this, "닉네임 변경에 실패했습니다.");
                     });
-
         });
     }
 }
