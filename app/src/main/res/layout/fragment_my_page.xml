@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            style="@style/navigation"
             android:text="마이페이지" />
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -68,12 +69,17 @@
                     android:id="@+id/profile_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="닉네임님 안녕하세요!" />
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="닉네임님 안녕하세요!"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/profile_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="#8C8C8C"
                     android:text="사용자이름" />
 
             </LinearLayout>
@@ -83,10 +89,10 @@
         <LinearLayout
             android:id="@+id/badge_counter_banner_viewgroup"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="60dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:background="@color/white"
+            android:background="@drawable/mypage_badge_count_background"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/profile_viewgroup"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,11 +100,34 @@
             app:layout_constraintTop_toBottomOf="@id/profile_banner_viewgroup">
 
             <TextView
-                android:id="@+id/badge_count_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/badge_count_textview_front"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="지금까지 총 23개의 쿠키 인증 뱃지를 획득했어요!" />
+                android:textSize="12sp"
+                android:fontFamily="@font/pretendard_medium"
+                android:paddingStart="42dp"
+                android:paddingEnd="5dp"
+                android:text="지금까지 총" />
+            <TextView
+                android:id="@+id/badge_count_textview_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingEnd="3dp"
+                android:textSize="28sp"
+                android:textColor="#009843"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="23" />
+
+            <TextView
+                android:id="@+id/badge_count_textview_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:fontFamily="@font/pretendard_medium"
+                android:layout_gravity="center"
+                android:text="개의 쿠키 인증 뱃지를 획득했어요!" />
         </LinearLayout>
 
 
@@ -123,6 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                style="@style/mypage_content"
                 android:text="친구 목록"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                style="@style/mypage_content"
                 android:text="닉네임 변경"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -181,6 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                style="@style/mypage_content"
                 android:text="비밀번호 변경"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -210,6 +242,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                style="@style/mypage_content"
                 android:text="로그아웃"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

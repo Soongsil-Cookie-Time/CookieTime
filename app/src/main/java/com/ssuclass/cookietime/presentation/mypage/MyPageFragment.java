@@ -117,7 +117,9 @@ public class MyPageFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int watchedMoviesCount = queryDocumentSnapshots.size();
-                    binding.badgeCountTextview.setText("지금까지 총" + watchedMoviesCount + "개의 쿠키 인증 뱃지를 획득했어요!");
+                    binding.badgeCountTextviewFront.setText("지금까지 총");
+                    binding.badgeCountTextviewNumber.setText(watchedMoviesCount);
+                    binding.badgeCountTextviewBack.setText("개의 쿠키 인증 뱃지를 획득했어요!");
                 })
                 .addOnFailureListener(e -> {
                     ToastHelper.showToast(getContext(), "데이터를 불러오는데 실패했습니다.");
