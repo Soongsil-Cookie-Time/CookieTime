@@ -6,9 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentSurveyBinding;
+import com.ssuclass.cookietime.domain.CookieKeywordModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SurveyFragment extends Fragment {
 
@@ -18,7 +23,7 @@ public class SurveyFragment extends Fragment {
     private View selectedCountButton = null; // 현재 선택된 버튼을 저장
     private View selectedImportantceButton = null; // 현재 선택된 버튼을 저장
     private View selectedLengthButton = null; // 현재 선택된 버튼을 저장
-
+    private SurveyKeywordAdapter surveyKeywordAdapter;
 
     /**
      * Fragment 생성 메서드: movieId를 Argument로 전달
@@ -125,7 +130,19 @@ public class SurveyFragment extends Fragment {
 
 
     private void setAdapter() {
-//        binding.keywordRecyclerView.setAdapter();
+        List<CookieKeywordModel> dataModels = Arrays.asList(
+                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
+                new CookieKeywordModel("보길 잘했어요", 0, true),
+                new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true),
+                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
+                new CookieKeywordModel("괜히 봤어요", 0, false),
+                new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true),
+                new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true),
+                new CookieKeywordModel("이스터에그가 포함되어 있어요", 0, true)
+        );
+        surveyKeywordAdapter = new SurveyKeywordAdapter(dataModels);
+        binding.keywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.keywordRecyclerView.setAdapter(surveyKeywordAdapter);
     }
 
 
@@ -135,6 +152,7 @@ public class SurveyFragment extends Fragment {
         binding = FragmentSurveyBinding.inflate(inflater, container, false);
         setUpButtonListeners();
         resetAllButtonsBackground();
+        setAdapter();
         return binding.getRoot();
     }
 
