@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".presentation.badgemanager.InstagramSharingActivity">
 
     <Toolbar
@@ -38,6 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:textSize="32sp"
         android:text="영화이름"
         app:layout_constraintBottom_toBottomOf="@+id/icon_imageview"
         app:layout_constraintStart_toEndOf="@+id/icon_imageview"
@@ -82,6 +85,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/primary"
                 android:text="0000.00.00"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +101,8 @@
         android:layout_width="223dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
-        android:text="인스태그램 스토리 공유하기"
+        android:background="@drawable/button_rounded"
+        android:text="인스타그램 스토리 공유하기"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardview" />

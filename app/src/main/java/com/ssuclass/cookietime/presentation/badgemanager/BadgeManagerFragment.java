@@ -23,6 +23,7 @@ import com.ssuclass.cookietime.presentation.badgemanager.model.MonthGroup;
 import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
+import com.ssuclass.cookietime.R;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -75,6 +76,9 @@ public class BadgeManagerFragment extends Fragment {
         adapter = new FragmentBadgeManagerAdapter(getContext(), new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+        int verticalSpaceInPixels = getResources().getDimensionPixelSize(R.dimen.month_spacing);
+        recyclerView.addItemDecoration(new FragmentBadgeManagerAdapter.VerticalSpaceItemDecoration(verticalSpaceInPixels));
     }
 
     private void fetchWatchedMovie() {

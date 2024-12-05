@@ -8,6 +8,8 @@
         android:id="@+id/monthly_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="20sp"
         android:layout_marginStart="30dp"
         android:text="N월"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,6 +19,7 @@
         android:id="@+id/badges_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/monthly_title_textview" />
 

@@ -18,10 +18,16 @@
         android:id="@+id/badge_movie_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:textSize="20sp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="영화제목"
         app:layout_constraintBottom_toBottomOf="@+id/badge_imageview"
         app:layout_constraintEnd_toEndOf="@+id/badge_imageview" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

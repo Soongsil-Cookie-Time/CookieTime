@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="badge_spacing">16dp</dimen>
+    <dimen name="month_spacing">32dp</dimen>
+</resources>
