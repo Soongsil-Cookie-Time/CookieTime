@@ -242,7 +242,6 @@ public class CookieInfoFragment extends Fragment {
                 new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
                 new CookieKeywordModel("보길 잘했어요", 0, true),
                 new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true),
-                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
                 new CookieKeywordModel("괜히 봤어요", 0, false),
                 new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true),
                 new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true),
