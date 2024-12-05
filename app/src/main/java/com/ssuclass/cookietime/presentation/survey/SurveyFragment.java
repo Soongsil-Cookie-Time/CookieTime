@@ -92,12 +92,40 @@ public class SurveyFragment extends Fragment {
 
     private void resetButtonState(View button) {
         // 배경을 기본(gray)으로 설정
+        button.setBackgroundTintList(null);
         button.setBackgroundResource(R.drawable.gray_button);
     }
 
     private void setSelectedButtonState(View button) {
         // 배경을 선택된(green)으로 설정
+        button.setBackgroundTintList(null);
         button.setBackgroundResource(R.drawable.green_button);
+    }
+
+    private void resetAllButtonsBackground() {
+        // Count 버튼들
+        resetButtonBackground(binding.zeroButton);
+        resetButtonBackground(binding.oneButton);
+        resetButtonBackground(binding.twoButton);
+        resetButtonBackground(binding.threeButton);
+
+        // Length 버튼들
+        resetButtonBackground(binding.longButton);
+        resetButtonBackground(binding.shortButton);
+
+        // Importance 버튼들
+        resetButtonBackground(binding.importantButton);
+        resetButtonBackground(binding.notImportantButton);
+    }
+
+    private void resetButtonBackground(View button) {
+        button.setBackgroundResource(R.drawable.gray_button); // 기본 배경
+        button.setBackgroundTintList(null); // Tint 제거
+    }
+
+
+    private void setAdapter() {
+//        binding.keywordRecyclerView.setAdapter();
     }
 
 
@@ -106,6 +134,7 @@ public class SurveyFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentSurveyBinding.inflate(inflater, container, false);
         setUpButtonListeners();
+        resetAllButtonsBackground();
         return binding.getRoot();
     }
 
