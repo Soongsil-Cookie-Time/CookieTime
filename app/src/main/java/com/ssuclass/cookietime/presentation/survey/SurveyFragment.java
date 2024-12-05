@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +23,7 @@ import java.util.function.Consumer;
 public class SurveyFragment extends Fragment {
 
     private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
+    private static final String ARG_MOVIE_TITLE = "movie_title"; // Argument Key for movie title
     private FragmentSurveyBinding binding; // 뷰 바인딩 객체
     private View selectedCountButton = null; // 현재 선택된 버튼을 저장
     private View selectedImportantceButton = null; // 현재 선택된 버튼을 저장
@@ -30,10 +32,11 @@ public class SurveyFragment extends Fragment {
     private FirebaseFirestore db;
     private List<CookieKeywordModel> dataModels;
 
-    public static SurveyFragment newInstance(int movieId) {
+    public static SurveyFragment newInstance(int movieId, String movieTitle) {
         SurveyFragment fragment = new SurveyFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_MOVIE_ID, movieId);
+        args.putString(ARG_MOVIE_TITLE, movieTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,10 +61,29 @@ public class SurveyFragment extends Fragment {
         binding.cookieSurveyButton.setOnClickListener(view -> {
             if (getArguments() != null) {
                 int movieId = getArguments().getInt(ARG_MOVIE_ID);
+                String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
                 updateAllSelectedData(movieId);
                 saveKeywordDataToFirestore(movieId);
+                saveWatchedMovie(movieId, movieTitle); // 사용자가 본 영화 추가
             }
         });
+    }
+
+    private void saveWatchedMovie(int movieId, String movieTitle) {
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId == null) {
+            System.err.println("User ID is null. Cannot save watched movie.");
+            return;
+        }
+
+        DocumentReference watchedMovieRef = db.collection("User")
+                .document(userId)
+                .collection("WatchedMovie")
+                .document(String.valueOf(movieId));
+
+        watchedMovieRef.set(new WatchedMovie(movieTitle))
+                .addOnSuccessListener(aVoid -> System.out.println("Watched movie saved successfully: " + movieTitle))
+                .addOnFailureListener(e -> System.err.println("Failed to save watched movie: " + e.getMessage()));
     }
 
     private void onCountButtonClicked(View clickedButton) {
@@ -238,6 +260,25 @@ public class SurveyFragment extends Fragment {
                 return "cookieEasterEgg";
             default:
                 return null;
+        }
+    }
+
+    private static class WatchedMovie {
+        private String title;
+
+        public WatchedMovie(String title) {
+            this.title = title;
+        }
+
+        public WatchedMovie() {
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
     }
 }
