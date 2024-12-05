@@ -124,7 +124,7 @@ public class MyPageFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int watchedMoviesCount = queryDocumentSnapshots.size();
                     binding.badgeCountTextviewFront.setText("지금까지 총");
-                    binding.badgeCountTextviewNumber.setText(watchedMoviesCount);
+                    binding.badgeCountTextviewNumber.setText(Integer.toString(watchedMoviesCount));
                     binding.badgeCountTextviewBack.setText("개의 쿠키 인증 뱃지를 획득했어요!");
                 })
                 .addOnFailureListener(e -> {
