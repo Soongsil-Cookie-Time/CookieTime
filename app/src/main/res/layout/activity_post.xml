@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".presentation.community.comments.CommentsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,12 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/uil_arrow_left">
 
         <TextView
             android:id="@+id/toolbar_title_textview"
+            style="@style/navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -35,10 +38,10 @@
 
         <ImageView
             android:id="@+id/app_icon_imageview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="31dp"
+            android:layout_width="61dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
             android:src="@drawable/cookie_time_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +50,10 @@
             android:id="@id/nickname_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/pretendard_bold"
             android:text="닉네임"
+            android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@id/app_icon_imageview"
             app:layout_constraintTop_toTopOf="@id/app_icon_imageview" />
 
@@ -55,7 +61,11 @@
             android:id="@+id/timestamp_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/pretendard_medium"
             android:text="11/24 21:37"
+            android:textColor="#8C8C8C"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="@id/app_icon_imageview"
             app:layout_constraintStart_toEndOf="@id/app_icon_imageview" />
 
@@ -70,23 +80,43 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="31dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="31dp"
+                android:fontFamily="@font/pretendard_bold"
                 android:text="제목"
+                android:textSize="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/content_textview"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:lineSpacingExtra="4dp"
                 android:text="게시글 내용 어쩌고 저쩌고 어쩌고 저쩌고 줄글 블라블라... 눈이 펑펑.. 게시글 내용 어쩌고 저쩌고 어쩌고 저쩌고 줄글 블라블라... 눈이 펑펑.. 게시글 내용 어쩌고 저쩌고 어쩌고 저쩌고 줄글 블라블라... 눈이 펑펑.. 게시글 내용 어쩌고 저쩌고 어쩌고 저쩌고 줄글 블라블라... 눈이 펑펑.."
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/title_textview"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/title_textview"
-                app:layout_constraintTop_toBottomOf="@id/title_textview" />
+                app:layout_constraintTop_toBottomOf="@id/title_textview"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:layout_marginTop="20dp"
+                android:background="#A0A0A0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/content_textview" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -98,6 +128,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_viewgroup" />
+        app:layout_constraintTop_toBottomOf="@id/post_viewgroup"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

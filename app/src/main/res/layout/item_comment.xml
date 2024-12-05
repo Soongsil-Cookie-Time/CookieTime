@@ -20,6 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="닉네임"
+        android:textSize="16sp"
+        android:fontFamily="@font/pretendard_bold"
         app:layout_constraintBottom_toBottomOf="@id/icon_imageview"
         app:layout_constraintStart_toEndOf="@+id/icon_imageview"
         app:layout_constraintTop_toTopOf="@+id/icon_imageview" />
@@ -29,7 +31,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="16sp"
         android:text="댓글 내용 어쩌구 저쩌고"
+        android:fontFamily="@font/pretendard_regular"
         app:layout_constraintStart_toStartOf="@+id/icon_imageview"
         app:layout_constraintTop_toBottomOf="@+id/icon_imageview" />
 
@@ -37,8 +41,21 @@
         android:id="@+id/timestamp_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#8C8C8C"
+        android:fontFamily="@font/pretendard_regular"
         android:text="11/24 21:58"
         app:layout_constraintStart_toStartOf="@id/content_textview"
-        app:layout_constraintTop_toBottomOf="@+id/content_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/content_textview"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:background="#A0A0A0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timestamp_textview"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
