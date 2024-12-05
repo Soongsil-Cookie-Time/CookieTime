@@ -63,6 +63,12 @@ public class MyPageFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        fetchUserData();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

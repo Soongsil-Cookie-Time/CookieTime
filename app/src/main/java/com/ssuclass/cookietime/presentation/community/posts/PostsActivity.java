@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
 import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
 import com.ssuclass.cookietime.util.FirebaseConstants;
@@ -76,15 +80,16 @@ public class PostsActivity extends AppCompatActivity {
     }
 
     private void fetchCommunityData() {
-        try {
-            db.collection(FirebaseConstants.COMMUNITIES_COLLECTION)
-                    .document(movieId)
-                    .collection(FirebaseConstants.POSTS_COLLECTION)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
+        db.collection(FirebaseConstants.COMMUNITIES_COLLECTION)
+                .document(movieId)
+                .collection(FirebaseConstants.POSTS_COLLECTION)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        try {
                             dataList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                 String postId = document.getId();
                                 String title = document.getString("title");
                                 String nickname = document.getString("nickname");
@@ -100,13 +105,16 @@ public class PostsActivity extends AppCompatActivity {
                                 dataList.add(model);
                             }
                             adapter.notifyDataSetChanged();
-                        } else {
-                            Log.e("FirebaseError", "Error fetching data: ", task.getException());
+                        } catch (RuntimeException e) {
+                            ToastHelper.showToast(PostsActivity.this, "데이터를 가져오지 못했습니다.");
                         }
-                    });
-        } catch (RuntimeException e) {
-            ToastHelper.showToast(this, "데이터를 가져오는데 실패했습니다.");
-        }
-
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        ToastHelper.showToast(PostsActivity.this, "데이터를 가져오지 못했습니다.");
+                    }
+                });
     }
 }
