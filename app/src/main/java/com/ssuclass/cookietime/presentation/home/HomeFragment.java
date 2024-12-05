@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
@@ -27,7 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import androidx.appcompat.widget.SearchView;
 
 public class HomeFragment extends Fragment implements OnCookieButtonClickListener {
 
@@ -58,6 +59,15 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     public void onStart() {
         super.onStart();
         fetchNowPlayingMovies(); // 현재 상영작 데이터 로드
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupCarouselRecyclerView() {
