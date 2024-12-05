@@ -18,6 +18,7 @@
 
         <TextView
             android:id="@+id/toolbar_title_textview"
+            style="@style/navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="29dp"
+        android:fontFamily="@font/pretendard_semi_bold"
         android:text="커뮤니티에서 사용할 닉네임을 입력해주세요"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -43,11 +45,11 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/edit_text_background"
         android:fontFamily="@font/pretendard_regular"
-        android:hint="닉네임을 입력해주세요."
-        android:padding="12dp"
+        android:hint="변경할 닉네임을 입력해주세요."
+        android:padding="16sp"
         android:textColor="#000000"
         android:textColorHint="#A0A0A0"
-        android:textSize="16dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/change_button"
         app:layout_constraintStart_toStartOf="@id/info_change_nickname_textview"
         app:layout_constraintTop_toBottomOf="@id/info_change_nickname_textview" />
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/button_rounded"
         android:text="변경"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/info_change_nickname_textview" />
