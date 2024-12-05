@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".presentation.community.write.PostsWriteActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,6 +19,7 @@
 
         <TextView
             android:id="@+id/toolbar_title_textview"
+            style="@style/navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,9 +29,15 @@
 
         <Button
             android:id="@+id/toolbar_done_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
+            android:background="@drawable/community_write_complete_button"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end|center_vertical"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:fontFamily="@font/pretendard_medium"
+            android:layout_marginEnd="12dp"
             android:text="완료" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -37,10 +45,30 @@
         android:id="@+id/title_editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:hint="제목"
+        android:textColorHint="#8C8C8C"
+        android:textColor="@color/black"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="20dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_write_toolbar_title_textview" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="#A0A0A0"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_editext" />
 
     <EditText
         android:id="@+id/content_edittext"
@@ -49,9 +77,15 @@
         android:background="@null"
         android:gravity="top"
         android:hint="내용을 입력하세요."
+        android:textColorHint="#8C8C8C"
+        android:fontFamily="@font/pretendard_medium"
+        android:textSize="16dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_editext" />
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
