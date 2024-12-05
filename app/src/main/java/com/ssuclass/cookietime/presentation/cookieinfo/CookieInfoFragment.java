@@ -29,9 +29,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -234,32 +235,37 @@ public class CookieInfoFragment extends Fragment {
                         System.err.println("Error adding document: " + task.getException());
                     }
                 });
+
         // 하위 컬렉션 참조 생성
         CollectionReference subCollectionRef = db.collection("Cookie").document(movieId.toString()).collection("Keyword");
 
-        // 여러 데이터 모델 생성
-        List<CookieKeywordModel> dataModels = Arrays.asList(
-                new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false),
-                new CookieKeywordModel("보길 잘했어요", 0, true),
-                new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true),
-                new CookieKeywordModel("괜히 봤어요", 0, false),
-                new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true),
-                new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true),
-                new CookieKeywordModel("이스터에그가 포함되어 있어요", 0, true)
-        );
+        // 데이터 모델 및 ID 매핑
+        Map<String, CookieKeywordModel> dataModels = new HashMap<>();
+        dataModels.put("cookieWaitLong", new CookieKeywordModel("엔딩 크레딧 이후 오래 기다렸어요", 0, false));
+        dataModels.put("cookieWorthWatching", new CookieKeywordModel("보길 잘했어요", 0, true));
+        dataModels.put("cookieNextSeries", new CookieKeywordModel("다음 시리즈 떡밥이 포함되어 있어요", 0, true));
+        dataModels.put("cookieRegret", new CookieKeywordModel("괜히 봤어요", 0, false));
+        dataModels.put("cookieQuickExit", new CookieKeywordModel("엔딩 크레딧 직후 바로 나왔어요", 0, true));
+        dataModels.put("cookieContentFun", new CookieKeywordModel("쿠키 내용이 재밌어요", 0, true));
+        dataModels.put("cookieEasterEgg", new CookieKeywordModel("이스터에그가 포함되어 있어요", 0, true));
 
-        // 각각의 데이터를 하위 컬렉션에 추가
-        for (CookieKeywordModel dataModel : dataModels) {
-            subCollectionRef.add(dataModel)
+        // 각각의 데이터를 지정된 ID로 하위 컬렉션에 추가
+        for (Map.Entry<String, CookieKeywordModel> entry : dataModels.entrySet()) {
+            String documentId = entry.getKey(); // 미리 지정한 ID
+            CookieKeywordModel dataModel = entry.getValue();
+
+            subCollectionRef.document(documentId)
+                    .set(dataModel)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            System.out.println("Document successfully added under movieId: " + movieId);
+                            System.out.println("Document successfully added with ID: " + documentId);
                         } else {
                             System.err.println("Error adding document: " + task.getException());
                         }
                     });
         }
     }
+
 
     /**
      * 러닝타임과 첫 번째 장르를 포맷팅하여 반환하는 메서드

@@ -22,9 +22,11 @@ public class SurveyKeywordAdapter extends RecyclerView.Adapter<SurveyKeywordAdap
 
     private final Set<Integer> selectedPositions = new HashSet<>(); // 복수 선택된 셀의 위치를 저장
     private final List<CookieKeywordModel> keywordList;
+    private final KeywordSelectionListener selectionListener; // 인터페이스를 통해 선택 이벤트 전달
 
-    public SurveyKeywordAdapter(List<CookieKeywordModel> keywordList) {
+    public SurveyKeywordAdapter(List<CookieKeywordModel> keywordList, KeywordSelectionListener selectionListener) {
         this.keywordList = keywordList;
+        this.selectionListener = selectionListener;
     }
 
     @NonNull
@@ -59,11 +61,13 @@ public class SurveyKeywordAdapter extends RecyclerView.Adapter<SurveyKeywordAdap
         // 클릭 이벤트 처리
         holder.itemView.setOnClickListener(v -> {
             if (selectedPositions.contains(position)) {
-                // 선택 해제
-                selectedPositions.remove(position);
+                selectedPositions.remove(position); // 선택 해제
             } else {
-                // 선택 추가
-                selectedPositions.add(position);
+                selectedPositions.add(position); // 선택 추가
+                keywordItem.setCount(keywordItem.getCount() + 1); // 모델의 count 증가
+                if (selectionListener != null) {
+                    selectionListener.onKeywordSelected(getFieldNameForKeyword(keywordItem)); // 선택 이벤트 전달
+                }
             }
             notifyItemChanged(position); // 변경된 항목만 업데이트
         });
@@ -81,6 +85,28 @@ public class SurveyKeywordAdapter extends RecyclerView.Adapter<SurveyKeywordAdap
         drawable.setColor(color);                     // 색상 설정
         drawable.setCornerRadius(cornerRadius);       // 코너 라디우스 설정
         view.setBackground(drawable);                 // 배경에 적용
+    }
+
+    // 키워드와 Firestore 필드 이름을 매핑하는 메서드
+    private String getFieldNameForKeyword(CookieKeywordModel keywordItem) {
+        switch (keywordItem.getKeyword()) {
+            case "엔딩 크레딧 이후 오래 기다렸어요":
+                return "cookieWaitLong";
+            case "보길 잘했어요":
+                return "cookieWorthWatching";
+            case "다음 시리즈 떡밥이 포함되어 있어요":
+                return "cookieNextSeries";
+            case "괜히 봤어요":
+                return "cookieRegret";
+            case "엔딩 크레딧 직후 바로 나왔어요":
+                return "cookieQuickExit";
+            case "쿠키 내용이 재밌어요":
+                return "cookieContentFun";
+            case "이스터에그가 포함되어 있어요":
+                return "cookieEasterEgg";
+            default:
+                return null;
+        }
     }
 
     static class KeywordViewHolder extends RecyclerView.ViewHolder {
