@@ -237,7 +237,7 @@ public class SurveyFragment extends Fragment {
                         .document(movieId.toString())
                         .collection("Keyword")
                         .document(documentId)
-                        .update("count", FieldValue.increment(model.getCount()));
+                        .update("count", FieldValue.increment(1));
             }
         }
     }
