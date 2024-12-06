@@ -9,14 +9,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.BadgeManagerFragment;
-import com.ssuclass.cookietime.presentation.community.entry.CommunitiesFragment;
+import com.ssuclass.cookietime.presentation.community.main.CommunitiesMainFragment;
 import com.ssuclass.cookietime.presentation.home.HomeFragment;
 import com.ssuclass.cookietime.presentation.mypage.MyPageFragment;
 
 public class MainActivity extends AppCompatActivity {
     // Fragment 인스턴스들을 저장
     private final Fragment homeFragment = new HomeFragment();
-    private final Fragment communitiesFragment = new CommunitiesFragment();
+    private final Fragment communitiesFragment = new CommunitiesMainFragment();
     private final Fragment badgeManagerFragment = new BadgeManagerFragment();
     private final Fragment myPageFragment = new MyPageFragment();
     private ActivityMainBinding binding;

@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.entry;
+package com.ssuclass.cookietime.presentation.community.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ssuclass.cookietime.databinding.ItemCommunityEntryBinding;
+import com.ssuclass.cookietime.presentation.community.main.model.CommunitiesModel;
 import com.ssuclass.cookietime.presentation.community.posts.PostsActivity;
 
 import java.util.List;
