@@ -29,6 +29,7 @@ import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
 import com.ssuclass.cookietime.presentation.badgemanager.InstagramSharingActivity;
 import com.ssuclass.cookietime.presentation.community.posts.PostsActivity;
+import com.ssuclass.cookietime.presentation.survey.OnSurveyCompleteListener;
 import com.ssuclass.cookietime.presentation.survey.SurveyFragment;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CookieInfoFragment extends Fragment {
+public class CookieInfoFragment extends Fragment implements OnSurveyCompleteListener {
 
     private static final String ARG_MOVIE_ID = "movie_id"; // Argument Key
     private static final String ARG_MOVIE_TITLE = "movie_title"; // Argument Key for title
@@ -152,12 +153,14 @@ public class CookieInfoFragment extends Fragment {
                 binding.goToCookieCommunityButton.setText("설문하여 입장");
                 binding.goToCookieCommunityButton.setEnabled(false);
                 binding.cookieInfoSurveyButton.setOnClickListener(view -> {
+                    SurveyFragment surveyFragment = SurveyFragment.newInstance(movieId, movieTitle);
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, SurveyFragment.newInstance(movieId, movieTitle))
-                            .addToBackStack(null) // 백스택에 추가
+                            .replace(R.id.fragment_container, surveyFragment)
+                            .addToBackStack(null)
                             .commit();
                 });
+
             }
         });
     }
@@ -416,6 +419,13 @@ public class CookieInfoFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSurveyComplete() {
+        if (getArguments() != null) {
+            int movieId = getArguments().getInt("movie_id");
+            fetchSurveyData(movieId); // 설문 데이터를 다시 로드
+        }
+    }
 
     interface OnCheckMovieCallback {
         void onCheckResult(boolean exists);
