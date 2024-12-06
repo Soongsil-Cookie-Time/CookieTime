@@ -52,6 +52,7 @@ public class CookieInfoFragment extends Fragment {
     private KeywordAdapter keywordAdapter;
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
     private FirebaseFirestore db;
+    private String posterPath;
 
     public static CookieInfoFragment newInstance(int movieId, String movieTitle) {
         CookieInfoFragment fragment = new CookieInfoFragment();
@@ -85,7 +86,7 @@ public class CookieInfoFragment extends Fragment {
                         if (exists) {
                             Map<String, Object> communityData = new HashMap<>();
                             communityData.put("title", movieTitle);
-                            communityData.put("poster_path", ""); // FIXME: 12/6/24 poster_path 추가
+                            communityData.put("poster_path", posterPath); // FIXME: 12/6/24 poster_path 추가
 
                             db.collection("Communities")
                                     .document(Integer.toString(movieId))
@@ -224,6 +225,7 @@ public class CookieInfoFragment extends Fragment {
                 Log.d("Response", String.valueOf(response.body()));
                 if (response.isSuccessful() && response.body() != null) {
                     TMDBMovieDetailResponse dataModel = response.body();
+                    posterPath = dataModel.getPosterPath();
                     updateUIWithMovieDetail(dataModel); // UI 업데이트
                     // 해당 도큐먼트가 없는 경우에만 신규 도큐먼트 생성
                     checkMovieDocument(movieId, exists -> {
