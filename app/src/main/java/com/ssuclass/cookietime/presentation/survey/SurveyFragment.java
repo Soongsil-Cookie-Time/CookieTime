@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -65,6 +66,12 @@ public class SurveyFragment extends Fragment {
                 updateAllSelectedData(movieId);
                 saveKeywordDataToFirestore(movieId);
                 saveWatchedMovie(movieId, movieTitle); // 사용자가 본 영화 추가
+                if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                    getParentFragmentManager().popBackStack();
+                } else {
+                    // 액티비티 종료
+                    requireActivity().finish();
+                }
             }
         });
     }
@@ -81,7 +88,10 @@ public class SurveyFragment extends Fragment {
                 .collection("WatchedMovie")
                 .document(String.valueOf(movieId));
 
-        watchedMovieRef.set(new WatchedMovie(movieTitle))
+        Timestamp currentTimestamp = Timestamp.now(); // 현재 타임스탬프 생성
+        WatchedMovie watchedMovie = new WatchedMovie(movieTitle, currentTimestamp);
+
+        watchedMovieRef.set(watchedMovie)
                 .addOnSuccessListener(aVoid -> System.out.println("Watched movie saved successfully: " + movieTitle))
                 .addOnFailureListener(e -> System.err.println("Failed to save watched movie: " + e.getMessage()));
     }
@@ -263,11 +273,14 @@ public class SurveyFragment extends Fragment {
         }
     }
 
+
     private static class WatchedMovie {
         private String title;
+        private Timestamp timestamp; // Firebase Timestamp 타입 사용
 
-        public WatchedMovie(String title) {
+        public WatchedMovie(String title, Timestamp timestamp) {
             this.title = title;
+            this.timestamp = timestamp;
         }
 
         public WatchedMovie() {
@@ -280,5 +293,15 @@ public class SurveyFragment extends Fragment {
         public void setTitle(String title) {
             this.title = title;
         }
+
+        public Timestamp getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(Timestamp timestamp) {
+            this.timestamp = timestamp;
+        }
     }
+
+
 }

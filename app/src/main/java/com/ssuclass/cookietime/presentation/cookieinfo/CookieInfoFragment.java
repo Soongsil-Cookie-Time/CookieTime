@@ -63,15 +63,46 @@ public class CookieInfoFragment extends Fragment {
         return fragment;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
         if (getArguments() != null) {
             int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
             String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
-            updateButtonState(movieId, movieTitle);
+            updateButtonState(movieId, movieTitle); // 버튼 업데이트
+            fetchSurveyData(movieId);
         }
     }
+
+
+    private void fetchSurveyData(int movieId) {
+        db.collection("Cookie")
+                .document(String.valueOf(movieId))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        SurveyProgressModel surveyProgress = documentSnapshot.toObject(SurveyProgressModel.class);
+
+                        db.collection("Cookie")
+                                .document(String.valueOf(movieId))
+                                .collection("Keyword")
+                                .get()
+                                .addOnSuccessListener(querySnapshot -> {
+                                    List<CookieKeywordModel> keywordList = querySnapshot.toObjects(CookieKeywordModel.class);
+
+                                    // 어댑터 업데이트
+                                    keywordAdapter.updateKeywords(keywordList);
+                                    surveyAdapter.updateSurveyData(surveyProgress);
+
+                                    // RecyclerView 갱신
+                                    keywordAdapter.notifyDataSetChanged();
+                                    surveyAdapter.notifyDataSetChanged();
+                                });
+                    }
+                });
+    }
+
 
     /**
      * 설문 버튼 상태를 업데이트하는 메서드
@@ -121,11 +152,10 @@ public class CookieInfoFragment extends Fragment {
                 binding.goToCookieCommunityButton.setText("설문하여 입장");
                 binding.goToCookieCommunityButton.setEnabled(false);
                 binding.cookieInfoSurveyButton.setOnClickListener(view -> {
-                    SurveyFragment surveyFragment = SurveyFragment.newInstance(movieId, movieTitle);
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, surveyFragment)
-                            .addToBackStack(null)
+                            .replace(R.id.fragment_container, SurveyFragment.newInstance(movieId, movieTitle))
+                            .addToBackStack(null) // 백스택에 추가
                             .commit();
                 });
             }
