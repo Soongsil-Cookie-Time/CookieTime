@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.ssuclass.cookietime.databinding.ActivityPostBinding;
+import com.ssuclass.cookietime.databinding.ActivityCommentsBinding;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class CommentsActivity extends AppCompatActivity {
 
     private final ArrayList<CommentsModel> dataList;
-    private ActivityPostBinding binding;
+    private ActivityCommentsBinding binding;
     private FirebaseFirestore db;
     private String movieId;
     private String title;
@@ -38,7 +38,7 @@ public class CommentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityPostBinding.inflate(getLayoutInflater());
+        binding = ActivityCommentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
