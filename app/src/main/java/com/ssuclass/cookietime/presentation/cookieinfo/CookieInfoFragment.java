@@ -1,6 +1,7 @@
 package com.ssuclass.cookietime.presentation.cookieinfo;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.ssuclass.cookietime.domain.CookieKeywordModel;
 import com.ssuclass.cookietime.domain.SurveyProgressModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
+import com.ssuclass.cookietime.presentation.badgemanager.InstagramSharingActivity;
 import com.ssuclass.cookietime.presentation.survey.SurveyFragment;
 
 import java.io.IOException;
@@ -76,11 +78,20 @@ public class CookieInfoFragment extends Fragment {
                 binding.goToCookieCommunityButton.setEnabled(true);
                 binding.goToCookieCommunityButton.setText("커뮤니티 입장");
                 binding.goToCookieCommunityButton.setOnClickListener(view -> {
-                    //TODO: 커뮤니티 화면으로 전환
+                    checkIfCommunityExits(movieId, exists -> {
+                        if (exists) {
+                            //TODO: 커뮤니티 신규 생성
+                        } else {
+                            //TODO: 커뮤니티 화면으로 전환
+                        }
+                    });
                 });
                 binding.cookieInfoSurveyButton.setText("오늘의 쿠키 스토리 공유하기");
                 binding.cookieInfoSurveyButton.setOnClickListener(view -> {
                     //TODO: 쿠키 스토리 공유 화면으로 전환
+                    Intent intent = new Intent(getContext(), InstagramSharingActivity.class);
+                    intent.putExtra("movie_id", Integer.toString(movieId)); // FIXME: 2024. 12. 6. 영화 아이디값 단일화
+                    startActivity(intent);
                 });
             } else {
                 binding.cookieInfoSurveyButton.setEnabled(true);
@@ -158,6 +169,20 @@ public class CookieInfoFragment extends Fragment {
                         callback.onCheckResult(task.getResult().exists());
                     } else {
                         Log.e("Firestore", "Error checking watched movie", task.getException());
+                        callback.onCheckResult(false);
+                    }
+                });
+    }
+
+    private void checkIfCommunityExits(int movieId, OnCheckMovieCommunityCallback callback) {
+        db.collection("Community")
+                .document(String.valueOf(movieId)) // Movie ID를 Document ID로 사용
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        callback.onCheckResult(task.getResult().exists());
+                    } else {
+                        Log.e("Firestore", "Error checking community", task.getException());
                         callback.onCheckResult(false);
                     }
                 });
@@ -335,6 +360,10 @@ public class CookieInfoFragment extends Fragment {
 
 
     interface OnCheckMovieCallback {
+        void onCheckResult(boolean exists);
+    }
+
+    interface OnCheckMovieCommunityCallback {
         void onCheckResult(boolean exists);
     }
 }
