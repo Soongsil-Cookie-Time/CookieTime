@@ -4,7 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".presentation.badgemanager.BadgeManagerFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/navigation"
+            android:text="쿠키 인증 뱃지" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <ImageView
         android:id="@+id/icon_imageview"
@@ -21,6 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="28sp"
         android:text="나의\n쿠키 인증뱃지 인벤토리"
         app:layout_constraintStart_toStartOf="@id/icon_imageview"
         app:layout_constraintTop_toBottomOf="@id/icon_imageview" />
@@ -29,14 +48,29 @@
         android:id="@+id/subtitle_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
+        android:textSize="12sp"
+        android:textColor="#8C8C8C"
+        android:layout_marginTop="8dp"
         android:text="쿠키를 클릭해 추억을 인스타그램 스토리로 공유해보세요!"
         app:layout_constraintStart_toStartOf="@id/title_textview"
         app:layout_constraintTop_toBottomOf="@+id/title_textview" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#A0A0A0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtitle_textview" /> <!-- line의 위치 명확히 설정 -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/monthly_badges_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitle_textview" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
