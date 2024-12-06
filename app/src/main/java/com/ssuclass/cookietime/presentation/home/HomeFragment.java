@@ -17,9 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentHomeBinding;
 import com.ssuclass.cookietime.network.MovieAPI;
-import com.ssuclass.cookietime.network.response.TMDBMovieSearchResponse;
 import com.ssuclass.cookietime.network.response.TMDBNowPlayingResponse;
 import com.ssuclass.cookietime.presentation.cookieinfo.CookieInfoFragment;
+import com.ssuclass.cookietime.presentation.search.SearchFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,6 +100,21 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         });
     }
 
+    private void searchMovies(String query) {
+        // SearchFragment로 전환 및 검색 키워드 전달
+        SearchFragment searchFragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("query", query); // 검색 키워드 전달
+        searchFragment.setArguments(bundle);
+
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, searchFragment) // container ID에 맞게 수정
+                .addToBackStack(null) // 뒤로가기 지원
+                .commit();
+    }
+
+
     /**
      * TMDB Now Playing API를 호출하여 현재 상영 중인 영화 데이터를 가져오는 메서드
      */
@@ -139,35 +154,6 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
         );
     }
 
-
-    /**
-     * TMDB API를 호출하여 영화 검색 결과를 가져오는 메서드
-     */
-    private void searchMovies(String query) {
-        MovieAPI.searchMovies(query, getString(R.string.TMDB_api_key), "ko-KR", "KR", new Callback<TMDBMovieSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<TMDBMovieSearchResponse> call, @NonNull Response<TMDBMovieSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<TMDBMovieSearchResponse.Movie> movies = response.body().getResults();
-                    if (movies != null && !movies.isEmpty()) {
-                        // 검색 결과 출력 (Log 또는 RecyclerView 업데이트)
-                        for (TMDBMovieSearchResponse.Movie movie : movies) {
-                            Log.d("HomeFragment", "Found Movie: " + movie.getTitle());
-                        }
-                    } else {
-                        Log.w("HomeFragment", "No movies found for query: " + query);
-                    }
-                } else {
-                    Log.e("HomeFragment", "Search API Response Error: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TMDBMovieSearchResponse> call, @NonNull Throwable t) {
-                Log.e("HomeFragment", "Search Movies API Call Failed: " + t.getMessage());
-            }
-        });
-    }
 
     @Override
     public void onCookieButtonClick(TMDBNowPlayingResponse.Movie dataModel) {
