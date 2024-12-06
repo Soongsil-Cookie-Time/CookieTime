@@ -29,7 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".presentation.community.comments.CommentsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.authentication.SignupActivity"
             android:exported="false" />
