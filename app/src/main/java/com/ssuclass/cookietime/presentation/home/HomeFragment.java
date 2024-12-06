@@ -172,7 +172,7 @@ public class HomeFragment extends Fragment implements OnCookieButtonClickListene
     @Override
     public void onCookieButtonClick(TMDBNowPlayingResponse.Movie dataModel) {
         // CookieInfoFragment 생성 및 Movie ID 전달
-        CookieInfoFragment cookieInfoFragment = CookieInfoFragment.newInstance(dataModel.getId());
+        CookieInfoFragment cookieInfoFragment = CookieInfoFragment.newInstance(dataModel.getId(), dataModel.getTitle());
 
         // Fragment 전환
         getParentFragmentManager()
