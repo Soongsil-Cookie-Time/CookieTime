@@ -59,10 +59,12 @@ public class CommunitiesAdapter extends RecyclerView.Adapter<CommunitiesAdapter.
         holder.binding.getRoot().setOnClickListener(view -> {
             int position = holder.getAdapterPosition();
             String movieId = dataList.get(position).getId();
+            String movieTitle = dataList.get(position).getTitle();
 
             Context context = view.getContext();
             Intent intent = new Intent(context, PostsActivity.class);
             intent.putExtra("movieId", movieId);
+            intent.putExtra("movieTitle", movieTitle);  // 영화 제목 전달
             context.startActivity(intent);
         });
     }
