@@ -3,6 +3,7 @@ package com.ssuclass.cookietime.presentation.community.posts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommunityDetailBinding;
+import com.ssuclass.cookietime.presentation.bottomnavigation.MainActivity;
 import com.ssuclass.cookietime.presentation.community.write.PostsWriteActivity;
 import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
@@ -47,6 +49,7 @@ public class PostsActivity extends AppCompatActivity {
         getMovieData();  // getMovieId() 대신 새로운 메서드
         setToolbarTitle();  // 새로 추가
         setButtonTitle();   // 새로 추가
+        addButtonListener();
         setFirebaseInstance();
         setCommunityDetailRecyclerView();
         setFloatingButtonOnClickListener();
@@ -56,6 +59,26 @@ public class PostsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fetchCommunityData();
+    }
+
+    private void addButtonListener() {
+        binding.goToCookieDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    int movieIdInt = Integer.parseInt(movieId);
+                    // MainActivity로 이동하기 위한 Intent 생성
+                    Intent intent = new Intent(PostsActivity.this, MainActivity.class);
+                    // 필요한 정보를 Intent에 추가
+                    intent.putExtra("show_cookie_info", true);  // 쿠키 정보를 보여줄지 결정하는 플래그
+                    intent.putExtra("movie_id", movieIdInt);
+                    intent.putExtra("movie_title", movieTitle);
+                    startActivity(intent);
+                } catch (NumberFormatException e) {
+                    ToastHelper.showToast(PostsActivity.this, "올바르지 않은 영화 ID 형식입니다");
+                }
+            }
+        });
     }
 
     private void setFirebaseInstance() {
