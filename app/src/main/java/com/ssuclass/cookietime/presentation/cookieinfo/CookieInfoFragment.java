@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -142,7 +143,11 @@ public class CookieInfoFragment extends Fragment {
      * 사용자가 이미 본 영화인지 확인하는 메서드
      */
     private void checkIfWatchedMovie(int movieId, OnCheckMovieCallback callback) {
-        String userId = "K0iopiggXVaaJkvtNlyIdQI1J5l2"; // Replace with dynamic user ID if available
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId == null) {
+            System.err.println("User ID is null. Cannot save watched movie.");
+            return;
+        }
         db.collection("User")
                 .document(userId)
                 .collection("WatchedMovie")
