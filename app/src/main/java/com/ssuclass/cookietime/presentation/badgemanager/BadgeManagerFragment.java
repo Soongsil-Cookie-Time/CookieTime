@@ -17,13 +17,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.FragmentBadgeManagerBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.model.BadgeModel;
 import com.ssuclass.cookietime.presentation.badgemanager.model.MonthGroup;
 import com.ssuclass.cookietime.util.FirebaseConstants;
-import com.ssuclass.cookietime.util.ToastHelper;
 
-import com.ssuclass.cookietime.R;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -116,7 +115,8 @@ public class BadgeManagerFragment extends Fragment {
 
                                 monthGroupMap.get(key).addMovie(movie);
                             } catch (Exception e) {
-                                ToastHelper.showToast(getContext(), "정보를 불러오는데 실패했습니다.");
+                                // FIXME: 12/6/24 실패했을 때 피드백 조치
+                                return;
                             }
                         }
 

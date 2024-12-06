@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,6 +28,7 @@ import com.ssuclass.cookietime.domain.SurveyProgressModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
 import com.ssuclass.cookietime.presentation.badgemanager.InstagramSharingActivity;
+import com.ssuclass.cookietime.presentation.community.posts.PostsActivity;
 import com.ssuclass.cookietime.presentation.survey.SurveyFragment;
 
 import java.io.IOException;
@@ -80,9 +83,28 @@ public class CookieInfoFragment extends Fragment {
                 binding.goToCookieCommunityButton.setOnClickListener(view -> {
                     checkIfCommunityExits(movieId, exists -> {
                         if (exists) {
-                            //TODO: 커뮤니티 신규 생성
+                            Map<String, Object> communityData = new HashMap<>();
+                            communityData.put("title", movieTitle);
+                            communityData.put("poster_path", ""); // FIXME: 12/6/24 poster_path 추가
+
+                            db.collection("Communities")
+                                    .document(Integer.toString(movieId))
+                                    .set(communityData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Firestore", "커뮤니티가 성공적으로 생성되었습니다.");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("Firestore", "커뮤니티 생성 실패: ", e);
+                                    });
+
+                            Intent intent = new Intent(getContext(), PostsActivity.class);
+                            intent.putExtra("movieId", Integer.toString(movieId));
+                            intent.putExtra("movieTitle", movieTitle);
+                            startActivity(intent);
                         } else {
-                            //TODO: 커뮤니티 화면으로 전환
+                            Intent intent = new Intent(getContext(), PostsActivity.class);
+                            intent.putExtra("movie_id", Integer.toString(movieId)); // FIXME: 12/6/24 movie_id 단일화
+                            startActivity(intent);
                         }
                     });
                 });
@@ -178,11 +200,15 @@ public class CookieInfoFragment extends Fragment {
         db.collection("Community")
                 .document(String.valueOf(movieId)) // Movie ID를 Document ID로 사용
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        callback.onCheckResult(task.getResult().exists());
-                    } else {
-                        Log.e("Firestore", "Error checking community", task.getException());
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        callback.onCheckResult(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
                         callback.onCheckResult(false);
                     }
                 });

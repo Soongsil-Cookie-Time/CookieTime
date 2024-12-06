@@ -90,7 +90,7 @@ public class PostsWriteActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        ToastHelper.showToast(PostsWriteActivity.this, "사용자 정보를 가져오지 못했습니다.");
+                        // FIXME: 12/6/24 실패했을 때 피드백 조치
                     }
                 });
     }
