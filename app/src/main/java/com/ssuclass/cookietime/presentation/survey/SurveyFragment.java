@@ -1,10 +1,12 @@
 package com.ssuclass.cookietime.presentation.survey;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -32,6 +34,7 @@ public class SurveyFragment extends Fragment {
     private SurveyKeywordAdapter surveyKeywordAdapter;
     private FirebaseFirestore db;
     private List<CookieKeywordModel> dataModels;
+    private OnSurveyCompleteListener callback;
 
     public static SurveyFragment newInstance(int movieId, String movieTitle) {
         SurveyFragment fragment = new SurveyFragment();
@@ -65,16 +68,45 @@ public class SurveyFragment extends Fragment {
                 String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
                 updateAllSelectedData(movieId);
                 saveKeywordDataToFirestore(movieId);
-                saveWatchedMovie(movieId, movieTitle); // 사용자가 본 영화 추가
-                if (getParentFragmentManager().getBackStackEntryCount() > 0) {
-                    getParentFragmentManager().popBackStack();
-                } else {
-                    // 액티비티 종료
-                    requireActivity().finish();
-                }
+                saveWatchedMovie(movieId, movieTitle);
             }
+
+            completeSurvey(); // 설문 완료 콜백 호출
         });
+
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        // 부모 Fragment가 OnSurveyCompleteListener를 구현했는지 확인
+        if (getParentFragment() instanceof OnSurveyCompleteListener) {
+            callback = (OnSurveyCompleteListener) getParentFragment();
+        } else {
+            callback = null; // 콜백 없이 작동 가능하도록 설정
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null; // 메모리 누수 방지
+    }
+
+    private void completeSurvey() {
+        // 설문 완료 후 콜백 호출
+        if (callback != null) {
+            callback.onSurveyComplete();
+        }
+
+        // 백스택에서 제거
+        if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+            getParentFragmentManager().popBackStack();
+        }
+    }
+
 
     private void saveWatchedMovie(int movieId, String movieTitle) {
         String userId = FirebaseAuth.getInstance().getUid();
@@ -305,3 +337,4 @@ public class SurveyFragment extends Fragment {
 
 
 }
+
