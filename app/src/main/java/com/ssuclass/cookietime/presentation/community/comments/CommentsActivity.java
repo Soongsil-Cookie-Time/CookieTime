@@ -9,10 +9,13 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ssuclass.cookietime.databinding.ActivityCommentsBinding;
+import com.ssuclass.cookietime.util.FirebaseConstants;
 import com.ssuclass.cookietime.util.ToastHelper;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +35,7 @@ public class CommentsActivity extends AppCompatActivity {
     private String content;
     private String nickname;
     private String postId;
+    private String currentUserNickname;
     private CommentsAdapter adapter;
 
     public CommentsActivity() {
@@ -94,40 +98,48 @@ public class CommentsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
     }
 
-    // Firestore에 댓글 저장
     private void saveComment(String commentText) {
-        // 현재 시간을 타임스탬프로 사용
-        String timestamp = new SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
-                .format(new Date());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // 댓글 데이터 구성
-        Map<String, Object> comment = new HashMap<>();
-        comment.put("title", commentText);  // 기존 모델에 맞춰서 title 필드 사용
-        comment.put("timestamp", timestamp);
-        comment.put("nickname", "사용자");  // 실제 사용자 닉네임으로 교체 필요
+        // 닉네임을 먼저 가져온 후, 성공했을 때 댓글을 저장하도록 수정
+        db.collection(FirebaseConstants.USERS_COLLECTION)
+                .document(user.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String userNickname = documentSnapshot.getString(FirebaseConstants.NICKNAME_FIELD);
 
-        // Firestore에 댓글 저장
-        db.collection("Communities")
-                .document(movieId)
-                .collection("Posts")
-                .document(postId)
-                .collection("Comments")
-                .add(comment)
-                .addOnSuccessListener(documentReference -> {
-                    // 댓글 저장 성공
-                    binding.commentInputEdittext.setText(""); // 입력창 비우기
-                    fetchCommentsData(); // 댓글 목록 새로고침
+                    // 현재 시간을 타임스탬프로 사용
+                    String timestamp = new SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
+                            .format(new Date());
 
-                    // 키보드 숨기기
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(binding.commentInputEdittext.getWindowToken(), 0);
+                    // 댓글 데이터 구성
+                    Map<String, Object> comment = new HashMap<>();
+                    comment.put("title", commentText);
+                    comment.put("timestamp", timestamp);
+                    comment.put("nickname", userNickname);
 
-                    ToastHelper.showToast(this, "댓글이 등록되었습니다.");
+                    // Firestore에 댓글 저장
+                    db.collection(FirebaseConstants.COMMUNITIES_COLLECTION)
+                            .document(movieId)
+                            .collection(FirebaseConstants.POSTS_COLLECTION)
+                            .document(postId)
+                            .collection(FirebaseConstants.COMMENTS_COLLECTION)
+                            .add(comment)
+                            .addOnSuccessListener(documentReference -> {
+                                binding.commentInputEdittext.setText("");
+                                fetchCommentsData();
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(binding.commentInputEdittext.getWindowToken(), 0);
+
+                                ToastHelper.showToast(CommentsActivity.this, "댓글이 등록되었습니다.");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("FirebaseError", "Error saving comment: ", e);
+                                ToastHelper.showToast(CommentsActivity.this, "댓글 등록에 실패했습니다.");
+                            });
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("FirebaseError", "Error saving comment: ", e);
-                    ToastHelper.showToast(this, "댓글 등록에 실패했습니다.");
-                });
+                .addOnFailureListener(e -> ToastHelper.showToast(CommentsActivity.this, "사용자 정보를 가져오지 못했습니다."));
     }
 
     // 기존의 fetchCommentsData() 메소드는 약간의 최적화가 필요합니다
