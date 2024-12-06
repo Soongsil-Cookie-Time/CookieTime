@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.entry;
+package com.ssuclass.cookietime.presentation.community.main;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ssuclass.cookietime.databinding.FragmentCommunityEntryBinding;
+import com.ssuclass.cookietime.presentation.community.main.model.CommunitiesModel;
 import com.ssuclass.cookietime.util.SpaceingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunitiesFragment extends Fragment {
+public class CommunitiesMainFragment extends Fragment {
     private FragmentCommunityEntryBinding binding;
     private FirebaseFirestore db;
     private List<CommunitiesModel> dataList;

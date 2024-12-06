@@ -1,4 +1,4 @@
-package com.ssuclass.cookietime.presentation.community.entry;
+package com.ssuclass.cookietime.presentation.community.main.model;
 
 public class CommunitiesModel {
     private String id;
