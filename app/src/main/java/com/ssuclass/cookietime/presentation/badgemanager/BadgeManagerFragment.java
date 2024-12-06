@@ -93,7 +93,7 @@ public class BadgeManagerFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             try {
                                 String title = documentSnapshot.getString(FirebaseConstants.TITLE_FIELD);
-                                String movieId = documentSnapshot.getString(FirebaseConstants.MOVIEID_TITLE);
+                                String movieId = documentSnapshot.getId();
                                 Timestamp timestamp = documentSnapshot.getTimestamp(FirebaseConstants.TIMESTAMP_FIELD);
                                 LocalDate localDate = timestamp.toDate()
                                         .toInstant()
