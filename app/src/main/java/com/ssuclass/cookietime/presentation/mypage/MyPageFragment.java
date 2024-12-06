@@ -94,7 +94,7 @@ public class MyPageFragment extends Fragment {
     private void fetchUserData() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            ToastHelper.showToast(getContext(), "사용자 정보를 확인할 수 없습니다.");
+            // FIXME: 12/6/24 사용자정보를 찾지 못했을 때 피드백
             return;
         }
 

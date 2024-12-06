@@ -43,7 +43,7 @@ public class ChangeNicknameActivity extends AppCompatActivity {
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 uid = user.getUid();
             } catch (RuntimeException e) {
-                ToastHelper.showToast(ChangeNicknameActivity.this, "사용자 정보를 찾지 못했습니다.");
+                // FIXME: 12/6/24 실패 했을 때 피드백 조치
                 return;
             }
 

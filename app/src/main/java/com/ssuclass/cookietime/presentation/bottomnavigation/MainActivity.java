@@ -10,6 +10,7 @@ import com.ssuclass.cookietime.R;
 import com.ssuclass.cookietime.databinding.ActivityMainBinding;
 import com.ssuclass.cookietime.presentation.badgemanager.BadgeManagerFragment;
 import com.ssuclass.cookietime.presentation.community.main.CommunitiesMainFragment;
+import com.ssuclass.cookietime.presentation.cookieinfo.CookieInfoFragment;
 import com.ssuclass.cookietime.presentation.home.HomeFragment;
 import com.ssuclass.cookietime.presentation.mypage.MyPageFragment;
 
@@ -29,13 +30,28 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 모든 Fragment를 미리 추가하고 숨김
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, myPageFragment).hide(myPageFragment)
-                .add(R.id.fragment_container, badgeManagerFragment).hide(badgeManagerFragment)
-                .add(R.id.fragment_container, communitiesFragment).hide(communitiesFragment)
-                .add(R.id.fragment_container, homeFragment)
-                .commit();
+        if (getIntent().getBooleanExtra("show_cookie_info", false)) {
+            int movieId = getIntent().getIntExtra("movie_id", -1);
+            String movieTitle = getIntent().getStringExtra("movie_title");
+
+            if (movieId != -1) {
+                // 쿠키 정보 Fragment 생성 및 표시
+                CookieInfoFragment cookieInfoFragment =
+                        CookieInfoFragment.newInstance(movieId, movieTitle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, cookieInfoFragment)
+                        .commit();
+            }
+        } else {
+            // FIXME: 2024. 12. 6. 사용자 정보 가져오는 문제 해결
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, myPageFragment).hide(myPageFragment)
+                    .add(R.id.fragment_container, badgeManagerFragment).hide(badgeManagerFragment)
+                    .add(R.id.fragment_container, communitiesFragment).hide(communitiesFragment)
+                    .add(R.id.fragment_container, homeFragment)
+                    .commit();
+        }
 
         setBottomNavigationView();
     }

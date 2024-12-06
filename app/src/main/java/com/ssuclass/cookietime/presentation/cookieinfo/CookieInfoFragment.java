@@ -1,6 +1,7 @@
 package com.ssuclass.cookietime.presentation.cookieinfo;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,6 +27,8 @@ import com.ssuclass.cookietime.domain.CookieKeywordModel;
 import com.ssuclass.cookietime.domain.SurveyProgressModel;
 import com.ssuclass.cookietime.network.MovieAPI;
 import com.ssuclass.cookietime.network.response.TMDBMovieDetailResponse;
+import com.ssuclass.cookietime.presentation.badgemanager.InstagramSharingActivity;
+import com.ssuclass.cookietime.presentation.community.posts.PostsActivity;
 import com.ssuclass.cookietime.presentation.survey.SurveyFragment;
 
 import java.io.IOException;
@@ -47,6 +52,7 @@ public class CookieInfoFragment extends Fragment {
     private KeywordAdapter keywordAdapter;
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
     private FirebaseFirestore db;
+    private String posterPath;
 
     public static CookieInfoFragment newInstance(int movieId, String movieTitle) {
         CookieInfoFragment fragment = new CookieInfoFragment();
@@ -57,15 +63,46 @@ public class CookieInfoFragment extends Fragment {
         return fragment;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
         if (getArguments() != null) {
             int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
             String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
-            updateButtonState(movieId, movieTitle);
+            updateButtonState(movieId, movieTitle); // 버튼 업데이트
+            fetchSurveyData(movieId);
         }
     }
+
+
+    private void fetchSurveyData(int movieId) {
+        db.collection("Cookie")
+                .document(String.valueOf(movieId))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        SurveyProgressModel surveyProgress = documentSnapshot.toObject(SurveyProgressModel.class);
+
+                        db.collection("Cookie")
+                                .document(String.valueOf(movieId))
+                                .collection("Keyword")
+                                .get()
+                                .addOnSuccessListener(querySnapshot -> {
+                                    List<CookieKeywordModel> keywordList = querySnapshot.toObjects(CookieKeywordModel.class);
+
+                                    // 어댑터 업데이트
+                                    keywordAdapter.updateKeywords(keywordList);
+                                    surveyAdapter.updateSurveyData(surveyProgress);
+
+                                    // RecyclerView 갱신
+                                    keywordAdapter.notifyDataSetChanged();
+                                    surveyAdapter.notifyDataSetChanged();
+                                });
+                    }
+                });
+    }
+
 
     /**
      * 설문 버튼 상태를 업데이트하는 메서드
@@ -76,22 +113,49 @@ public class CookieInfoFragment extends Fragment {
                 binding.goToCookieCommunityButton.setEnabled(true);
                 binding.goToCookieCommunityButton.setText("커뮤니티 입장");
                 binding.goToCookieCommunityButton.setOnClickListener(view -> {
-                    //TODO: 커뮤니티 화면으로 전환
+                    checkIfCommunityExits(movieId, exists -> {
+                        if (exists) {
+                            Map<String, Object> communityData = new HashMap<>();
+                            communityData.put("title", movieTitle);
+                            communityData.put("poster_path", posterPath); // FIXME: 12/6/24 poster_path 추가
+
+                            db.collection("Communities")
+                                    .document(Integer.toString(movieId))
+                                    .set(communityData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Firestore", "커뮤니티가 성공적으로 생성되었습니다.");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("Firestore", "커뮤니티 생성 실패: ", e);
+                                    });
+
+                            Intent intent = new Intent(getContext(), PostsActivity.class);
+                            intent.putExtra("movieId", Integer.toString(movieId));
+                            intent.putExtra("movieTitle", movieTitle);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getContext(), PostsActivity.class);
+                            intent.putExtra("movie_id", Integer.toString(movieId)); // FIXME: 12/6/24 movie_id 단일화
+                            startActivity(intent);
+                        }
+                    });
                 });
                 binding.cookieInfoSurveyButton.setText("오늘의 쿠키 스토리 공유하기");
                 binding.cookieInfoSurveyButton.setOnClickListener(view -> {
                     //TODO: 쿠키 스토리 공유 화면으로 전환
+                    Intent intent = new Intent(getContext(), InstagramSharingActivity.class);
+                    intent.putExtra("movie_id", Integer.toString(movieId)); // FIXME: 2024. 12. 6. 영화 아이디값 단일화
+                    startActivity(intent);
                 });
             } else {
                 binding.cookieInfoSurveyButton.setEnabled(true);
                 binding.goToCookieCommunityButton.setText("설문하여 입장");
                 binding.goToCookieCommunityButton.setEnabled(false);
                 binding.cookieInfoSurveyButton.setOnClickListener(view -> {
-                    SurveyFragment surveyFragment = SurveyFragment.newInstance(movieId, movieTitle);
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, surveyFragment)
-                            .addToBackStack(null)
+                            .replace(R.id.fragment_container, SurveyFragment.newInstance(movieId, movieTitle))
+                            .addToBackStack(null) // 백스택에 추가
                             .commit();
                 });
             }
@@ -163,6 +227,24 @@ public class CookieInfoFragment extends Fragment {
                 });
     }
 
+    private void checkIfCommunityExits(int movieId, OnCheckMovieCommunityCallback callback) {
+        db.collection("Community")
+                .document(String.valueOf(movieId)) // Movie ID를 Document ID로 사용
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        callback.onCheckResult(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onCheckResult(false);
+                    }
+                });
+    }
+
     /**
      * TMDB API를 호출하여 영화 세부 정보를 가져오는 메서드
      */
@@ -173,6 +255,7 @@ public class CookieInfoFragment extends Fragment {
                 Log.d("Response", String.valueOf(response.body()));
                 if (response.isSuccessful() && response.body() != null) {
                     TMDBMovieDetailResponse dataModel = response.body();
+                    posterPath = dataModel.getPosterPath();
                     updateUIWithMovieDetail(dataModel); // UI 업데이트
                     // 해당 도큐먼트가 없는 경우에만 신규 도큐먼트 생성
                     checkMovieDocument(movieId, exists -> {
@@ -335,6 +418,10 @@ public class CookieInfoFragment extends Fragment {
 
 
     interface OnCheckMovieCallback {
+        void onCheckResult(boolean exists);
+    }
+
+    interface OnCheckMovieCommunityCallback {
         void onCheckResult(boolean exists);
     }
 }
