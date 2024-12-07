@@ -28,10 +28,14 @@
         <TextView
             android:id="@+id/info_community_textview"
             style="@style/community_info_community_viewholder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="쿠키 커뮤니티"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_title_textview"
             app:layout_constraintTop_toTopOf="@+id/movie_title_textview" />
 
