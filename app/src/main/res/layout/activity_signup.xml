@@ -8,6 +8,7 @@
     android:background="#FFFFFF"
     tools:context=".presentation.authentication.SignupActivity">
 
+    <!-- 상단 툴바 영역 - 스크롤에 영향받지 않고 고정됨 -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/signup_detail_page_toolbar"
         android:layout_width="match_parent"
@@ -27,190 +28,206 @@
             android:text="회원가입" />
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Cookie Image -->
-
-    <!-- 이름 안내 텍스트 -->
-    <ImageView
-        android:id="@+id/cookieImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
-        android:gravity="left"
-        android:src="@drawable/cookie_time_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.091"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup_detail_page_toolbar" />
-
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="left"
-        android:text="환영합니다!\n정보를 입력해주세요."
-        android:textColor="#000000"
-        android:textSize="28dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cookieImage" />
-
-    <!-- 이름 입력 -->
-    <TextView
-        android:id="@+id/inputNametext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="left"
-        android:text="이름을 입력해주세요"
-        android:textColor="#000000"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.109"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeText" />
-
-    <EditText
-        android:id="@+id/input_name_edit_text"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/edit_text_background"
-        android:hint="이름을 입력해주세요."
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#A0A0A0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputNametext" />
-
-    <!-- 닉네임 안내 텍스트 -->
-
-    <!-- 닉네임 입력 -->
-    <TextView
-        android:id="@+id/inputNicknametext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="left"
-        android:text="커뮤니티에서 사용할 닉네임을 입력해주세요"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.224"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_name_edit_text" />
-
-    <EditText
-        android:id="@+id/input_nickname_edit_text"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/edit_text_background"
-        android:hint="닉네임을 입력해주세요."
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#A0A0A0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputNicknametext" />
-
-    <!-- 아이디 안내 텍스트 -->
-
-    <!-- 아이디 입력 -->
-    <TextView
-        android:id="@+id/input_email_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="left"
-        android:text="이메일을 입력해주세요"
-        android:textColor="#000000"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_nickname_edit_text" />
-
-    <EditText
-        android:id="@+id/input_email_edittext"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/edit_text_background"
-        android:hint="이메일를 입력해주세요."
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#A0A0A0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_email_textview" />
-
-    <!-- 비밀번호 안내 텍스트 -->
-
-    <!-- 비밀번호 입력 -->
-    <TextView
-        android:id="@+id/input_password_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="left"
-        android:text="비밀번호를 입력해주세요"
-        android:textColor="#000000"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.121"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_email_edittext" />
-
-    <EditText
-        android:id="@+id/input_password_edittext"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/edit_text_background"
-        android:hint="비밀번호를 입력해주세요."
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#A0A0A0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_password_textview" />
-
-    <!-- 회원가입 버튼 -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signup_button"
+    <!-- 스크롤 가능한 콘텐츠 영역 -->
+    <ScrollView
+        android:id="@+id/signup_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="96dp"
-        android:background="@drawable/button_rounded"
-        android:padding="12dp"
-        android:text="회원가입"
-        android:textColor="#FFFFFF"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_password_edittext" />
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_detail_page_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 쿠키 이미지 -->
+            <ImageView
+                android:id="@+id/cookieImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                android:gravity="left"
+                android:src="@drawable/cookie_time_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.091"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 환영 메시지 -->
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="left"
+                android:text="환영합니다!\n정보를 입력해주세요."
+                android:textColor="#000000"
+                android:textSize="28dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.134"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cookieImage" />
+
+            <!-- 이름 입력 영역 -->
+            <TextView
+                android:id="@+id/inputNametext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="left"
+                android:text="이름을 입력해주세요"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.109"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcomeText" />
+
+            <EditText
+                android:id="@+id/input_name_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="52dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="이름을 입력해주세요."
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#A0A0A0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputNametext" />
+
+            <!-- 닉네임 입력 영역 -->
+            <TextView
+                android:id="@+id/inputNicknametext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="left"
+                android:text="커뮤니티에서 사용할 닉네임을 입력해주세요"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.224"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_name_edit_text" />
+
+            <EditText
+                android:id="@+id/input_nickname_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="52dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="닉네임을 입력해주세요."
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#A0A0A0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputNicknametext" />
+
+            <!-- 이메일 입력 영역 -->
+            <TextView
+                android:id="@+id/input_email_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="left"
+                android:text="이메일을 입력해주세요"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.115"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_nickname_edit_text" />
+
+            <EditText
+                android:id="@+id/input_email_edittext"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="52dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="이메일을 입력해주세요."
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#A0A0A0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_email_textview" />
+
+            <!-- 비밀번호 입력 영역 -->
+            <TextView
+                android:id="@+id/input_password_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="left"
+                android:text="비밀번호를 입력해주세요"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.121"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_email_edittext" />
+
+            <EditText
+                android:id="@+id/input_password_edittext"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="52dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="비밀번호를 입력해주세요."
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#A0A0A0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_password_textview" />
+
+            <!-- 회원가입 버튼 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signup_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="96dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_rounded"
+                android:padding="12dp"
+                android:text="회원가입"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_password_edittext" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
