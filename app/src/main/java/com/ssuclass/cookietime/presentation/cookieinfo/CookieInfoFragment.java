@@ -71,12 +71,14 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
     @Override
     public void onResume() {
         super.onResume();
+
+        movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
+        String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
+        updateButtonState(movieId, movieTitle); // 버튼 업데이트
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (getArguments() != null) {
                 Log.d("state", "onResume");
-                movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
-                String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
-                updateButtonState(movieId, movieTitle); // 버튼 업데이트
                 fetchSurveyData(movieId);
             }
             // 1초 후 실행할 다른 코드
