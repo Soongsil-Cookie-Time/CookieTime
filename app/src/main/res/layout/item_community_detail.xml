@@ -31,8 +31,10 @@
         style="@style/community_detail_nickname_community_viewholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" | 하이용"
+        android:layout_marginTop="5dp"
+        android:text="하이용"
         app:layout_constraintStart_toStartOf="@+id/content_textview"
+        app:layout_constraintTop_toBottomOf="@+id/content_textview"
         tools:layout_editor_absoluteX="127dp"
         tools:layout_editor_absoluteY="64dp" />
 
