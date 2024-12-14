@@ -33,7 +33,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.authentication.SignupActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.authentication.SigninActivity"
             android:exported="false" />
