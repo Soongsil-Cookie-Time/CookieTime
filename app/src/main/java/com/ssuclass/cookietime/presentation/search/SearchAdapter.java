@@ -1,5 +1,6 @@
 package com.ssuclass.cookietime.presentation.search;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,19 +34,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TMDBMovieSearchResponse.Movie movie = movieList.get(position);
         holder.titleTextView.setText(movie.getTitle());
-        holder.releaseDateTextView.setText(movie.getReleaseDate());
-        holder.voteAverageTextView.setText(String.valueOf(movie.getVoteAverage()));
+        holder.releaseDateTextView.setText(movie.getReleaseDate() + " 개봉");
+        holder.voteAverageTextView.setText("평점 : " + movie.getVoteAverage());
 
         String imageUrl = "https://image.tmdb.org/t/p/w500" + movie.getPosterPath();
         Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.posterImageView);
 
         holder.cookieDetailButton.setOnClickListener(v -> listener.onMovieClick(movie.getId(), movie.getTitle()));
     }
-
 
     @Override
     public int getItemCount() {

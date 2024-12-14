@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -24,37 +25,6 @@
         app:layout_constraintStart_toStartOf="@+id/title_textview"
         app:layout_constraintTop_toBottomOf="@+id/title_textview" />
 
-    <ImageView
-        android:id="@+id/comment_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:contentDescription="댓글 수"
-        android:src="@drawable/uil_comment"
-        app:layout_constraintStart_toStartOf="@id/content_textview"
-        app:layout_constraintTop_toBottomOf="@+id/content_textview" />
-
-    <TextView
-        android:id="@+id/comment_number"
-        style="@style/community_detail_comment_community_viewholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="3"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_imageview"
-        app:layout_constraintStart_toEndOf="@+id/comment_imageview"
-        app:layout_constraintTop_toTopOf="@+id/comment_imageview" />
-
-
-    <TextView
-        android:id="@+id/posted_time_textview"
-        style="@style/community_detail_time_community_viewholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" | N분 전"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_number"
-        app:layout_constraintStart_toEndOf="@+id/comment_number"
-        app:layout_constraintTop_toTopOf="@+id/comment_number" />
 
     <TextView
         android:id="@+id/nickname_textview"
@@ -62,9 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" | 하이용"
-        app:layout_constraintBottom_toBottomOf="@+id/posted_time_textview"
-        app:layout_constraintStart_toEndOf="@+id/posted_time_textview"
-        app:layout_constraintTop_toTopOf="@+id/posted_time_textview" />
+        app:layout_constraintStart_toStartOf="@+id/content_textview"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="64dp" />
 
     <View
         android:layout_width="match_parent"

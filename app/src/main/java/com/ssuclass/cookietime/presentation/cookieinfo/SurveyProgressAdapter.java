@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import com.ssuclass.cookietime.domain.SurveyProgressModel;
 
 public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAdapter.SurveyViewHolder> {
 
+    private static final String TAG = "SurveyProgressAdapter"; // 디버깅 태그
     private SurveyProgressModel surveyList;
+
 
     public SurveyProgressAdapter(SurveyProgressModel surveyList) {
         this.surveyList = surveyList;
@@ -26,6 +29,7 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
 
     // 데이터 업데이트 메서드
     public void updateSurveyData(SurveyProgressModel newSurveyList) {
+        Log.d(TAG, "updateSurveyData: New survey list received: " + newSurveyList);
         this.surveyList = newSurveyList;
         notifyDataSetChanged(); // 데이터 변경 사항 반영
     }
@@ -41,6 +45,7 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SurveyViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: Binding data at position: " + position);
         // 1. 모든 뷰 초기화
         holder.progressBar.setProgress(0); // ProgressBar 초기화
         holder.startText.setText("");     // 시작 텍스트 초기화
@@ -79,10 +84,15 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 surveyList.getCookieTwoCount(),
                 surveyList.getCookieThreeCount()
         };
+
+        Log.d(TAG, "updateCookieCount: Raw cookie count data: " + java.util.Arrays.toString(cookieCounts));
+
         int totalCookieCount = 0;
         for (int count : cookieCounts) {
             totalCookieCount += count;
         }
+
+        Log.d(TAG, "updateCookieCount: Total cookie count: " + totalCookieCount);
 
         // 가장 높은 응답 값 및 인덱스 찾기
         int[] topTwoIndexes = findTopTwoIndexes(cookieCounts);
@@ -90,6 +100,9 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
         int topIndex2 = topTwoIndexes[1];
         int topPercent1 = calculatePercentage(cookieCounts[topIndex1], totalCookieCount);
         int topPercent2 = calculatePercentage(cookieCounts[topIndex2], totalCookieCount);
+
+        Log.d(TAG, "updateCookieCount: Top indexes: " + java.util.Arrays.toString(topTwoIndexes));
+        Log.d(TAG, "updateCookieCount: Top percentages: " + topPercent1 + "%, " + topPercent2 + "%");
 
         // 라벨 설정
         String[] labels = {"0개", "1개", "2개", "3개"};
@@ -115,6 +128,9 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
         int cookieLongPercent = calculatePercentage(cookieLongCount, totalCookieLength);
         int cookieShortPercent = calculatePercentage(cookieShortCount, totalCookieLength);
 
+        Log.d(TAG, "updateCookieLength: Long: " + cookieLongCount + ", Short: " + cookieShortCount);
+        Log.d(TAG, "updateCookieLength: Total: " + totalCookieLength);
+
         holder.progressBar.setProgress(cookieLongPercent);
         holder.startText.setText("길어요 " + cookieLongPercent + "%");
         holder.endText.setText("짧아요 " + cookieShortPercent + "%");
@@ -137,6 +153,10 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
 
         int cookieImportantPercent = calculatePercentage(cookieImportantCount, totalCookieImportance);
         int cookieNotImportantPercent = calculatePercentage(cookieNotImportantCount, totalCookieImportance);
+
+        Log.d(TAG, "updateCookieImportance: Important: " + cookieImportantCount + ", Not Important: " + cookieNotImportantCount);
+        Log.d(TAG, "updateCookieImportance: Total: " + totalCookieImportance);
+
 
         holder.progressBar.setProgress(cookieImportantPercent);
         holder.startText.setText("중요해요 " + cookieImportantPercent + "%");
@@ -195,6 +215,7 @@ public class SurveyProgressAdapter extends RecyclerView.Adapter<SurveyProgressAd
                 index2 = i;
             }
         }
+        Log.d(TAG, "findTopTwoIndexes: Max1: " + max1 + " (Index: " + index1 + "), Max2: " + max2 + " (Index: " + index2 + ")");
 
         return new int[]{index1, index2};
     }
