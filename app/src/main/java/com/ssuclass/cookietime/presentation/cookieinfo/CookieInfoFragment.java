@@ -3,6 +3,8 @@ package com.ssuclass.cookietime.presentation.cookieinfo;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,7 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
     private FragmentCookieInfoBinding binding; // 뷰 바인딩 객체
     private FirebaseFirestore db;
     private String posterPath;
+    private int movieId;
 
     public static CookieInfoFragment newInstance(int movieId, String movieTitle) {
         CookieInfoFragment fragment = new CookieInfoFragment();
@@ -68,12 +71,17 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
     @Override
     public void onResume() {
         super.onResume();
-        if (getArguments() != null) {
-            int movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
-            String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
-            updateButtonState(movieId, movieTitle); // 버튼 업데이트
-            fetchSurveyData(movieId);
-        }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (getArguments() != null) {
+                Log.d("state", "onResume");
+                movieId = getArguments().getInt(ARG_MOVIE_ID, -1);
+                String movieTitle = getArguments().getString(ARG_MOVIE_TITLE);
+                updateButtonState(movieId, movieTitle); // 버튼 업데이트
+                fetchSurveyData(movieId);
+            }
+            // 1초 후 실행할 다른 코드
+        }, 1500); // 1000ms = 1초
+
     }
 
 
@@ -84,7 +92,6 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         SurveyProgressModel surveyProgress = documentSnapshot.toObject(SurveyProgressModel.class);
-
                         db.collection("Cookie")
                                 .document(String.valueOf(movieId))
                                 .collection("Keyword")
@@ -99,6 +106,9 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
                                     // RecyclerView 갱신
                                     keywordAdapter.notifyDataSetChanged();
                                     surveyAdapter.notifyDataSetChanged();
+
+                                    // UI 화면 전환 예: 로딩 상태 제거
+                                    Log.d("ScreenTransition", "Survey data loaded successfully.");
                                 });
                     }
                 });
@@ -263,7 +273,10 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
                     // 해당 도큐먼트가 없는 경우에만 신규 도큐먼트 생성
                     checkMovieDocument(movieId, exists -> {
                         if (!exists) {
-                            addMovieDocumentWithId(movieId);
+                            addMovieDocumentWithId(movieId, () -> {
+                                Log.d("FirebaseUpload", "Document created, fetching survey data...");
+                                fetchSurveyData(movieId); // 데이터 갱신
+                            });
                         }
                     });
                 } else {
@@ -345,17 +358,34 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
                 });
     }
 
-    private void addMovieDocumentWithId(Integer movieId) {
+    private void addMovieDocumentWithId(Integer movieId, Runnable onCompletionCallback) {
+        // 총 작업 수 (문서 생성 1 + 키워드 7)
+        int totalTasks = 8;
+        int[] completedTasks = {0}; // 동기화된 완료 카운터를 배열로 선언
+
+        // 작업 완료 확인 메서드
+        Runnable checkCompletion = () -> {
+            synchronized (completedTasks) {
+                completedTasks[0]++;
+                Log.d("FirebaseUpload", "Completed tasks: " + completedTasks[0] + " / " + totalTasks);
+                if (completedTasks[0] == totalTasks) {
+                    Log.d("FirebaseUpload", "All tasks completed. Triggering callback.");
+                    onCompletionCallback.run(); // 모든 작업이 완료된 경우 콜백 실행
+                }
+            }
+        };
+
         // 쿠키정보 데이터베이스 초깃값 설정
         db.collection("Cookie")
                 .document(movieId.toString())
                 .set(new SurveyProgressModel(0, 0, 0, 0, 0, 0, 0, 0))
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        System.out.println("Document successfully added under movieId: " + movieId);
+                        Log.d("FirebaseUpload", "SurveyProgressModel document added for movieId: " + movieId);
                     } else {
-                        System.err.println("Error adding document: " + task.getException());
+                        Log.e("FirebaseUpload", "Error adding SurveyProgressModel document", task.getException());
                     }
+                    checkCompletion.run(); // 작업 완료
                 });
 
         // 하위 컬렉션 참조 생성
@@ -373,17 +403,18 @@ public class CookieInfoFragment extends Fragment implements OnSurveyCompleteList
 
         // 각각의 데이터를 지정된 ID로 하위 컬렉션에 추가
         for (Map.Entry<String, CookieKeywordModel> entry : dataModels.entrySet()) {
-            String documentId = entry.getKey(); // 미리 지정한 ID
+            String documentId = entry.getKey();
             CookieKeywordModel dataModel = entry.getValue();
 
             subCollectionRef.document(documentId)
                     .set(dataModel)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            System.out.println("Document successfully added with ID: " + documentId);
+                            Log.d("FirebaseUpload", "Keyword document added with ID: " + documentId);
                         } else {
-                            System.err.println("Error adding document: " + task.getException());
+                            Log.e("FirebaseUpload", "Error adding keyword document with ID: " + documentId, task.getException());
                         }
+                        checkCompletion.run(); // 작업 완료
                     });
         }
     }
